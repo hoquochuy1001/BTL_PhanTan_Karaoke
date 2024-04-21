@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
@@ -27,4 +28,14 @@ public class ChucVu {
     @OneToMany(mappedBy = "maCV")
     private Set<NhanVien> nhanViens = new LinkedHashSet<>();
 
+	public ChucVu() {
+		super();
+	}
+
+	public ChucVu(String maCV, String tenCV) {
+		super();
+		this.maCV = maCV;
+		this.tenCV = tenCV;
+	}
+    
 }
