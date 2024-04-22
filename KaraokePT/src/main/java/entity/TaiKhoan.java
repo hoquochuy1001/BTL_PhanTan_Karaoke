@@ -8,6 +8,7 @@ import org.hibernate.annotations.Nationalized;
 @Getter
 @Setter
 @Entity
+@NamedNativeQueries({ @NamedNativeQuery(name = "getDSTaiKhoan", query = "{}", resultClass = TaiKhoan.class), })
 public class TaiKhoan {
     @Id
     @Nationalized

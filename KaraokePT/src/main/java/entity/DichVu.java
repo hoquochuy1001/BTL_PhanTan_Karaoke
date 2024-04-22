@@ -12,6 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@NamedNativeQueries({ @NamedNativeQuery(name = "getDSDichVu", query = "{}", resultClass = DichVu.class), })
 public class DichVu {
     @Id
     @Nationalized

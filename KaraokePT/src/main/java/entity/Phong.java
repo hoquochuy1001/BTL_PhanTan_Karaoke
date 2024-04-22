@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
+@NamedNativeQueries({ @NamedNativeQuery(name = "getDSPhong", query = "{}", resultClass = Phong.class), })
 public class Phong {
     @Id
     @Nationalized

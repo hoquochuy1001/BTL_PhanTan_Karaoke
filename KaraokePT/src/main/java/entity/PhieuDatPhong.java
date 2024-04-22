@@ -9,6 +9,7 @@ import java.time.Instant;
 @Getter
 @Setter
 @Entity
+@NamedNativeQueries({ @NamedNativeQuery(name = "getDSPhieuDatPhong", query = "{}", resultClass = PhieuDatPhong.class), })
 public class PhieuDatPhong {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
