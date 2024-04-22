@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@NamedNativeQueries({ @NamedNativeQuery(name = "getDSNhanVien", query = "{}", resultClass = NhanVien.class), })
 public class NhanVien {
     @Id
     @Nationalized

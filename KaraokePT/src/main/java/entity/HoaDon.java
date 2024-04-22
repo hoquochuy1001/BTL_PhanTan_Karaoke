@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
+@NamedNativeQueries({ @NamedNativeQuery(name = "getDSHoaDon", query = "{}", resultClass = HoaDon.class), })
 public class HoaDon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

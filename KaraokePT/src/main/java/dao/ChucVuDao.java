@@ -15,7 +15,7 @@ public class ChucVuDao {
     }
 
     public List<ChucVu> getAllChucVu() {
-        List<ChucVu> dsChucVu = new ArrayList<>();
+        List<ChucVu> dsChucVu = new ArrayList<ChucVu>();
         try (Session session = sessionFactory.openSession()) {
             dsChucVu = session.createQuery("FROM ChucVu", ChucVu.class).getResultList();
         } catch (Exception e) {
