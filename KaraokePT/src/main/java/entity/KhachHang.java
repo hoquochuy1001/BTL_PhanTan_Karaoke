@@ -31,4 +31,17 @@ public class KhachHang {
     @Column(name = "sdt", length = 10)
     private String sdt;
 
+    public KhachHang() {
+    }
+
+    public KhachHang(String maKH, String tenKH, String cmnd, String sdt) {
+        this.maKH = maKH;
+        this.tenKH = tenKH;
+        this.cmnd = cmnd;
+        this.sdt = sdt;
+    }
+
+    public KhachHang(String khachhang) {
+        this.maKH = khachhang;
+    }
 }

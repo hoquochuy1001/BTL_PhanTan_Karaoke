@@ -19,5 +19,11 @@ public class LoaiPhong {
     @Column(name = "loaiPhong", nullable = false, length = 50)
     private String loaiPhong;
 
+    public LoaiPhong() {
+    }
+    public LoaiPhong(String loaiPhong) {
+        this.loaiPhong = loaiPhong;
+    }
+
     //TODO [JPA Buddy] generate columns from DB
 }

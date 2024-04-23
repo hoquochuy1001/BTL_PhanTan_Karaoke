@@ -37,4 +37,21 @@ public class DichVu {
     @OneToMany(mappedBy = "maDV")
     private Set<ChiTietHoaDon> chiTietHoaDons = new LinkedHashSet<>();
 
+    public DichVu() {
+    }
+
+    public DichVu(String maDV) {
+        this.maDV = maDV;
+    }
+
+    public DichVu(String maDV, String tenDV, String donViTinh, BigDecimal giaDV, LoaiDichVu loaiDV) {
+        this.maDV = maDV;
+        this.tenDV = tenDV;
+        this.donViTinh = donViTinh;
+        this.giaDV = giaDV;
+        this.loaiDV = loaiDV;
+    }
+
+
+
 }

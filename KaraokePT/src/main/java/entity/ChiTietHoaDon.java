@@ -38,4 +38,20 @@ public class ChiTietHoaDon {
     @Column(name = "GhiChu", length = 200)
     private String ghiChu;
 
+    public ChiTietHoaDon() {
+    }
+
+    public ChiTietHoaDon(Integer id) {
+        this.id = id;
+    }
+
+    public ChiTietHoaDon(Integer id, HoaDon maHD, DichVu maDV, Integer maPDP, Integer soLuong, BigDecimal thanhTien, String ghiChu) {
+        this.id = id;
+        this.maHD = maHD;
+        this.maDV = maDV;
+        this.maPDP = maPDP;
+        this.soLuong = soLuong;
+        this.thanhTien = thanhTien;
+        this.ghiChu = ghiChu;
+    }
 }

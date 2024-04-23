@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -17,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.TextField;
 import javax.swing.JComboBox;
+import javax.swing.AbstractButton;
 import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.border.BevelBorder;
@@ -27,17 +29,39 @@ import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.Component;
+import java.awt.Container;
+
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
-public class Menu_GUI extends JFrame implements ActionListener{
+
+import dao.LoaiDichVuDao;
+import entity.KhachHang;
+import entity.LoaiDichVu;
+import util.HibernateUtil;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.List;
+public class LoaiDichVu_GUI extends JFrame implements ActionListener, MouseListener{
 
 	private JPanel contentPane;
-	JMenuBar menuBar;
+	private JTable table;
+	private DefaultTableModel tableModel;
+	private Container lblNewLabel_tenCV;
+	private JTextField textField;
+	private JButton btnNewButton_xoaTrang;
+	private JButton btnNewButton_xoa;
+	private JButton btnNewButton_them;
+	private LoaiDichVuDao ldv_dao;
+//	private String loaiDV;
 	
-	public Menu_GUI() {
+	
+
+	
+	public LoaiDichVu_GUI() {
+		ldv_dao = new LoaiDichVuDao(HibernateUtil.getSessionFactory());
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setBounds(0, 0, 1650, 1080);
@@ -159,6 +183,8 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		mntmNewMenuItem_lapHD.addActionListener(this);
 		mnNewMenu_hd.add(mntmNewMenuItem_lapHD);
 		
+		
+		
 		JMenu mnNewMenu_thongKe = new JMenu("Thống Kê");
 		mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
 		mnNewMenu_thongKe.setFont(new Font("Segoe UI", Font.PLAIN, 30));
@@ -172,24 +198,83 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		mnNewMenu_thongKe.add(mntmNewMenuItem_tkDoanhThu);
 		
 		
-		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("KARAOKE NICE");
+		JLabel lblNewLabel = new JLabel("LOẠI DỊCH VỤ");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 50));
-		lblNewLabel.setBounds(426, 0, 650, 74);
+		lblNewLabel.setBounds(410, 0, 650, 74);
 		contentPane.add(lblNewLabel);
 		
-
 		
+		JLabel lblNewLabel_loaiDV = new JLabel("Loại Dịch Vụ:");
+		lblNewLabel_loaiDV.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_loaiDV.setBounds(583, 135, 103, 29);
+		contentPane.add(lblNewLabel_loaiDV);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(696, 139, 191, 26);
+		contentPane.add(textField);
+		
+		 btnNewButton_them = new JButton("Thêm");
+		btnNewButton_them.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnNewButton_them.setBounds(300, 249, 134, 39);
+		contentPane.add(btnNewButton_them);
+		
+		 btnNewButton_xoa = new JButton("Xoá");
+		btnNewButton_xoa.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnNewButton_xoa.setBounds(530, 249, 134, 39);
+		contentPane.add(btnNewButton_xoa);
+		
+		 btnNewButton_xoaTrang = new JButton("Xoá Trắng");
+		btnNewButton_xoaTrang.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnNewButton_xoaTrang.setBounds(753, 249, 134, 39);
+		contentPane.add(btnNewButton_xoaTrang);
+		
+		String [] headers = {"Loại Dịch Vụ"};
+		tableModel=new DefaultTableModel(headers,0);
+		JScrollPane scroll = new JScrollPane();
+		scroll.setViewportView(table = new JTable(tableModel));
+		table.setRowHeight(25);
+		table.setAutoCreateRowSorter(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(10, 331, 1520, 396);
+		contentPane.add(scrollPane);
+		
+		JLabel lblNewLabel_2 = new JLabel("Danh sách Loại Dịch Vụ:");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_2.setBounds(10, 292, 151, 29);
+		contentPane.add(lblNewLabel_2);
+		
+		Box horizontalBox = Box.createHorizontalBox();
+		horizontalBox.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng Tin Lo\u1EA1i D\u1ECBch V\u1EE5", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		horizontalBox.setBounds(10, 84, 1520, 135);
+		contentPane.add(horizontalBox);
+		
+		btnNewButton_them.addActionListener(this);
+		btnNewButton_xoa.addActionListener(this);
+		btnNewButton_xoaTrang.addActionListener(this);
+		table.addMouseListener(this);
+		DocDuLieuDatabaseVaoTable();
 		this.setVisible(true);
 	}
 
+	private void DocDuLieuDatabaseVaoTable() {
+		// TODO Auto-generated method stub
+		List<LoaiDichVu> list = ldv_dao.getAllLoaiDichVu();
+		for(LoaiDichVu s : list) {
+			String[] rowData = {s.getLoaiDV()};
+			tableModel.addRow(rowData);
+			}
+		table.setModel(tableModel);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -210,7 +295,7 @@ public class Menu_GUI extends JFrame implements ActionListener{
 			dispose();
             new ChucVu_GUI();
         }
-//		////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Khách Hàng")) {
 			dispose();
             new CapNhapKH_GUI();
@@ -232,7 +317,7 @@ public class Menu_GUI extends JFrame implements ActionListener{
 			dispose();
             new LoaiDichVu_GUI();
         }
-//		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Phòng")) {
 			dispose();
             new CapNhapPhong_GUI();
@@ -258,16 +343,75 @@ public class Menu_GUI extends JFrame implements ActionListener{
 //			dispose();
 //            new ThongKe_GUI();
 //        }
-//		///////////////////////////////////////////////////////////////////////////
-//		if (e.getActionCommand().equals("Lập Hoá Đơn")) {
-//			dispose();
-//            new LapHoaDon_GUI();
-//        }
-//		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
-//			dispose();
-//            new ThongKe_GUI();
-//        }
+		Object o = e.getSource();
+		if(o.equals(btnNewButton_them))
+			themLDV();
+		if(o.equals(btnNewButton_xoa))
+			xoaLDV();
+		if(o.equals(btnNewButton_xoaTrang))
+			xoaTrang();
+	}
 
+	private void xoaTrang() {
+		// TODO Auto-generated method stub
+		textField.setText("");
+		textField.requestFocus();
+	}
 
+	private void xoaLDV() {
+		// TODO Auto-generated method stub
+		int row = table.getSelectedRow();
+		if(row>=0) {
+			String loaiDV = (String) table.getValueAt(row,0);
+			if(ldv_dao.deleteLoaiDichVu(loaiDV)) {
+				tableModel.removeRow(row);
+				xoaTrang();
+			}
+		}
+	}
+//
+	private void themLDV() {
+		// TODO Auto-generated method stub
+		String loai = textField.getText();
+		LoaiDichVu ldv = new LoaiDichVu(loai);
+		try {
+			ldv_dao.createLoaiDichVu(ldv);
+			tableModel.addRow(new Object[] {ldv.getLoaiDV()});
+		} catch (Exception e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(this, "Trùng");
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		int row = table.getSelectedRow();
+		textField.setText(tableModel.getValueAt(row, 0).toString());
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

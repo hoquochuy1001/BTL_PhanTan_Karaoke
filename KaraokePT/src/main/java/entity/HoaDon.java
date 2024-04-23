@@ -43,4 +43,22 @@ public class HoaDon {
     @Column(name = "IDCode", length = 25)
     private String iDCode;
 
+
+    public HoaDon() {
+    }
+
+    public HoaDon(Integer id) {
+        this.id = id;
+    }
+
+    public HoaDon(Integer id, String soHoaDon, LocalDate ngayTaoHD, NhanVien maNV, KhachHang maKH, BigDecimal tongTien, String ghiChu, String iDCode) {
+        this.id = id;
+        this.soHoaDon = soHoaDon;
+        this.ngayTaoHD = ngayTaoHD;
+        this.maNV = maNV;
+        this.maKH = maKH;
+        this.tongTien = tongTien;
+        this.ghiChu = ghiChu;
+        this.iDCode = iDCode;
+    }
 }

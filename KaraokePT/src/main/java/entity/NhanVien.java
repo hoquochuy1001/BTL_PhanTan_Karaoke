@@ -36,4 +36,21 @@ public class NhanVien {
     @JoinColumn(name = "maCV", nullable = false)
     private ChucVu maCV;
 
+    public NhanVien(String maNV) {
+        this.maNV = maNV;
+    }
+
+    public NhanVien() {
+    }
+
+    public NhanVien(String maNV, String tenNV, LocalDate ngaySinh, String sdt, String gioiTinh, ChucVu maCV) {
+        this.maNV = maNV;
+        this.tenNV = tenNV;
+        this.ngaySinh = ngaySinh;
+        this.sdt = sdt;
+        this.gioiTinh = gioiTinh;
+        this.maCV = maCV;
+    }
+
+
 }

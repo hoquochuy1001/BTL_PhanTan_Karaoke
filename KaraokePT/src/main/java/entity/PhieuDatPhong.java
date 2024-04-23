@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 
 @Getter
@@ -21,7 +22,7 @@ public class PhieuDatPhong {
     private Phong maPhong;
 
     @Column(name = "tgDatPhong", nullable = false)
-    private Instant tgDatPhong;
+    private Timestamp tgDatPhong;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "maKH", nullable = false)
@@ -31,4 +32,18 @@ public class PhieuDatPhong {
     @JoinColumn(name = "maNV", nullable = false)
     private NhanVien maNV;
 
+    public PhieuDatPhong() {
+    }
+
+    public PhieuDatPhong(Integer id) {
+        this.id = id;
+    }
+
+    public PhieuDatPhong(Integer id, Phong maPhong, Timestamp tgDatPhong, KhachHang maKH, NhanVien maNV) {
+        this.id = id;
+        this.maPhong = maPhong;
+        this.tgDatPhong = tgDatPhong;
+        this.maKH = maKH;
+        this.maNV = maNV;
+    }
 }

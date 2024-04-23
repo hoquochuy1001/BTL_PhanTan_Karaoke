@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -29,15 +30,43 @@ import javax.swing.JTextField;
 import java.awt.Component;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
-public class Menu_GUI extends JFrame implements ActionListener{
+
+import dao.DichVuDao;
+
+import dao.LoaiDichVuDao;
+
+import entity.DichVu;
+import entity.LoaiDichVu;
+import util.HibernateUtil;
+
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.math.BigDecimal;
+import java.util.List;
+public class CapNhapDV_GUI extends JFrame implements ActionListener, MouseListener{
 
 	private JPanel contentPane;
-	JMenuBar menuBar;
+	private JTextField textField_maDV;
+	private JTable table;
+	private DichVuDao dv_dao;
+	private DefaultTableModel tableModel;
+	private JComboBox comboBox_loaiDV;
+	private JButton btnNewButton_them;
+	private JButton btnNewButton_xoa;
+	private JButton btnNewButton_sua;
+	private JButton btnNewButton_xoaTrang;
+	private LoaiDichVuDao ldv_dao;
+	private JComboBox comboBox_dvt;
+	private JTextField textField_tenDV;
+	private JTextField textField_giaDV;
+
 	
-	public Menu_GUI() {
+	public CapNhapDV_GUI() {
+
+		dv_dao = new DichVuDao(HibernateUtil.getSessionFactory());
+		ldv_dao = new LoaiDichVuDao(HibernateUtil.getSessionFactory());
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		setBounds(0, 0, 1650, 1080);
@@ -171,23 +200,141 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		mntmNewMenuItem_tkDoanhThu.addActionListener(this);
 		mnNewMenu_thongKe.add(mntmNewMenuItem_tkDoanhThu);
 		
-		
-		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 255, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
-		
-		JLabel lblNewLabel = new JLabel("KARAOKE NICE");
+		contentPane.setLayout(null);		
+		JLabel lblNewLabel = new JLabel("CẬP NHẬT DỊCH VỤ");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 50));
-		lblNewLabel.setBounds(426, 0, 650, 74);
+		lblNewLabel.setBounds(329, 0, 650, 74);
 		contentPane.add(lblNewLabel);
 		
-
+		JLabel lblNewLabel_maDV = new JLabel("Mã DV:");
+		lblNewLabel_maDV.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_maDV.setBounds(262, 118, 58, 29);
+		contentPane.add(lblNewLabel_maDV);
 		
+		JLabel lblNewLabel_tenDV = new JLabel("Tên DV:");
+		lblNewLabel_tenDV.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_tenDV.setBounds(262, 172, 58, 29);
+		contentPane.add(lblNewLabel_tenDV);
+		
+		JLabel lblNewLabel_dvt = new JLabel("Đơn Vị Tính:");
+		lblNewLabel_dvt.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_dvt.setBounds(525, 118, 84, 29);
+		contentPane.add(lblNewLabel_dvt);
+		
+		JLabel lblNewLabel_giaDV = new JLabel("Giá DV:");
+		lblNewLabel_giaDV.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_giaDV.setBounds(823, 118, 74, 29);
+		contentPane.add(lblNewLabel_giaDV);
+		
+		JLabel lblNewLabel_loaiDV = new JLabel("Loại DV:");
+		lblNewLabel_loaiDV.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_loaiDV.setBounds(535, 172, 74, 29);
+		contentPane.add(lblNewLabel_loaiDV);
+		
+		textField_maDV = new JTextField();
+		textField_maDV.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		textField_maDV.setBounds(329, 118, 161, 26);
+		contentPane.add(textField_maDV);
+		textField_maDV.setColumns(10);
+		
+		comboBox_loaiDV = new JComboBox();
+		comboBox_loaiDV.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		comboBox_loaiDV.setEditable(true);
+		for(LoaiDichVu ldv : ldv_dao.getAllLoaiDichVu()) {
+			comboBox_loaiDV.addItem(ldv.getLoaiDV());
+		}
+		comboBox_loaiDV.setBounds(619, 174, 161, 29);
+		contentPane.add(comboBox_loaiDV);
+		
+		btnNewButton_them = new JButton("Thêm");
+		btnNewButton_them.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnNewButton_them.setBounds(276, 236, 134, 39);
+		contentPane.add(btnNewButton_them);
+		
+		 btnNewButton_xoa = new JButton("Xoá");
+		btnNewButton_xoa.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnNewButton_xoa.setBounds(499, 236, 134, 39);
+		contentPane.add(btnNewButton_xoa);
+		
+		 btnNewButton_sua = new JButton("Sửa");
+		btnNewButton_sua.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnNewButton_sua.setBounds(710, 236, 134, 39);
+		contentPane.add(btnNewButton_sua);
+		
+		 btnNewButton_xoaTrang = new JButton("Xoá Trắng");
+		btnNewButton_xoaTrang.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		btnNewButton_xoaTrang.setBounds(919, 236, 134, 39);
+		contentPane.add(btnNewButton_xoaTrang);
+		
+		String [] headers = {"Mã DV", "Tên DV", "Đơn Vị Tính", "Giá Dịch Vụ", "Loại Dịch Vụ"};
+		tableModel=new DefaultTableModel(headers,0);
+		JScrollPane scroll = new JScrollPane();
+		scroll.setViewportView(table = new JTable(tableModel));
+		table.setRowHeight(25);
+		table.setAutoCreateRowSorter(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+		
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(10, 331, 1520, 395);
+		contentPane.add(scrollPane);
+		
+		JLabel lblNewLabel_2 = new JLabel("Danh sách Dịch Vụ:");
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblNewLabel_2.setBounds(10, 292, 151, 29);
+		contentPane.add(lblNewLabel_2);
+		
+		 comboBox_dvt = new JComboBox();
+		 comboBox_dvt.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		 comboBox_dvt.setEditable(true);
+
+		 comboBox_dvt.addItem("Bịch");
+		 comboBox_dvt.addItem("Lon");
+		 comboBox_dvt.addItem("Điếu");
+		 comboBox_dvt.addItem("Gói");
+		 
+		comboBox_dvt.setBounds(619, 118, 161, 28);
+		contentPane.add(comboBox_dvt);
+		
+		textField_tenDV = new JTextField();
+		textField_tenDV.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		textField_tenDV.setColumns(10);
+		textField_tenDV.setBounds(329, 172, 161, 26);
+		contentPane.add(textField_tenDV);
+		
+		textField_giaDV = new JTextField();
+		textField_giaDV.setFont(new Font("Tahoma", Font.PLAIN, 10));
+		textField_giaDV.setColumns(10);
+		textField_giaDV.setBounds(907, 118, 146, 26);
+		contentPane.add(textField_giaDV);
+		
+		
+		btnNewButton_them.addActionListener(this);
+		btnNewButton_xoa.addActionListener(this);
+		btnNewButton_sua.addActionListener(this);
+		btnNewButton_xoaTrang.addActionListener(this);
+		
+		table.addMouseListener(this);
+		DocDuLieuDatabaseVaoTable();
 		this.setVisible(true);
+	}
+
+
+	private void DocDuLieuDatabaseVaoTable() {
+		// TODO Auto-generated method stub
+		List<DichVu> list = dv_dao.getAllDichVu();
+		for(DichVu s : list) {
+			LoaiDichVu loaiDV = s.getLoaiDV();
+			String loaiDVStr = (loaiDV != null) ? loaiDV.getLoaiDV() : "N/A";
+			String[] rowData = {s.getMaDV(), s.getTenDV(), s.getDonViTinh(), s.getGiaDV()+"", loaiDVStr};
+			tableModel.addRow(rowData);
+		}
+
+		table.setModel(tableModel);
 	}
 
 
@@ -210,7 +357,7 @@ public class Menu_GUI extends JFrame implements ActionListener{
 			dispose();
             new ChucVu_GUI();
         }
-//		////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Khách Hàng")) {
 			dispose();
             new CapNhapKH_GUI();
@@ -219,7 +366,7 @@ public class Menu_GUI extends JFrame implements ActionListener{
 //			dispose();
 //            new TimKiemKH_GUI();
 //        }
-//		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Dịch Vụ")) {
 			dispose();
             new CapNhapDV_GUI();
@@ -232,7 +379,7 @@ public class Menu_GUI extends JFrame implements ActionListener{
 			dispose();
             new LoaiDichVu_GUI();
         }
-//		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Phòng")) {
 			dispose();
             new CapNhapPhong_GUI();
@@ -249,7 +396,7 @@ public class Menu_GUI extends JFrame implements ActionListener{
 			dispose();
             new DatPhong_GUI();
         }
-//		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
 //		if (e.getActionCommand().equals("Lập Hoá Đơn")) {
 //			dispose();
 //            new LapHoaDon_GUI();
@@ -258,16 +405,118 @@ public class Menu_GUI extends JFrame implements ActionListener{
 //			dispose();
 //            new ThongKe_GUI();
 //        }
-//		///////////////////////////////////////////////////////////////////////////
-//		if (e.getActionCommand().equals("Lập Hoá Đơn")) {
-//			dispose();
-//            new LapHoaDon_GUI();
-//        }
-//		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
-//			dispose();
-//            new ThongKe_GUI();
-//        }
+		///////////////////////////////////////////////////////////////////////
+		Object o = e.getSource();
+		if(o.equals(btnNewButton_them))
+			themDV();
+		if(o.equals(btnNewButton_xoa))
+			xoaDV();
+		if(o.equals(btnNewButton_sua))
+			suaDV();
+		if(o.equals(btnNewButton_xoaTrang))
+			xoaTrang();
+	}
 
 
+	private void xoaTrang() {
+		// TODO Auto-generated method stub
+		textField_maDV.setText("");
+		textField_tenDV.setText("");
+		//textField_dvt.setText("");
+		textField_giaDV.setText("");
+		textField_maDV.requestFocus();
+		
+	}
+//
+//
+	private void suaDV() {
+		// TODO Auto-generated method stub
+		int row = table.getSelectedRow();
+		String ma = textField_maDV.getText();
+		String ten = textField_tenDV.getText();
+		String dvt = comboBox_dvt.getSelectedItem().toString();
+		BigDecimal giadv = new BigDecimal(textField_giaDV.getText());
+		String loaidv = comboBox_loaiDV.getSelectedItem().toString();
+		LoaiDichVu ldv = new LoaiDichVu(loaidv);
+		DichVu dv = new DichVu(ma, ten, dvt, giadv, ldv);
+		if(row>=0) {
+			if(dv_dao.updateDichVu(dv)) {
+				table.setValueAt(textField_tenDV.getText(), row, 1);
+				table.setValueAt(comboBox_dvt.getSelectedItem().toString(), row, 2);
+				table.setValueAt(textField_giaDV.getText(), row, 3);
+				table.setValueAt(comboBox_loaiDV.getSelectedItem().toString(), row,4);
+			}
+		}
+	}
+//
+	private void xoaDV() {
+		// TODO Auto-generated method stub
+		int row = table.getSelectedRow();
+		if(row>=0) {
+			String maDV = (String) table.getValueAt(row, 0);
+			if(dv_dao.deleteDichVu(maDV)) {
+				tableModel.removeRow(row);
+				xoaTrang();
+			}
+		}
+	}
+//
+//
+	private void themDV() {
+		// TODO Auto-generated method stub
+		String ma = textField_maDV.getText();
+		String ten = textField_tenDV.getText();
+		String dvt = comboBox_dvt.getSelectedItem().toString();
+		BigDecimal giadv = new BigDecimal(textField_giaDV.getText());
+		String loaidv = comboBox_loaiDV.getSelectedItem().toString();
+		LoaiDichVu ldv = new LoaiDichVu(loaidv);
+		DichVu dv = new DichVu(ma, ten, dvt, giadv, ldv);
+		try {
+			dv_dao.createDichVu(dv);
+			tableModel.addRow(new Object[] {dv.getMaDV(), dv.getTenDV(), dv.getDonViTinh(), dv.getGiaDV(), dv.getLoaiDV().getLoaiDV()});
+		}catch(Exception e) {
+			JOptionPane.showMessageDialog(this, "Trùng");
+			e.printStackTrace();
+		}
+	}
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		int row = table.getSelectedRow();
+		textField_maDV.setText(tableModel.getValueAt(row, 0).toString());
+		textField_tenDV.setText(tableModel.getValueAt(row, 1).toString());
+		((JComboBox) comboBox_dvt).setSelectedItem(tableModel.getValueAt(row, 2).toString());
+		textField_giaDV.setText(tableModel.getValueAt(row, 3).toString());
+		((JComboBox) comboBox_loaiDV).setSelectedItem(tableModel.getValueAt(row, 4).toString());
+	}
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 }

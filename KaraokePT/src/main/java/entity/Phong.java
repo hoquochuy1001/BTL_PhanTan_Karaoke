@@ -32,4 +32,18 @@ public class Phong {
     @Column(name = "tinhTrang", length = 50)
     private String tinhTrang;
 
+    public Phong() {
+    }
+
+    public Phong(String maPhong) {
+        this.maPhong = maPhong;
+    }
+
+    public Phong(String maPhong, String tenPhong, BigDecimal giaPhong, LoaiPhong loaiPhong, String tinhTrang) {
+        this.maPhong = maPhong;
+        this.tenPhong = tenPhong;
+        this.giaPhong = giaPhong;
+        this.loaiPhong = loaiPhong;
+        this.tinhTrang = tinhTrang;
+    }
 }

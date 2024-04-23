@@ -95,4 +95,46 @@ public class PhongDao {
         }
         return false;
     }
+
+    //function to update status of room(Phong) to "Phòng có Khách"
+    public boolean updateTrangThaiDP(String maP) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Phong p = session.get(Phong.class, maP);
+            if (p != null) {
+                p.setTinhTrang("Phòng có Khách");
+                session.update(p);
+                transaction.commit();
+                return true;
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //function to update status of room(Phong) to "Phòng trống"
+    public boolean updateTrangThaiTP(String maP) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            Phong p = session.get(Phong.class, maP);
+            if (p != null) {
+                p.setTinhTrang("Phòng trống");
+                session.update(p);
+                transaction.commit();
+                return true;
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

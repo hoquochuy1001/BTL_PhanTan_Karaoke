@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 
 import entity.DichVu;
 import entity.PhieuDatPhong;
+import org.hibernate.query.Query;
 
 public class PhieuDatPhongDao {
 	private final SessionFactory sessionFactory;
@@ -20,13 +21,15 @@ public class PhieuDatPhongDao {
     public List<PhieuDatPhong> getAllPhieuDatPhong() {
         List<PhieuDatPhong> dsPhieuDatPhong = new ArrayList<PhieuDatPhong>();
         try (Session session = sessionFactory.openSession()) {
-        	dsPhieuDatPhong = session.createQuery("FROM PhieuDatPhong", PhieuDatPhong.class).getResultList();
+            String hql = "SELECT pdp FROM PhieuDatPhong pdp JOIN FETCH pdp.maPhong";
+            dsPhieuDatPhong = session.createQuery(hql, PhieuDatPhong.class).getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return dsPhieuDatPhong;
     }
-    
+
+
     public boolean deletePhieuDatPhong(int maDV) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
@@ -45,4 +48,27 @@ public class PhieuDatPhongDao {
         }
         return false;
     }
+
+    public boolean createPhieuDatPhong(PhieuDatPhong pdp) {
+        Transaction transaction = null;
+        Session session = null;
+        try {
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+            session.save(pdp);
+            transaction.commit();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null && session.isOpen() && transaction.isActive()){
+                transaction.rollback();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
 }

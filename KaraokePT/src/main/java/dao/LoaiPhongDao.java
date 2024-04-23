@@ -17,7 +17,7 @@ public class LoaiPhongDao {
         this.sessionFactory = sessionFactory;
     }
 
-    public List<LoaiPhong> getAllDichVu() {
+    public List<LoaiPhong> getAllLoaiPhong() {
         List<LoaiPhong> dsLoaiPhong = new ArrayList<LoaiPhong>();
         try (Session session = sessionFactory.openSession()) {
             dsLoaiPhong = session.createQuery("FROM LoaiPhong", LoaiPhong.class).getResultList();
