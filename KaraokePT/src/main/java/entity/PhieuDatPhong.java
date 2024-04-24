@@ -46,4 +46,49 @@ public class PhieuDatPhong {
         this.maKH = maKH;
         this.maNV = maNV;
     }
+<<<<<<< HEAD
+=======
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Phong getMaPhong() {
+		return maPhong;
+	}
+
+	public void setMaPhong(Phong maPhong) {
+		this.maPhong = maPhong;
+	}
+
+	public Timestamp getTgDatPhong() {
+		return tgDatPhong;
+	}
+
+	public void setTgDatPhong(Timestamp tgDatPhong) {
+		this.tgDatPhong = tgDatPhong;
+	}
+
+	public KhachHang getMaKH() {
+		return maKH;
+	}
+
+	public void setMaKH(KhachHang maKH) {
+		this.maKH = maKH;
+	}
+
+	public NhanVien getMaNV() {
+		return maNV;
+	}
+
+	public void setMaNV(NhanVien maNV) {
+		this.maNV = maNV;
+	}
+    
+    
+>>>>>>> Khai-branch
 }

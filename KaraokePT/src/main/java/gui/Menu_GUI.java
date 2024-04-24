@@ -47,9 +47,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		  
 		JMenu mnNewMenu_menu = new JMenu("Nhân Viên");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mnNewMenu_menu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user.png")));
 =======
 		mnNewMenu_menu.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/user.png")));
+>>>>>>> Khai-branch
+=======
+
+		mnNewMenu_menu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user.png")));
+
+		mnNewMenu_menu.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/user.png")));
+
 >>>>>>> Khai-branch
 		mnNewMenu_menu.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		mnNewMenu_menu.addActionListener(this);
@@ -57,9 +65,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_upNV = new JMenuItem("Cập Nhập Nhân Viên");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_upNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
 =======
 		mntmNewMenuItem_upNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_upNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+		mntmNewMenuItem_upNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_upNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_upNV.addActionListener(this);
@@ -67,9 +83,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_findNV = new JMenuItem("Tìm Kiếm Nhân Viên");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_findNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
 =======
 		mntmNewMenuItem_findNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_findNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+		mntmNewMenuItem_findNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_findNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_findNV.addActionListener(this);
@@ -77,9 +101,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_tkNV = new JMenuItem("Tài Khoản");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_tkNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user4.png")));
 =======
 		mntmNewMenuItem_tkNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/user4.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_tkNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user4.png")));
+
+		mntmNewMenuItem_tkNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/user4.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_tkNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_tkNV.addActionListener(this);
@@ -87,9 +119,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_cvNV = new JMenuItem("Chức Vụ");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_cvNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_KH.png")));
 =======
 		mntmNewMenuItem_cvNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_KH.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_cvNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_KH.png")));
+
+		mntmNewMenuItem_cvNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_KH.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_cvNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_cvNV.addActionListener(this);
@@ -97,9 +137,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenu mnNewMenu_kh = new JMenu("Khách Hàng");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mnNewMenu_kh.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/users.png")));
 =======
 		mnNewMenu_kh.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/users.png")));
+>>>>>>> Khai-branch
+=======
+
+		mnNewMenu_kh.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/users.png")));
+
+		mnNewMenu_kh.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/users.png")));
+
 >>>>>>> Khai-branch
 		mnNewMenu_kh.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		mnNewMenu_kh.addActionListener(this);
@@ -107,9 +155,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmCpNhp_upKH = new JMenuItem("Cập Nhập Khách Hàng");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmCpNhp_upKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
 =======
 		mntmCpNhp_upKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmCpNhp_upKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+		mntmCpNhp_upKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
 >>>>>>> Khai-branch
 		mntmCpNhp_upKH.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmCpNhp_upKH.addActionListener(this);
@@ -117,9 +173,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_findKH = new JMenuItem("Tìm Kiếm Khách Hàng");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_findKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
 =======
 		mntmNewMenuItem_findKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_findKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+		mntmNewMenuItem_findKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_findKH.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_findKH.addActionListener(this);
@@ -127,9 +191,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenu mnNewMenu_dv = new JMenu("Dịch Vụ");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mnNewMenu_dv.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_DV (5).png")));
 =======
 		mnNewMenu_dv.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_DV (5).png")));
+>>>>>>> Khai-branch
+=======
+
+		mnNewMenu_dv.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_DV (5).png")));
+
+		mnNewMenu_dv.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_DV (5).png")));
+
 >>>>>>> Khai-branch
 		mnNewMenu_dv.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		mnNewMenu_dv.addActionListener(this);
@@ -137,9 +209,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_upDV = new JMenuItem("Cập Nhập Dịch Vụ");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_upDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
 =======
 		mntmNewMenuItem_upDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_upDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+		mntmNewMenuItem_upDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_upDV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_upDV.addActionListener(this);
@@ -147,9 +227,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_findDV = new JMenuItem("Tìm Kiếm Dịch Vụ");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_findDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
 =======
 		mntmNewMenuItem_findDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_findDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+		mntmNewMenuItem_findDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_findDV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_findDV.addActionListener(this);
@@ -157,9 +245,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_loaiDV = new JMenuItem("Loại Dịch Vụ");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_loaiDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/food.png")));
 =======
 		mntmNewMenuItem_loaiDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/food.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_loaiDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/food.png")));
+
+		mntmNewMenuItem_loaiDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/food.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_loaiDV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_loaiDV.addActionListener(this);
@@ -167,9 +263,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenu mnNewMenu_phong = new JMenu("Phòng");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mnNewMenu_phong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/essentials-08.png")));
 =======
 		mnNewMenu_phong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/essentials-08.png")));
+>>>>>>> Khai-branch
+=======
+
+		mnNewMenu_phong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/essentials-08.png")));
+
+		mnNewMenu_phong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/essentials-08.png")));
+
 >>>>>>> Khai-branch
 		mnNewMenu_phong.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		mnNewMenu_phong.addActionListener(this);
@@ -177,9 +281,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_upPhong = new JMenuItem("Cập Nhập Phòng");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_upPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
 =======
 		mntmNewMenuItem_upPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_upPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+		mntmNewMenuItem_upPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_upPhong.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_upPhong.addActionListener(this);
@@ -187,9 +299,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_upLP = new JMenuItem("Cập Nhập Loại Phòng");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_upLP.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
 =======
 		mntmNewMenuItem_upLP.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_upLP.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+		mntmNewMenuItem_upLP.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_upLP.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_upLP.addActionListener(this);
@@ -197,9 +317,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_findPhong = new JMenuItem("Tìm Kiếm Phòng");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_findPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
 =======
 		mntmNewMenuItem_findPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_findPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+		mntmNewMenuItem_findPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_findPhong.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_findPhong.addActionListener(this);
@@ -207,9 +335,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_datPhong = new JMenuItem("Đặt Phòng");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_datPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/bell.png")));
 =======
 		mntmNewMenuItem_datPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/bell.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_datPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/bell.png")));
+
+		mntmNewMenuItem_datPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/bell.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_datPhong.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_datPhong.addActionListener(this);
@@ -217,9 +353,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenu mnNewMenu_hd = new JMenu("Hoá Đơn");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mnNewMenu_hd.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_HD.png")));
 =======
 		mnNewMenu_hd.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_HD.png")));
+>>>>>>> Khai-branch
+=======
+
+		mnNewMenu_hd.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_HD.png")));
+
+		mnNewMenu_hd.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_HD.png")));
+
 >>>>>>> Khai-branch
 		mnNewMenu_hd.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		mnNewMenu_hd.addActionListener(this);
@@ -227,9 +371,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_lapHD = new JMenuItem("Lập Hoá Đơn");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_ThanhToan.png")));
 =======
 		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_ThanhToan.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_ThanhToan.png")));
+
+		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_ThanhToan.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_lapHD.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_lapHD.addActionListener(this);
@@ -237,9 +389,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenu mnNewMenu_thongKe = new JMenu("Thống Kê");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
 =======
 		mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_TK.png")));
+>>>>>>> Khai-branch
+=======
+
+		mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
+
+		mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_TK.png")));
+
 >>>>>>> Khai-branch
 		mnNewMenu_thongKe.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		mnNewMenu_thongKe.addActionListener(this);
@@ -247,9 +407,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		
 		JMenuItem mntmNewMenuItem_tkDoanhThu = new JMenuItem("Thống Kê Doanh Thu");
 <<<<<<< HEAD
+<<<<<<< HEAD
 		mntmNewMenuItem_tkDoanhThu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
 =======
 		mntmNewMenuItem_tkDoanhThu.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_TK.png")));
+>>>>>>> Khai-branch
+=======
+
+		mntmNewMenuItem_tkDoanhThu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
+
+		mntmNewMenuItem_tkDoanhThu.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_TK.png")));
+
 >>>>>>> Khai-branch
 		mntmNewMenuItem_tkDoanhThu.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_tkDoanhThu.addActionListener(this);
@@ -308,10 +476,17 @@ public class Menu_GUI extends JFrame implements ActionListener{
 			dispose();
             new CapNhapDV_GUI();
         }
+<<<<<<< HEAD
 //		if (e.getActionCommand().equals("Tìm Kiếm Dịch Vụ")) {
 //			dispose();
 //            new TimKiemDV_GUI();
 //        }
+=======
+		if (e.getActionCommand().equals("Tìm Kiếm Dịch Vụ")) {
+			dispose();
+            new TimKiemDV_GUI();
+        }
+>>>>>>> Khai-branch
 		if (e.getActionCommand().equals("Loại Dịch Vụ")) {
 			dispose();
             new LoaiDichVu_GUI();
