@@ -419,10 +419,10 @@ public class CapNhapNV_GUI extends JFrame implements ActionListener, MouseListen
             new DatPhong_GUI();
         }
 //		///////////////////////////////////////////////////////////////////////////
-//		if (e.getActionCommand().equals("Lập Hoá Đơn")) {
-//			dispose();
-//            new LapHoaDon_GUI();
-//        }
+		if (e.getActionCommand().equals("Lập Hoá Đơn")) {
+			dispose();
+            new LapHoaDon_GUI();
+        }
 //		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
 //			dispose();
 //            new ThongKe_GUI();

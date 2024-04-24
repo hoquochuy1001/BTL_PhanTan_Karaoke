@@ -99,7 +99,7 @@ public class NhanVienDao {
     public List<NhanVien> getNhanVienExceptAdmin() {
         List<NhanVien> dsNhanVien = new ArrayList<NhanVien>();
         try (Session session = sessionFactory.openSession()) {
-            dsNhanVien = session.createQuery("FROM NhanVien WHERE maNV != 'NV001'", NhanVien.class).getResultList();
+            dsNhanVien = session.createQuery("FROM NhanVien WHERE maNV != 'GD'", NhanVien.class).getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }
