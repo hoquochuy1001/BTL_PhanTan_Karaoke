@@ -61,4 +61,73 @@ public class HoaDon {
         this.ghiChu = ghiChu;
         this.iDCode = iDCode;
     }
+<<<<<<< HEAD
+=======
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getSoHoaDon() {
+		return soHoaDon;
+	}
+
+	public void setSoHoaDon(String soHoaDon) {
+		this.soHoaDon = soHoaDon;
+	}
+
+	public LocalDate getNgayTaoHD() {
+		return ngayTaoHD;
+	}
+
+	public void setNgayTaoHD(LocalDate ngayTaoHD) {
+		this.ngayTaoHD = ngayTaoHD;
+	}
+
+	public NhanVien getMaNV() {
+		return maNV;
+	}
+
+	public void setMaNV(NhanVien maNV) {
+		this.maNV = maNV;
+	}
+
+	public KhachHang getMaKH() {
+		return maKH;
+	}
+
+	public void setMaKH(KhachHang maKH) {
+		this.maKH = maKH;
+	}
+
+	public BigDecimal getTongTien() {
+		return tongTien;
+	}
+
+	public void setTongTien(BigDecimal tongTien) {
+		this.tongTien = tongTien;
+	}
+
+	public String getGhiChu() {
+		return ghiChu;
+	}
+
+	public void setGhiChu(String ghiChu) {
+		this.ghiChu = ghiChu;
+	}
+
+	public String getiDCode() {
+		return iDCode;
+	}
+
+	public void setiDCode(String iDCode) {
+		this.iDCode = iDCode;
+	}
+    
+    
+>>>>>>> Khai-branch
 }

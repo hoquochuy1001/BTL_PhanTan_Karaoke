@@ -25,4 +25,15 @@ public class LoaiDichVu {
     public LoaiDichVu(String loaiDV) {
         this.loaiDV = loaiDV;
     }
+<<<<<<< HEAD
+=======
+
+	public String getLoaiDV() {
+		return loaiDV;
+	}
+
+	public void setLoaiDV(String loaiDV) {
+		this.loaiDV = loaiDV;
+	}
+>>>>>>> Khai-branch
 }

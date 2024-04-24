@@ -40,6 +40,35 @@ public class ChucVu {
 
 	public ChucVu(String chucvu) {
 		this.maCV = chucvu;
+<<<<<<< HEAD
 	}
 
+=======
+	}
+
+	public String getMaCV() {
+		return maCV;
+	}
+
+	public void setMaCV(String maCV) {
+		this.maCV = maCV;
+	}
+
+	public String getTenCV() {
+		return tenCV;
+	}
+
+	public void setTenCV(String tenCV) {
+		this.tenCV = tenCV;
+	}
+
+	public Set<NhanVien> getNhanViens() {
+		return nhanViens;
+	}
+
+	public void setNhanViens(Set<NhanVien> nhanViens) {
+		this.nhanViens = nhanViens;
+	}
+
+>>>>>>> Khai-branch
 }

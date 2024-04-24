@@ -662,7 +662,11 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		hd.setNgayTaoHD(NgayTaoHD.toLocalDate());
 		hd.setMaNV(nv);
 		hd.setGhiChu(gc);
+<<<<<<< HEAD
 		hd.setIDCode(idcode);
+=======
+		hd.setiDCode(idcode);
+>>>>>>> Khai-branch
 		int maHD = dao.createHoaDon(hd);
 
 		System.out.println(maHD);

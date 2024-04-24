@@ -24,6 +24,15 @@ public class LoaiPhong {
     public LoaiPhong(String loaiPhong) {
         this.loaiPhong = loaiPhong;
     }
+<<<<<<< HEAD
+=======
+	public String getLoaiPhong() {
+		return loaiPhong;
+	}
+	public void setLoaiPhong(String loaiPhong) {
+		this.loaiPhong = loaiPhong;
+	}
+>>>>>>> Khai-branch
 
     //TODO [JPA Buddy] generate columns from DB
 }

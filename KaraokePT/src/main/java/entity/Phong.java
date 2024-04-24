@@ -46,4 +46,49 @@ public class Phong {
         this.loaiPhong = loaiPhong;
         this.tinhTrang = tinhTrang;
     }
+<<<<<<< HEAD
+=======
+
+	public String getMaPhong() {
+		return maPhong;
+	}
+
+	public void setMaPhong(String maPhong) {
+		this.maPhong = maPhong;
+	}
+
+	public String getTenPhong() {
+		return tenPhong;
+	}
+
+	public void setTenPhong(String tenPhong) {
+		this.tenPhong = tenPhong;
+	}
+
+	public BigDecimal getGiaPhong() {
+		return giaPhong;
+	}
+
+	public void setGiaPhong(BigDecimal giaPhong) {
+		this.giaPhong = giaPhong;
+	}
+
+	public LoaiPhong getLoaiPhong() {
+		return loaiPhong;
+	}
+
+	public void setLoaiPhong(LoaiPhong loaiPhong) {
+		this.loaiPhong = loaiPhong;
+	}
+
+	public String getTinhTrang() {
+		return tinhTrang;
+	}
+
+	public void setTinhTrang(String tinhTrang) {
+		this.tinhTrang = tinhTrang;
+	}
+    
+    
+>>>>>>> Khai-branch
 }

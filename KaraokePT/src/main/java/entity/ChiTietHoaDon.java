@@ -54,4 +54,65 @@ public class ChiTietHoaDon {
         this.thanhTien = thanhTien;
         this.ghiChu = ghiChu;
     }
+<<<<<<< HEAD
+=======
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public HoaDon getMaHD() {
+		return maHD;
+	}
+
+	public void setMaHD(HoaDon maHD) {
+		this.maHD = maHD;
+	}
+
+	public DichVu getMaDV() {
+		return maDV;
+	}
+
+	public void setMaDV(DichVu maDV) {
+		this.maDV = maDV;
+	}
+
+	public Integer getMaPDP() {
+		return maPDP;
+	}
+
+	public void setMaPDP(Integer maPDP) {
+		this.maPDP = maPDP;
+	}
+
+	public Integer getSoLuong() {
+		return soLuong;
+	}
+
+	public void setSoLuong(Integer soLuong) {
+		this.soLuong = soLuong;
+	}
+
+	public BigDecimal getThanhTien() {
+		return thanhTien;
+	}
+
+	public void setThanhTien(BigDecimal thanhTien) {
+		this.thanhTien = thanhTien;
+	}
+
+	public String getGhiChu() {
+		return ghiChu;
+	}
+
+	public void setGhiChu(String ghiChu) {
+		this.ghiChu = ghiChu;
+	}
+    
+    
+>>>>>>> Khai-branch
 }
