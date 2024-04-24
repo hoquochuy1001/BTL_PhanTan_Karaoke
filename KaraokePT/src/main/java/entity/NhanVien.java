@@ -36,4 +36,69 @@ public class NhanVien {
     @JoinColumn(name = "maCV", nullable = false)
     private ChucVu maCV;
 
+    public NhanVien(String maNV) {
+        this.maNV = maNV;
+    }
+
+    public NhanVien() {
+    }
+
+    public NhanVien(String maNV, String tenNV, LocalDate ngaySinh, String sdt, String gioiTinh, ChucVu maCV) {
+        this.maNV = maNV;
+        this.tenNV = tenNV;
+        this.ngaySinh = ngaySinh;
+        this.sdt = sdt;
+        this.gioiTinh = gioiTinh;
+        this.maCV = maCV;
+    }
+
+	public String getMaNV() {
+		return maNV;
+	}
+
+	public void setMaNV(String maNV) {
+		this.maNV = maNV;
+	}
+
+	public String getTenNV() {
+		return tenNV;
+	}
+
+	public void setTenNV(String tenNV) {
+		this.tenNV = tenNV;
+	}
+
+	public LocalDate getNgaySinh() {
+		return ngaySinh;
+	}
+
+	public void setNgaySinh(LocalDate ngaySinh) {
+		this.ngaySinh = ngaySinh;
+	}
+
+	public String getSdt() {
+		return sdt;
+	}
+
+	public void setSdt(String sdt) {
+		this.sdt = sdt;
+	}
+
+	public String getGioiTinh() {
+		return gioiTinh;
+	}
+
+	public void setGioiTinh(String gioiTinh) {
+		this.gioiTinh = gioiTinh;
+	}
+
+	public ChucVu getMaCV() {
+		return maCV;
+	}
+
+	public void setMaCV(ChucVu maCV) {
+		this.maCV = maCV;
+	}
+
+
 }

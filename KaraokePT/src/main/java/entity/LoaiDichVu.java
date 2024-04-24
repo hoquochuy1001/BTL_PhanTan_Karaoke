@@ -19,5 +19,18 @@ public class LoaiDichVu {
     @Column(name = "loaiDV", nullable = false, length = 50)
     private String loaiDV;
 
-    //TODO [JPA Buddy] generate columns from DB
+    public LoaiDichVu() {
+    }
+
+    public LoaiDichVu(String loaiDV) {
+        this.loaiDV = loaiDV;
+    }
+
+	public String getLoaiDV() {
+		return loaiDV;
+	}
+
+	public void setLoaiDV(String loaiDV) {
+		this.loaiDV = loaiDV;
+	}
 }

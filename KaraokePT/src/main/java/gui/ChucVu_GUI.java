@@ -279,10 +279,10 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-//		if (e.getActionCommand().equals("Cập Nhập Nhân Viên")) {
-//			dispose();
-//            new CapNhapNV_GUI();
-//        }
+		if (e.getActionCommand().equals("Cập Nhập Nhân Viên")) {
+			dispose();
+            new CapNhapNV_GUI();
+        }
 //		if (e.getActionCommand().equals("Tìm Kiếm Nhân Viên")) {
 //			dispose();
 //            new TimKiemNV_GUI();
@@ -296,49 +296,49 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
             new ChucVu_GUI();
 	  }
 //		////////////////////////////////////////////////////////////////////////////
-//		if (e.getActionCommand().equals("Cập Nhập Khách Hàng")) {
-//			dispose();
-//            new CapNhapKH_GUI();
-//        }
+		if (e.getActionCommand().equals("Cập Nhập Khách Hàng")) {
+			dispose();
+            new CapNhapKH_GUI();
+        }
 //		if (e.getActionCommand().equals("Tìm Kiếm Khách Hàng")) {
 //			dispose();
 //            new TimKiemKH_GUI();
 //        }
 //		///////////////////////////////////////////////////////////////////////////
-//		if (e.getActionCommand().equals("Cập Nhập Dịch Vụ")) {
-//			dispose();
-//            new CapNhapDV_GUI();
-//        }
+		if (e.getActionCommand().equals("Cập Nhập Dịch Vụ")) {
+			dispose();
+            new CapNhapDV_GUI();
+        }
 //		if (e.getActionCommand().equals("Tìm Kiếm Dịch Vụ")) {
 //			dispose();
 //            new TimKiemDV_GUI();
 //        }
-//		if (e.getActionCommand().equals("Loại Dịch Vụ")) {
-//			dispose();
-//            new LoaiDichVu_GUI();
-//        }
+		if (e.getActionCommand().equals("Loại Dịch Vụ")) {
+			dispose();
+            new LoaiDichVu_GUI();
+        }
 //		///////////////////////////////////////////////////////////////////////////
-//		if (e.getActionCommand().equals("Cập Nhập Phòng")) {
-//			dispose();
-//            new CapNhapPhong_GUI();
-//        }
-//		if (e.getActionCommand().equals("Cập Nhập Loại Phòng")) {
-//			dispose();
-//            new LoaiPhong_GUI();
-//        }
+		if (e.getActionCommand().equals("Cập Nhập Phòng")) {
+			dispose();
+            new CapNhapPhong_GUI();
+        }
+		if (e.getActionCommand().equals("Cập Nhập Loại Phòng")) {
+			dispose();
+            new LoaiPhong_GUI();
+        }
 //		if (e.getActionCommand().equals("Tìm Kiếm Phòng")) {
 //			dispose();
 //            new TimKiemPhong_GUI();
 //        }
-//		if (e.getActionCommand().equals("Đặt Phòng")) {
-//			dispose();
-//            new DatPhong_GUI();
-//        }
+		if (e.getActionCommand().equals("Đặt Phòng")) {
+			dispose();
+            new DatPhong_GUI();
+        }
 //		///////////////////////////////////////////////////////////////////////////
-//		if (e.getActionCommand().equals("Lập Hoá Đơn")) {
-//			dispose();
-//            new LapHoaDon_GUI();
-//        }
+		if (e.getActionCommand().equals("Lập Hoá Đơn")) {
+			dispose();
+            new LapHoaDon_GUI();
+        }
 //		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
 //			dispose();
 //            new ThongKe_GUI();
@@ -430,8 +430,5 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 	@Override
 	public void mouseExited(MouseEvent e) {
 
-	}
-	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> new ChucVu_GUI());
 	}
 }

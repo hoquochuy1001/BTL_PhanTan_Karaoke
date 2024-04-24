@@ -38,4 +38,78 @@ public class ChiTietHoaDon {
     @Column(name = "GhiChu", length = 200)
     private String ghiChu;
 
+    public ChiTietHoaDon() {
+    }
+
+    public ChiTietHoaDon(Integer id) {
+        this.id = id;
+    }
+
+    public ChiTietHoaDon(Integer id, HoaDon maHD, DichVu maDV, Integer maPDP, Integer soLuong, BigDecimal thanhTien, String ghiChu) {
+        this.id = id;
+        this.maHD = maHD;
+        this.maDV = maDV;
+        this.maPDP = maPDP;
+        this.soLuong = soLuong;
+        this.thanhTien = thanhTien;
+        this.ghiChu = ghiChu;
+    }
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public HoaDon getMaHD() {
+		return maHD;
+	}
+
+	public void setMaHD(HoaDon maHD) {
+		this.maHD = maHD;
+	}
+
+	public DichVu getMaDV() {
+		return maDV;
+	}
+
+	public void setMaDV(DichVu maDV) {
+		this.maDV = maDV;
+	}
+
+	public Integer getMaPDP() {
+		return maPDP;
+	}
+
+	public void setMaPDP(Integer maPDP) {
+		this.maPDP = maPDP;
+	}
+
+	public Integer getSoLuong() {
+		return soLuong;
+	}
+
+	public void setSoLuong(Integer soLuong) {
+		this.soLuong = soLuong;
+	}
+
+	public BigDecimal getThanhTien() {
+		return thanhTien;
+	}
+
+	public void setThanhTien(BigDecimal thanhTien) {
+		this.thanhTien = thanhTien;
+	}
+
+	public String getGhiChu() {
+		return ghiChu;
+	}
+
+	public void setGhiChu(String ghiChu) {
+		this.ghiChu = ghiChu;
+	}
+    
+    
 }

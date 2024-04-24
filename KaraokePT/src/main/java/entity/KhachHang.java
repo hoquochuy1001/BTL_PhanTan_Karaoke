@@ -31,4 +31,51 @@ public class KhachHang {
     @Column(name = "sdt", length = 10)
     private String sdt;
 
+    public KhachHang() {
+    }
+
+    public KhachHang(String maKH, String tenKH, String cmnd, String sdt) {
+        this.maKH = maKH;
+        this.tenKH = tenKH;
+        this.cmnd = cmnd;
+        this.sdt = sdt;
+    }
+
+    public KhachHang(String khachhang) {
+        this.maKH = khachhang;
+    }
+
+	public String getMaKH() {
+		return maKH;
+	}
+
+	public void setMaKH(String maKH) {
+		this.maKH = maKH;
+	}
+
+	public String getTenKH() {
+		return tenKH;
+	}
+
+	public void setTenKH(String tenKH) {
+		this.tenKH = tenKH;
+	}
+
+	public String getCmnd() {
+		return cmnd;
+	}
+
+	public void setCmnd(String cmnd) {
+		this.cmnd = cmnd;
+	}
+
+	public String getSdt() {
+		return sdt;
+	}
+
+	public void setSdt(String sdt) {
+		this.sdt = sdt;
+	}
+    
+    
 }

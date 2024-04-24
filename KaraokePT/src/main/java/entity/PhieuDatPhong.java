@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 
 @Getter
@@ -21,7 +22,7 @@ public class PhieuDatPhong {
     private Phong maPhong;
 
     @Column(name = "tgDatPhong", nullable = false)
-    private Instant tgDatPhong;
+    private Timestamp tgDatPhong;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "maKH", nullable = false)
@@ -31,4 +32,60 @@ public class PhieuDatPhong {
     @JoinColumn(name = "maNV", nullable = false)
     private NhanVien maNV;
 
+    public PhieuDatPhong() {
+    }
+
+    public PhieuDatPhong(Integer id) {
+        this.id = id;
+    }
+
+    public PhieuDatPhong(Integer id, Phong maPhong, Timestamp tgDatPhong, KhachHang maKH, NhanVien maNV) {
+        this.id = id;
+        this.maPhong = maPhong;
+        this.tgDatPhong = tgDatPhong;
+        this.maKH = maKH;
+        this.maNV = maNV;
+    }
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Phong getMaPhong() {
+		return maPhong;
+	}
+
+	public void setMaPhong(Phong maPhong) {
+		this.maPhong = maPhong;
+	}
+
+	public Timestamp getTgDatPhong() {
+		return tgDatPhong;
+	}
+
+	public void setTgDatPhong(Timestamp tgDatPhong) {
+		this.tgDatPhong = tgDatPhong;
+	}
+
+	public KhachHang getMaKH() {
+		return maKH;
+	}
+
+	public void setMaKH(KhachHang maKH) {
+		this.maKH = maKH;
+	}
+
+	public NhanVien getMaNV() {
+		return maNV;
+	}
+
+	public void setMaNV(NhanVien maNV) {
+		this.maNV = maNV;
+	}
+    
+    
 }

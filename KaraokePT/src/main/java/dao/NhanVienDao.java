@@ -95,4 +95,15 @@ public class NhanVienDao {
         }
         return false;
     }
+
+    public List<NhanVien> getNhanVienExceptAdmin() {
+        List<NhanVien> dsNhanVien = new ArrayList<NhanVien>();
+        try (Session session = sessionFactory.openSession()) {
+            dsNhanVien = session.createQuery("FROM NhanVien WHERE maNV != 'GD'", NhanVien.class).getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dsNhanVien;
+    }
+
 }

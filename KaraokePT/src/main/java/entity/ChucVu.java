@@ -38,6 +38,10 @@ public class ChucVu {
 		this.tenCV = tenCV;
 	}
 
+	public ChucVu(String chucvu) {
+		this.maCV = chucvu;
+	}
+
 	public String getMaCV() {
 		return maCV;
 	}
@@ -61,7 +65,5 @@ public class ChucVu {
 	public void setNhanViens(Set<NhanVien> nhanViens) {
 		this.nhanViens = nhanViens;
 	}
-    
-	
-	
+
 }
