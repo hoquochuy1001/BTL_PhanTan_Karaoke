@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import entity.DichVu;
 import entity.PhieuDatPhong;
 import org.hibernate.query.Query;
+import util.HibernateUtil;
 
 public class PhieuDatPhongDao {
 	private final SessionFactory sessionFactory;
@@ -70,5 +71,23 @@ public class PhieuDatPhongDao {
             }
         }
     }
-
+    public PhieuDatPhong getPhieuDatPhongByID(int id) {
+        Transaction transaction = null;
+        PhieuDatPhong pdp = null;
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            transaction = session.beginTransaction();
+            pdp = session.get(PhieuDatPhong.class, id);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return pdp;
+    }
 }
+

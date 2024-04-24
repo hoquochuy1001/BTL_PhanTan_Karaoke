@@ -53,6 +53,7 @@ import entity.*;
 //import net.sf.jasperreports.engine.JasperPrint;
 //import net.sf.jasperreports.engine.JasperReport;
 //import net.sf.jasperreports.view.JasperViewer;
+import org.hibernate.Session;
 import util.HibernateUtil;
 
 public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListener{
@@ -719,22 +720,33 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		ChiTietHoaDon_Dao dao = new ChiTietHoaDon_Dao();
 		for (int i = 0; i < table_1.getRowCount(); i++) {
 			String temp = table_1.getValueAt(i, 1).toString();
-			int pdp1 = isNumeric(temp) ? Integer.parseInt(temp) : 0;
-			//DichVu dv = isNumeric(temp) ? "DV000" : temp;
-			DichVu dv = new DichVu();
-			dv.setMaDV(temp);
+			int pdp1 = 0;
+			if (isNumeric(temp)) {
+				pdp1 = pdp_dao.getPhieuDatPhongByID(Integer.parseInt(temp)).getId();
+			}
 			int sl = Integer.parseInt(table_1.getValueAt(i, 4).toString());
 			double ThanhTien = ChuyenDoi.ChuyenTien(table_1.getValueAt(i, 5).toString());
 			String gc = table_1.getValueAt(i, 6).toString();
 			ChiTietHoaDon cthd = new ChiTietHoaDon();
 			HoaDon hd = new HoaDon();
+			hd.setId(maHD);
 			cthd.setMaHD(hd);
-			cthd.setMaDV(dv);
-			cthd.setMaPDP(pdp1);
-			cthd.setSoLuong(sl);
-			cthd.setThanhTien(BigDecimal.valueOf(ThanhTien));
-			cthd.setGhiChu(gc);
-			dao.createChiTietHoaDon(cthd);
+			DichVu dv = dv_dao.getDichVuByLoaiDichVu(temp);
+			if (dv == null) {
+				// Tạo một DichVu mặc định
+				dv = new DichVu();
+				dv.setMaDV("DV000");
+				dv.setTenDV("Dịch vụ mặc định");
+				// hoặc bạn có thể thông báo cho người dùng
+				System.out.println("Không tìm thấy Dịch Vụ: " + temp);
+			} else {
+				cthd.setMaPDP(pdp1);
+				cthd.setMaDV(dv);
+				cthd.setSoLuong(sl);
+				cthd.setThanhTien(BigDecimal.valueOf(ThanhTien));
+				cthd.setGhiChu(gc);
+				dao.createChiTietHoaDon(cthd);
+			}
 		}
 	}
 

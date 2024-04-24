@@ -15,7 +15,7 @@ public class HoaDonDao {
 
     public Long countSoHoaDon(String soHoaDon) {
         try (Session session = sessionFactory.openSession()) {
-            String hql = "SELECT COUNT(*) FROM HoaDon WHERE SoHoaDon = :soHoaDon";
+            String hql = "SELECT COUNT(*) FROM HoaDon WHERE soHoaDon like :soHoaDon";
             Query query = session.createQuery(hql);
             query.setParameter("soHoaDon", "%" + soHoaDon + "%");
             return (Long) query.uniqueResult();
@@ -27,7 +27,7 @@ public class HoaDonDao {
 
     public HoaDon getBySoHoaDon(String soHoaDon) {
         try (Session session = sessionFactory.openSession()) {
-            String hql = "FROM HoaDon WHERE SoHoaDon = soHoaDon";
+            String hql = "FROM HoaDon WHERE soHoaDon = :soHoaDon";
             Query query = session.createQuery(hql);
             query.setParameter("soHoaDon", soHoaDon);
             return (HoaDon) query.uniqueResult();
