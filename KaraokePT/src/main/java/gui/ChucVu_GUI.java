@@ -294,7 +294,7 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 		if (e.getActionCommand().equals("Chức Vụ")) {
 			dispose();
             new ChucVu_GUI();
-      }
+	  }
 //		////////////////////////////////////////////////////////////////////////////
 //		if (e.getActionCommand().equals("Cập Nhập Khách Hàng")) {
 //			dispose();
