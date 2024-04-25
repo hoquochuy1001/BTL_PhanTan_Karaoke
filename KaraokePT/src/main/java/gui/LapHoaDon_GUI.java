@@ -47,13 +47,14 @@ import bll.jdlAddPDP;
 import dao.*;
 
 import entity.*;
-//import net.sf.jasperreports.engine.JasperCompileManager;
-//import net.sf.jasperreports.engine.JasperExportManager;
-//import net.sf.jasperreports.engine.JasperFillManager;
-//import net.sf.jasperreports.engine.JasperPrint;
-//import net.sf.jasperreports.engine.JasperReport;
-//import net.sf.jasperreports.view.JasperViewer;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.view.JasperViewer;
 import org.hibernate.Session;
+import org.hibernate.jdbc.ReturningWork;
 import util.HibernateUtil;
 
 public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListener{
@@ -662,45 +663,55 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		hd.setNgayTaoHD(NgayTaoHD.toLocalDate());
 		hd.setMaNV(nv);
 		hd.setGhiChu(gc);
-		hd.setIDCode(idcode);
+		hd.setiDCode(idcode);
 		int maHD = dao.createHoaDon(hd);
 
 		System.out.println(maHD);
 		ThemCTHDTuTable(maHD);
 		p_dao.updateTrangThaiTP(tp);
 		pdp_dao.deletePhieuDatPhong(pdp);
-		//XuatHoaDon(maHD);
+		XuatHoaDon(maHD);
 
 		TaoMoiHD();
-		return 1;
+		return maHD;
 	}
 
 
-	//	private void XuatHoaDon(int idhd) {
-//		// TODO Auto-generated method stub
-//		try {
-//
-//            Hashtable map = new Hashtable();
-//            JasperReport report = JasperCompileManager.compileReport("src/report/Blank_A4.jrxml");
-//
-//            map.put("sMaHD", idhd);
-//
-//            JasperPrint p = JasperFillManager.fillReport(report,  map, ConnectDB.con );
-//            JasperViewer.viewReport(p, false);
-//            JasperExportManager.exportReportToPdfFile(p, "test.pdf");
-//        } catch (Exception ex) {
-//            System.out.println(ex.getMessage());
-//        }
-//
-//	}
+	private void XuatHoaDon(int idhd) {
+		Session session = null;
+		try {
+			Hashtable map = new Hashtable();
+			JasperReport report = JasperCompileManager.compileReport("src/report/Blank_A4.jrxml");
+
+			map.put("sMaHD", idhd);
+
+			session = HibernateUtil.getSessionFactory().openSession();
+			Connection connection = session.doReturningWork(new ReturningWork<Connection>() {
+				@Override
+				public Connection execute(Connection conn) {
+					return conn;
+				}
+			});
+			JasperPrint p = JasperFillManager.fillReport(report, map, connection);
+			JasperViewer.viewReport(p, false);
+			JasperExportManager.exportReportToPdfFile(p, "src/report/test.pdf");
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+			if (session != null) {
+				session.close();
+			}
+		}
+	}
+
+
+
 	private void TaoMoiHD() {
-		// TODO Auto-generated method stub
 		textField_shd.setText(SoHoaDon());
 		DefaultTableModel tbModel = (DefaultTableModel)table_1.getModel();
         tbModel.setRowCount(0);
 	}
 	private void taoHD() {
-		// TODO Auto-generated method stub
 		textField_shd.setText(SoHoaDon());
 	}
 

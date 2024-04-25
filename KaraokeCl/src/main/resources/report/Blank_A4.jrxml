@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="1c730b29-3955-4489-9f7a-5a33bdb2a2e3">
+	<queryString language="SQL">
+		<![CDATA[SELECT "HoaDon"."maHD",
+    "HoaDon"."TongTien",
+    "HoaDon"."SoHoaDon",
+    "HoaDon"."ngayTaoHD",
+    "HoaDon"."GhiChu" as hd_gc,
+
+    "NhanVien"."tenNV",
+    "KhachHang"."tenKH",
+    "KhachHang"."sdt",
+    "KhachHang"."cmnd",
+
+    "DichVu"."maDV",
+    "DichVu"."tenDV",
+
+    "ChiTietHoaDon"."soLuong",
+    "DichVu"."giaDV",
+    "ChiTietHoaDon"."thanhTien",
+    "ChiTietHoaDon"."GhiChu" as cthd_gc,
+    "HoaDon"."tongTien",
+
+    "ChiTietHoaDon"."maPDP"
+
+FROM "HoaDon"
+    inner join "NhanVien" ON
+     "NhanVien"."maNV" = "HoaDon"."maNV"
+    inner join "KhachHang" ON
+     "KhachHang"."maKH" = "HoaDon"."maKH"
+    inner join "ChiTietHoaDon" ON
+     "ChiTietHoaDon"."maHD" = "HoaDon"."maHD"
+    inner join "DichVu" ON
+     "DichVu"."maDV" = "ChiTietHoaDon"."maDV"
+
+    where
+     HoaDon."MaHD" =  $P{sMaHD}]]>
+	</queryString>
+	<!-- Add your fields, variables, and other report elements here -->
+</jasperReport>

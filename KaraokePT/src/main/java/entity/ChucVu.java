@@ -40,11 +40,11 @@ public class ChucVu {
 
 	public ChucVu(String chucvu) {
 		this.maCV = chucvu;
-<<<<<<< HEAD
+
 	}
 
-=======
-	}
+
+
 
 	public String getMaCV() {
 		return maCV;
@@ -70,5 +70,5 @@ public class ChucVu {
 		this.nhanViens = nhanViens;
 	}
 
->>>>>>> Khai-branch
+
 }

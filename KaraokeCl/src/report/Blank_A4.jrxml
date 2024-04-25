@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.0.final using JasperReports Library version 6.20.0-2bc7ab61c56f459e8176eb05c7705e145cd400ad  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_A4" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b23312fd-2c4c-413d-b08f-544460c20b1b">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter (6)"/>
+	<parameter name="sMaHD" class="java.lang.String"/>
+	<parameter name="smaPDP" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="smaDV" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="stenDV" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="sgiaDV" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="sThanhTien" class="java.lang.String" isForPrompting="false"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT "HoaDon"."maHD",
+	"HoaDon"."TongTien",
+	"HoaDon"."SoHoaDon",
+	"HoaDon"."ngayTaoHD",
+	"HoaDon"."GhiChu" as hd_gc,
+
+	"NhanVien"."tenNV",
+	"KhachHang"."tenKH",
+	"KhachHang"."sdt",
+	"KhachHang"."cmnd",
+
+	"DichVu"."maDV",
+	"DichVu"."tenDV",
+
+	"ChiTietHoaDon"."soLuong",
+	"DichVu"."giaDV",
+	"ChiTietHoaDon"."thanhTien",
+	"ChiTietHoaDon"."GhiChu" as cthd_gc,
+	"HoaDon"."tongTien",
+
+	"ChiTietHoaDon"."maPDP"
+
+FROM "HoaDon"
+	inner join "NhanVien" ON
+	 "NhanVien"."maNV" = "HoaDon"."maNV"
+	inner join "KhachHang" ON
+	 "KhachHang"."maKH" = "HoaDon"."maKH"
+	inner join "ChiTietHoaDon" ON
+	 "ChiTietHoaDon"."maHD" = "HoaDon"."maHD"
+	inner join "DichVu" ON
+	 "DichVu"."maDV" = "ChiTietHoaDon"."maDV"
+	where
+     HoaDon."MaHD" =  $P{sMaHD}]]>
+	</queryString>
+	<field name="maHD" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="maHD"/>
+		<property name="com.jaspersoft.studio.field.label" value="maHD"/>
+	</field>
+	<field name="TongTien" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="TongTien"/>
+		<property name="com.jaspersoft.studio.field.label" value="TongTien"/>
+	</field>
+	<field name="SoHoaDon" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="SoHoaDon"/>
+		<property name="com.jaspersoft.studio.field.label" value="SoHoaDon"/>
+	</field>
+	<field name="ngayTaoHD" class="java.sql.Date">
+		<property name="com.jaspersoft.studio.field.name" value="ngayTaoHD"/>
+		<property name="com.jaspersoft.studio.field.label" value="ngayTaoHD"/>
+	</field>
+	<field name="hd_gc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="hd_gc"/>
+		<property name="com.jaspersoft.studio.field.label" value="hd_gc"/>
+	</field>
+	<field name="tenNV" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tenNV"/>
+		<property name="com.jaspersoft.studio.field.label" value="tenNV"/>
+	</field>
+	<field name="tenKH" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tenKH"/>
+		<property name="com.jaspersoft.studio.field.label" value="tenKH"/>
+	</field>
+	<field name="sdt" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="sdt"/>
+		<property name="com.jaspersoft.studio.field.label" value="sdt"/>
+	</field>
+	<field name="cmnd" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cmnd"/>
+		<property name="com.jaspersoft.studio.field.label" value="cmnd"/>
+	</field>
+	<field name="maDV" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="maDV"/>
+		<property name="com.jaspersoft.studio.field.label" value="maDV"/>
+	</field>
+	<field name="tenDV" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tenDV"/>
+		<property name="com.jaspersoft.studio.field.label" value="tenDV"/>
+	</field>
+	<field name="soLuong" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="soLuong"/>
+		<property name="com.jaspersoft.studio.field.label" value="soLuong"/>
+	</field>
+	<field name="giaDV" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="giaDV"/>
+		<property name="com.jaspersoft.studio.field.label" value="giaDV"/>
+	</field>
+	<field name="thanhTien" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="thanhTien"/>
+		<property name="com.jaspersoft.studio.field.label" value="thanhTien"/>
+	</field>
+	<field name="cthd_gc" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cthd_gc"/>
+		<property name="com.jaspersoft.studio.field.label" value="cthd_gc"/>
+	</field>
+	<field name="tongTien" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="tongTien"/>
+		<property name="com.jaspersoft.studio.field.label" value="tongTien"/>
+	</field>
+	<field name="maPDP" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="maPDP"/>
+		<property name="com.jaspersoft.studio.field.label" value="maPDP"/>
+	</field>
+	<group name="maHD">
+		<groupExpression><![CDATA[$F{maHD}]]></groupExpression>
+	</group>
+	<group name="TongTien">
+		<groupExpression><![CDATA[$F{TongTien}]]></groupExpression>
+	</group>
+	<group name="SoHoaDon">
+		<groupExpression><![CDATA[$F{SoHoaDon}]]></groupExpression>
+	</group>
+	<group name="ngayTaoHD">
+		<groupExpression><![CDATA[$F{ngayTaoHD}]]></groupExpression>
+	</group>
+	<group name="hd_gc">
+		<groupExpression><![CDATA[$F{hd_gc}]]></groupExpression>
+	</group>
+	<group name="tenNV">
+		<groupExpression><![CDATA[$F{tenNV}]]></groupExpression>
+	</group>
+	<group name="tenKH">
+		<groupExpression><![CDATA[$F{tenKH}]]></groupExpression>
+	</group>
+	<group name="sdt">
+		<groupExpression><![CDATA[$F{sdt}]]></groupExpression>
+	</group>
+	<group name="cmnd">
+		<groupExpression><![CDATA[$F{cmnd}]]></groupExpression>
+	</group>
+	<group name="maDV">
+		<groupExpression><![CDATA[$F{maDV}]]></groupExpression>
+	</group>
+	<group name="tenDV">
+		<groupExpression><![CDATA[$F{tenDV}]]></groupExpression>
+	</group>
+	<group name="soLuong">
+		<groupExpression><![CDATA[$F{soLuong}]]></groupExpression>
+	</group>
+	<group name="giaDV">
+		<groupExpression><![CDATA[$F{giaDV}]]></groupExpression>
+	</group>
+	<group name="thanhTien">
+		<groupExpression><![CDATA[$F{thanhTien}]]></groupExpression>
+	</group>
+	<group name="cthd_gc">
+		<groupExpression><![CDATA[$F{cthd_gc}]]></groupExpression>
+	</group>
+	<group name="tongTien">
+		<groupExpression><![CDATA[$F{tongTien}]]></groupExpression>
+	</group>
+	<group name="maPDP">
+		<groupExpression><![CDATA[$F{maPDP}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="175" y="30" width="194" height="20" uuid="b3ed2c4c-6d78-4ce3-96d8-8798506df887"/>
+				<textElement textAlignment="Center">
+					<font fontName="Cambria" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HÓA ĐƠN Karaoke Nice]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="77" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="17" width="73" height="20" uuid="ea270e8b-180b-4920-9011-67be2eb4ba55"/>
+				<text><![CDATA[Số hóa đơn]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="93" y="17" width="129" height="20" uuid="9d483b7f-0a8a-4ba4-9a8d-09458443705c"/>
+				<textFieldExpression><![CDATA[$F{SoHoaDon}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="37" width="73" height="20" uuid="bdc6c40d-e083-42cf-9f30-46ad2a6a621b"/>
+				<text><![CDATA[Ngày tạo]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="93" y="37" width="129" height="20" uuid="0081d40c-3dbd-4b33-b6f7-85e0e54076f1"/>
+				<textFieldExpression><![CDATA[$F{ngayTaoHD}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="20" y="57" width="73" height="20" uuid="0d9e69cb-c223-4bd6-951a-0c57f26ad951"/>
+				<text><![CDATA[Nhân viên]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="93" y="57" width="129" height="20" uuid="d2213adf-9e9c-45b0-a19d-72661068bcb1"/>
+				<textElement>
+					<font fontName="Times New Roman"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tenNV}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="17" width="73" height="20" uuid="0b426bdd-5806-4bff-ba3a-11dd98372b17"/>
+				<text><![CDATA[Khách hàng]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="353" y="17" width="171" height="20" uuid="8c5e3d92-d8ca-4beb-addd-9e6f5ddc30e5"/>
+				<textFieldExpression><![CDATA[$F{tenKH}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="37" width="73" height="20" uuid="e428107b-8772-4121-85b4-37a2e48a6f6e"/>
+				<text><![CDATA[Số điện thoại]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="353" y="37" width="171" height="20" uuid="4d052921-266f-40e4-b1b2-b02c7b1be76a"/>
+				<textFieldExpression><![CDATA[$F{sdt}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="280" y="57" width="73" height="20" uuid="54ce5147-c13e-48d8-b526-5ec351cd709e"/>
+				<text><![CDATA[Ghi chú]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="353" y="57" width="171" height="20" uuid="d377af9b-5e0e-48ca-bd52-e7e53fb52540"/>
+				<textFieldExpression><![CDATA[$F{hd_gc}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="31" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="10" width="47" height="20" uuid="e2039541-f15e-4b37-aa7c-b3c9ce6a12af"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mã hàng]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="47" y="10" width="90" height="20" uuid="c38a403d-da03-4ca9-9c6a-dfa16ffa4989"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tên hàng]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="137" y="10" width="90" height="20" uuid="401adb29-8375-4214-bb4a-75e441198616"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Giá bán]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="227" y="10" width="90" height="20" uuid="462ddf2a-b441-464c-9bfa-4d3b4a93fcb3"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Số lượng]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="317" y="10" width="119" height="20" uuid="ab05cc90-9d36-4ec3-a058-a40f3a8ecd9b"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Thành tiền]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="436" y="10" width="119" height="20" uuid="ac1dbcfc-83f8-4782-9390-5e8e7005758c"/>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ghi chú]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="10" width="552" height="1" uuid="d6f48ae8-1757-4253-ab87-5c93585bec1d"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="125" splitType="Stretch">
+			<textField>
+				<reportElement x="59" y="5" width="90" height="20" uuid="9d9d89b0-91f2-42b3-b930-83547b18cd77"/>
+				<textFieldExpression><![CDATA[$F{tenDV}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="149" y="5" width="77" height="20" uuid="cb943d60-7dc1-4ba5-9787-de51b68580e2"/>
+				<textFieldExpression><![CDATA[$F{giaDV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-1" y="5" width="47" height="20" uuid="cde765dc-b05d-4416-ad54-e7ee7233b237"/>
+				<textFieldExpression><![CDATA[$F{maDV}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="242" y="5" width="67" height="20" uuid="037f9b86-5eb9-48ca-b73d-341dceebdde7"/>
+				<textFieldExpression><![CDATA[$F{soLuong}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="332" y="5" width="96" height="20" uuid="d343c96e-9195-46e6-8cc0-b6cb8488409f"/>
+				<textFieldExpression><![CDATA[$F{thanhTien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="436" y="5" width="111" height="20" uuid="366aa2e3-d73a-4868-aceb-e770fc7cedf6"/>
+				<textFieldExpression><![CDATA[$F{cthd_gc}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="1" y="0" width="553" height="1" uuid="03ac66a9-b16d-4d42-b94a-525ed49703e3"/>
+			</line>
+			<line>
+				<reportElement x="4" y="25" width="553" height="1" uuid="e0b29f92-3f0d-435c-8fd7-6d3400f664e3"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="115" splitType="Stretch">
+			<line>
+				<reportElement x="2" y="111" width="559" height="1" uuid="c5233078-3300-47de-b042-269e89430f5b"/>
+			</line>
+			<staticText>
+				<reportElement x="320" y="95" width="100" height="20" uuid="f75c016c-cbe9-4db8-9d3a-f2a62636c1e7"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Tổng tiền]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="448" y="95" width="135" height="20" uuid="8f98089d-7adc-43bf-a440-eedfbcc632e8"/>
+				<textFieldExpression><![CDATA[$F{tongTien}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

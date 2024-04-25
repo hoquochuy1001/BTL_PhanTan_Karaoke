@@ -46,8 +46,7 @@ public class Phong {
         this.loaiPhong = loaiPhong;
         this.tinhTrang = tinhTrang;
     }
-<<<<<<< HEAD
-=======
+
 
 	public String getMaPhong() {
 		return maPhong;
@@ -90,5 +89,5 @@ public class Phong {
 	}
     
     
->>>>>>> Khai-branch
+
 }

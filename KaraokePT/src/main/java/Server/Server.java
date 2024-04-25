@@ -13,6 +13,6 @@ public class Server {
         Session session = sessionFactory.openSession();
         System.out.println("Success!!!");
         
-        new Menu_GUI();
+       new Menu_GUI();
     }
 }

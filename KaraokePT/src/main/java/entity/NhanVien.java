@@ -52,8 +52,7 @@ public class NhanVien {
         this.maCV = maCV;
     }
 
-<<<<<<< HEAD
-=======
+
 	public String getMaNV() {
 		return maNV;
 	}
@@ -102,6 +101,6 @@ public class NhanVien {
 		this.maCV = maCV;
 	}
 
->>>>>>> Khai-branch
+
 
 }

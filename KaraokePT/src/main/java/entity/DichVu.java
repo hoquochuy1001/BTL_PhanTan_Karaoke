@@ -52,8 +52,7 @@ public class DichVu {
         this.loaiDV = loaiDV;
     }
 
-<<<<<<< HEAD
-=======
+
 	public String getMaDV() {
 		return maDV;
 	}
@@ -102,7 +101,7 @@ public class DichVu {
 		this.chiTietHoaDons = chiTietHoaDons;
 	}
 
->>>>>>> Khai-branch
+
 
 
 }

@@ -46,8 +46,7 @@ public class PhieuDatPhong {
         this.maKH = maKH;
         this.maNV = maNV;
     }
-<<<<<<< HEAD
-=======
+
 
 	public Integer getId() {
 		return id;
@@ -90,5 +89,5 @@ public class PhieuDatPhong {
 	}
     
     
->>>>>>> Khai-branch
+
 }

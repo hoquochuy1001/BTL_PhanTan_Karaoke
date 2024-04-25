@@ -44,8 +44,7 @@ public class KhachHang {
     public KhachHang(String khachhang) {
         this.maKH = khachhang;
     }
-<<<<<<< HEAD
-=======
+
 
 	public String getMaKH() {
 		return maKH;
@@ -80,5 +79,5 @@ public class KhachHang {
 	}
     
     
->>>>>>> Khai-branch
+
 }

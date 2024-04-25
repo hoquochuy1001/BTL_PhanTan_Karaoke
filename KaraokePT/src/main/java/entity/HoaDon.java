@@ -61,8 +61,7 @@ public class HoaDon {
         this.ghiChu = ghiChu;
         this.iDCode = iDCode;
     }
-<<<<<<< HEAD
-=======
+
 
 	public Integer getId() {
 		return id;
@@ -129,5 +128,5 @@ public class HoaDon {
 	}
     
     
->>>>>>> Khai-branch
+
 }

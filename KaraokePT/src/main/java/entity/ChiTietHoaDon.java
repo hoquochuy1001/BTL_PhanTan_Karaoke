@@ -54,8 +54,7 @@ public class ChiTietHoaDon {
         this.thanhTien = thanhTien;
         this.ghiChu = ghiChu;
     }
-<<<<<<< HEAD
-=======
+
 
 	public Integer getId() {
 		return id;
@@ -113,6 +112,5 @@ public class ChiTietHoaDon {
 		this.ghiChu = ghiChu;
 	}
     
-    
->>>>>>> Khai-branch
+
 }
