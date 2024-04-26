@@ -13,7 +13,7 @@ import java.util.Set;
 @Setter
 @Entity
 @NamedNativeQueries({ @NamedNativeQuery(name = "getDSDichVu", query = "{}", resultClass = DichVu.class), })
-public class DichVu {
+public class DichVu implements java.io.Serializable{
     @Id
     @Nationalized
     @Column(name = "maDV", nullable = false, length = 10)

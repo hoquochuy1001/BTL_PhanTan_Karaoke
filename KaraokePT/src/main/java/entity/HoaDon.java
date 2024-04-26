@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @NamedNativeQueries({ @NamedNativeQuery(name = "getDSHoaDon", query = "{}", resultClass = HoaDon.class), })
-public class HoaDon {
+public class HoaDon implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MaHD", nullable = false)

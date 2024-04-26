@@ -11,7 +11,7 @@ import java.time.Instant;
 @Setter
 @Entity
 @NamedNativeQueries({ @NamedNativeQuery(name = "getDSPhieuDatPhong", query = "{}", resultClass = PhieuDatPhong.class), })
-public class PhieuDatPhong {
+public class PhieuDatPhong implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "maPDP", nullable = false)

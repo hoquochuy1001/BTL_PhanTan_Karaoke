@@ -24,12 +24,15 @@ import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
 
-import dao.ChucVuDao;
+import Server.Config;
 import entity.ChucVu;
+import model.ChucVuDao;
 import util.HibernateUtil;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.List;
 public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 
@@ -46,8 +49,12 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 	private JButton btnNewButton_them;
 
 
-	public ChucVu_GUI() {
-		cv_dao = new ChucVuDao(HibernateUtil.getSessionFactory());
+	public ChucVu_GUI() throws RemoteException {
+		try{
+			cv_dao = (ChucVuDao) Naming.lookup(Config.SERVER_URL + "chucVuDao");
+		}catch (Exception e){
+			JOptionPane.showMessageDialog(this, "Server chưa mở");
+		}
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -268,7 +275,7 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 		this.setVisible(true);
 	}
 
-	private void DocDuLieuDatabaseVaoTable() {
+	private void DocDuLieuDatabaseVaoTable() throws RemoteException {
 		List<ChucVu> list = cv_dao.getAllChucVu();
 		for (ChucVu s : list) {
 			tableModel.addRow(new Object[] { s.getMaCV(), s.getTenCV() });
@@ -281,8 +288,12 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 		// TODO Auto-generated method stub
 		if (e.getActionCommand().equals("Cập Nhập Nhân Viên")) {
 			dispose();
-            new CapNhapNV_GUI();
-        }
+			try {
+				new CapNhapNV_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Tìm Kiếm Nhân Viên")) {
 //			dispose();
 //            new TimKiemNV_GUI();
@@ -293,52 +304,84 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 //        }
 		if (e.getActionCommand().equals("Chức Vụ")) {
 			dispose();
-            new ChucVu_GUI();
-	  }
-//		////////////////////////////////////////////////////////////////////////////
+			try {
+				new ChucVu_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		////////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Khách Hàng")) {
 			dispose();
-            new CapNhapKH_GUI();
-        }
+			try {
+				new CapNhapKH_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Tìm Kiếm Khách Hàng")) {
 //			dispose();
 //            new TimKiemKH_GUI();
 //        }
-//		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Dịch Vụ")) {
 			dispose();
-            new CapNhapDV_GUI();
-        }
+			try {
+				new CapNhapDV_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Tìm Kiếm Dịch Vụ")) {
 //			dispose();
 //            new TimKiemDV_GUI();
 //        }
 		if (e.getActionCommand().equals("Loại Dịch Vụ")) {
 			dispose();
-            new LoaiDichVu_GUI();
-        }
-//		///////////////////////////////////////////////////////////////////////////
+			try {
+				new LoaiDichVu_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		///////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Phòng")) {
 			dispose();
-            new CapNhapPhong_GUI();
-        }
+			try {
+				new CapNhapPhong_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		if (e.getActionCommand().equals("Cập Nhập Loại Phòng")) {
 			dispose();
-            new LoaiPhong_GUI();
-        }
+			try {
+				new LoaiPhong_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Tìm Kiếm Phòng")) {
 //			dispose();
 //            new TimKiemPhong_GUI();
 //        }
 		if (e.getActionCommand().equals("Đặt Phòng")) {
 			dispose();
-            new DatPhong_GUI();
-        }
-//		///////////////////////////////////////////////////////////////////////////
+			try {
+				new DatPhong_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		///////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Lập Hoá Đơn")) {
 			dispose();
-            new LapHoaDon_GUI();
-        }
+			try {
+				new LapHoaDon_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
 //			dispose();
 //            new ThongKe_GUI();
@@ -347,10 +390,20 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 		Object o = e.getSource();
 		if(o.equals(btnNewButton_them))
 			themCV();
-		if(o.equals(btnNewButton_xoa))
-			xoaCV();
-		if(o.equals(btnNewButton_sua))
-			suaCV();
+		if(o.equals(btnNewButton_xoa)) {
+			try {
+				xoaCV();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		if(o.equals(btnNewButton_sua)) {
+			try {
+				suaCV();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		if(o.equals(btnNewButton_xoaTrang))
 			xoaTrang();
 	}
@@ -360,7 +413,7 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 		textField_maCV.requestFocus();
 	}
 
-	private void suaCV() {
+	private void suaCV() throws RemoteException {
 		int row = table.getSelectedRow();
 		String ma = textField_maCV.getText();
 		String hoten = textField_tenCV.getText();
@@ -381,7 +434,7 @@ public class ChucVu_GUI extends JFrame implements ActionListener, MouseListener{
 	}
 
 
-	private void xoaCV() {
+	private void xoaCV() throws RemoteException {
 		int row = table.getSelectedRow();
 		if (row >= 0) {
 			String maCV = (String) table.getValueAt(row, 0);

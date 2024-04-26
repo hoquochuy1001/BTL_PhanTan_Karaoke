@@ -13,7 +13,7 @@ import org.hibernate.annotations.Nationalized;
 @Setter
 @Entity
 @NamedNativeQueries({ @NamedNativeQuery(name = "getDSLoaiPhong", query = "{}", resultClass = LoaiPhong.class), })
-public class LoaiPhong {
+public class LoaiPhong implements java.io.Serializable{
     @Id
     @Nationalized
     @Column(name = "loaiPhong", nullable = false, length = 50)

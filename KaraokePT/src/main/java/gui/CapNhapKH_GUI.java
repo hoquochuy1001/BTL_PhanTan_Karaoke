@@ -31,14 +31,18 @@ import java.awt.Component;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
-import dao.KhachHangDao;
+
+import Server.Config;
 import entity.ChucVu;
 import entity.KhachHang;
 import entity.NhanVien;
+import model.KhachHangDao;
 import util.HibernateUtil;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.List;
 
 public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListener{
@@ -57,8 +61,15 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 	private JButton btnNewButton_xoaTrang;
 
 	
-	public CapNhapKH_GUI() {
-		kh_dao = new KhachHangDao(HibernateUtil.getSessionFactory());
+	public CapNhapKH_GUI() throws RemoteException {
+
+		try{
+
+			kh_dao = (KhachHangDao) Naming.lookup(Config.SERVER_URL + "khachHangDao");
+		}catch (Exception e){
+			JOptionPane.showMessageDialog(this, "Server chưa mở");
+		}
+
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -301,7 +312,7 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 		this.setVisible(true);
 	}
 
-	private void DocDuLieuDatabaseVaoTable() {
+	private void DocDuLieuDatabaseVaoTable() throws RemoteException {
 		List<KhachHang> list = kh_dao.getAllKhachHang();
 		for (KhachHang kh : list) {
 			tableModel.addRow(new Object[]{kh.getMaKH(), kh.getTenKH(), kh.getCmnd(), kh.getSdt()});
@@ -314,8 +325,12 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 		// TODO Auto-generated method stub
 		if (e.getActionCommand().equals("Cập Nhập Nhân Viên")) {
 			dispose();
-            new CapNhapNV_GUI();
-        }
+			try {
+				new CapNhapNV_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Tìm Kiếm Nhân Viên")) {
 //			dispose();
 //            new TimKiemNV_GUI();
@@ -326,52 +341,84 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 //        }
 		if (e.getActionCommand().equals("Chức Vụ")) {
 			dispose();
-            new ChucVu_GUI();
-        }
+			try {
+				new ChucVu_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		////////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Khách Hàng")) {
 			dispose();
-            new CapNhapKH_GUI();
-        }
+			try {
+				new CapNhapKH_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Tìm Kiếm Khách Hàng")) {
 //			dispose();
 //            new TimKiemKH_GUI();
 //        }
-//		///////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Dịch Vụ")) {
 			dispose();
-            new CapNhapDV_GUI();
-        }
+			try {
+				new CapNhapDV_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Tìm Kiếm Dịch Vụ")) {
 //			dispose();
 //            new TimKiemDV_GUI();
 //        }
 		if (e.getActionCommand().equals("Loại Dịch Vụ")) {
 			dispose();
-            new LoaiDichVu_GUI();
-        }
-//		///////////////////////////////////////////////////////////////////////////
+			try {
+				new LoaiDichVu_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		///////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Cập Nhập Phòng")) {
 			dispose();
-            new CapNhapPhong_GUI();
-        }
+			try {
+				new CapNhapPhong_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		if (e.getActionCommand().equals("Cập Nhập Loại Phòng")) {
 			dispose();
-            new LoaiPhong_GUI();
-        }
+			try {
+				new LoaiPhong_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Tìm Kiếm Phòng")) {
 //			dispose();
 //            new TimKiemPhong_GUI();
 //        }
 		if (e.getActionCommand().equals("Đặt Phòng")) {
 			dispose();
-            new DatPhong_GUI();
-        }
-//		///////////////////////////////////////////////////////////////////////////
+			try {
+				new DatPhong_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		///////////////////////////////////////////////////////////////////////////
 		if (e.getActionCommand().equals("Lập Hoá Đơn")) {
 			dispose();
-            new LapHoaDon_GUI();
-        }
+			try {
+				new LapHoaDon_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 //		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
 //			dispose();
 //            new ThongKe_GUI();
@@ -380,10 +427,20 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 		Object o = e.getSource();
 		if(o.equals(btnNewButton_them))
 			themKH();
-		if(o.equals(btnNewButton_xoa))
-			xoaKH();
-		if(o.equals(btnNewButton_sua))
-			suaKH();
+		if(o.equals(btnNewButton_xoa)) {
+			try {
+				xoaKH();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		if(o.equals(btnNewButton_sua)) {
+			try {
+				suaKH();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		if(o.equals(btnNewButton_xoaTrang))
 			xoaTrang();
 	}
@@ -397,7 +454,7 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 		textField_maKH.requestFocus();
 	}
 
-	private void suaKH() {
+	private void suaKH() throws RemoteException {
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
 		String ma = textField_maKH.getText();
@@ -414,7 +471,7 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 		}
 	}
 
-	private void xoaKH() {
+	private void xoaKH() throws RemoteException {
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
 		if(row>=0) {

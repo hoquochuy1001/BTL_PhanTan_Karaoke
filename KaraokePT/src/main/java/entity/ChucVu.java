@@ -9,13 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
+import java.io.Serializable;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @Entity
-public class ChucVu {
+public class ChucVu implements Serializable {
     @Id
     @Nationalized
     @Column(name = "maCV", nullable = false, length = 10)

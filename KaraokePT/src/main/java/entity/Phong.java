@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Setter
 @Entity
 @NamedNativeQueries({ @NamedNativeQuery(name = "getDSPhong", query = "{}", resultClass = Phong.class), })
-public class Phong {
+public class Phong implements java.io.Serializable{
     @Id
     @Nationalized
     @Column(name = "maPhong", nullable = false, length = 10)

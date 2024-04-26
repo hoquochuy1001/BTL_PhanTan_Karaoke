@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @Entity
 @NamedNativeQueries({ @NamedNativeQuery(name = "getDSNhanVien", query = "{}", resultClass = NhanVien.class), })
-public class NhanVien {
+public class NhanVien implements Serializable {
     @Id
     @Nationalized
     @Column(name = "maNV", nullable = false, length = 50)
