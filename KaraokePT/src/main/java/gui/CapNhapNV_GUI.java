@@ -53,6 +53,8 @@ import entity.NhanVien;
 import model.ChucVuDao;
 import model.NhanVienDao;
 import util.HibernateUtil;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class CapNhapNV_GUI extends JFrame implements ActionListener, MouseListener{
 
@@ -71,6 +73,7 @@ public class CapNhapNV_GUI extends JFrame implements ActionListener, MouseListen
 	private JButton btnNewButton_xoa;
 	private JButton btnNewButton_sua;
 	private JButton btnNewButton_xoaTrang;
+	private JTextField txt_timkiemnhanvien;
 	
 	public CapNhapNV_GUI() throws RemoteException {
 
@@ -232,52 +235,52 @@ public class CapNhapNV_GUI extends JFrame implements ActionListener, MouseListen
 		
 		JLabel lblNewLabel_maNV = new JLabel("Mã NV:");
 		lblNewLabel_maNV.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_maNV.setBounds(246, 118, 58, 29);
+		lblNewLabel_maNV.setBounds(587, 118, 58, 29);
 		contentPane.add(lblNewLabel_maNV);
 		
 		JLabel lblNewLabel_tenNV = new JLabel("Tên NV:");
 		lblNewLabel_tenNV.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_tenNV.setBounds(246, 172, 58, 29);
+		lblNewLabel_tenNV.setBounds(587, 172, 58, 29);
 		contentPane.add(lblNewLabel_tenNV);
 		
 		JLabel lblNewLabel_ngaySinh = new JLabel("Ngày Sinh:");
 		lblNewLabel_ngaySinh.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_ngaySinh.setBounds(581, 118, 74, 29);
+		lblNewLabel_ngaySinh.setBounds(860, 118, 74, 29);
 		contentPane.add(lblNewLabel_ngaySinh);
 		
 		JLabel lblNewLabel_sdt = new JLabel("SĐT:");
 		lblNewLabel_sdt.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_sdt.setBounds(581, 172, 74, 29);
+		lblNewLabel_sdt.setBounds(860, 172, 74, 29);
 		contentPane.add(lblNewLabel_sdt);
 		
 		JLabel lblNewLabel_gioiTinh = new JLabel("Giới Tính:");
 		lblNewLabel_gioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_gioiTinh.setBounds(1002, 118, 74, 29);
+		lblNewLabel_gioiTinh.setBounds(1169, 118, 74, 29);
 		contentPane.add(lblNewLabel_gioiTinh);
 		
 		JLabel lblNewLabel_chucVu = new JLabel("Chức Vụ:");
 		lblNewLabel_chucVu.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_chucVu.setBounds(1002, 172, 74, 29);
+		lblNewLabel_chucVu.setBounds(1169, 172, 74, 29);
 		contentPane.add(lblNewLabel_chucVu);
 		
 		textField_maNV = new JTextField();
-		textField_maNV.setBounds(314, 122, 146, 26);
+		textField_maNV.setBounds(655, 122, 146, 26);
 		contentPane.add(textField_maNV);
 		textField_maNV.setColumns(10);
 		
 		textField_tenNV = new JTextField();
-		textField_tenNV.setBounds(314, 176, 146, 26);
+		textField_tenNV.setBounds(655, 176, 146, 26);
 		contentPane.add(textField_tenNV);
 		textField_tenNV.setColumns(10);
 		
 		textField_ngaySinh = new JTextField();
 		textField_ngaySinh.setColumns(10);
-		textField_ngaySinh.setBounds(665, 122, 146, 26);
+		textField_ngaySinh.setBounds(944, 122, 146, 26);
 		contentPane.add(textField_ngaySinh);
 		
 		textField_sdt = new JTextField();
 		textField_sdt.setColumns(10);
-		textField_sdt.setBounds(665, 176, 146, 26);
+		textField_sdt.setBounds(944, 176, 146, 26);
 		contentPane.add(textField_sdt);
 		
 		comboBox_gioiTinh = new JComboBox();
@@ -287,7 +290,7 @@ public class CapNhapNV_GUI extends JFrame implements ActionListener, MouseListen
 //		for(NhanVien nv : nv_dao.getalltbNhanVien()) {
 //			comboBox_gioiTinh.addItem(nv.getGioiTinh());
 //		}
-		comboBox_gioiTinh.setBounds(1072, 120, 146, 29);
+		comboBox_gioiTinh.setBounds(1253, 120, 146, 29);
 		contentPane.add(comboBox_gioiTinh);
 		
 		comboBox_chucVu = new JComboBox();
@@ -295,27 +298,27 @@ public class CapNhapNV_GUI extends JFrame implements ActionListener, MouseListen
 		for(ChucVu cv : cv_dao.getAllChucVu()) {
 			comboBox_chucVu.addItem(cv.getMaCV());
 		}
-		comboBox_chucVu.setBounds(1072, 174, 146, 29);
+		comboBox_chucVu.setBounds(1253, 174, 146, 29);
 		contentPane.add(comboBox_chucVu);
 		
 		 btnNewButton_them = new JButton("Thêm");
 		btnNewButton_them.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_them.setBounds(314, 236, 134, 39);
+		btnNewButton_them.setBounds(724, 236, 134, 39);
 		contentPane.add(btnNewButton_them);
 		
 		 btnNewButton_xoa = new JButton("Xoá");
 		btnNewButton_xoa.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_xoa.setBounds(549, 236, 134, 39);
+		btnNewButton_xoa.setBounds(906, 236, 134, 39);
 		contentPane.add(btnNewButton_xoa);
 		
 		 btnNewButton_sua = new JButton("Sửa");
 		btnNewButton_sua.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_sua.setBounds(814, 236, 134, 39);
+		btnNewButton_sua.setBounds(1084, 236, 134, 39);
 		contentPane.add(btnNewButton_sua);
 		
 		btnNewButton_xoaTrang = new JButton("Xoá Trắng");
 		btnNewButton_xoaTrang.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_xoaTrang.setBounds(1072, 236, 134, 39);
+		btnNewButton_xoaTrang.setBounds(1265, 236, 134, 39);
 		contentPane.add(btnNewButton_xoaTrang);
 		
 		
@@ -328,18 +331,46 @@ public class CapNhapNV_GUI extends JFrame implements ActionListener, MouseListen
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 331, 1520, 391);
+		scrollPane.setBounds(314, 331, 1216, 391);
 		contentPane.add(scrollPane);
 		
 		JLabel lblNewLabel_2 = new JLabel("Danh sách Nhân Viên:");
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(10, 292, 151, 29);
+		lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_2.setBounds(314, 300, 188, 29);
 		contentPane.add(lblNewLabel_2);
 		
 		Box horizontalBox = Box.createHorizontalBox();
 		horizontalBox.setBorder(new TitledBorder(null, "Thông Tin Nhân Viên", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		horizontalBox.setBounds(10, 91, 1520, 135);
+		horizontalBox.setBounds(314, 103, 1216, 135);
 		contentPane.add(horizontalBox);
+		
+		JLabel lblNewLabel_maNV_1 = new JLabel("Tìm Kiếm Nhân Viên");
+		lblNewLabel_maNV_1.setFont(new Font("Times New Roman", Font.BOLD, 15));
+		lblNewLabel_maNV_1.setBounds(10, 0, 188, 29);
+		contentPane.add(lblNewLabel_maNV_1);
+		
+		txt_timkiemnhanvien = new JTextField();
+		txt_timkiemnhanvien.setForeground(Color.GRAY);
+		txt_timkiemnhanvien.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(txt_timkiemnhanvien.getText().equals("Mã, Tên, Điện thoại")) {
+					txt_timkiemnhanvien.setText("");
+					txt_timkiemnhanvien.setForeground(new Color(153,153,153));
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(txt_timkiemnhanvien.getText().equals("")) {
+					txt_timkiemnhanvien.setText("Mã, Tên, Điện thoại");
+					txt_timkiemnhanvien.setForeground(new Color(153,153,153));
+				}
+			}
+		});
+		txt_timkiemnhanvien.setText("Mã, Tên, Điện thoại");
+		txt_timkiemnhanvien.setColumns(10);
+		txt_timkiemnhanvien.setBounds(10, 28, 236, 26);
+		contentPane.add(txt_timkiemnhanvien);
 		
 		btnNewButton_them.addActionListener(this);
 		btnNewButton_xoa.addActionListener(this);

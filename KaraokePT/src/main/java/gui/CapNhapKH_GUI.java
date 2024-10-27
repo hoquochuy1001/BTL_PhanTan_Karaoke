@@ -44,6 +44,8 @@ import java.awt.event.MouseListener;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 
 public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListener{
 
@@ -59,6 +61,12 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 	private JButton btnNewButton_xoa;
 	private JButton btnNewButton_sua;
 	private JButton btnNewButton_xoaTrang;
+	private JTextField txt_timkiemkhachhang;
+	private JTextField txt_tinhthanh;
+	private JTextField txt_tuKH;
+	private JTextField txt_denKH;
+	private JTextField txt_duno;
+	private JTextField txt_denduno;
 
 	
 	public CapNhapKH_GUI() throws RemoteException {
@@ -222,62 +230,62 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 		
 		JLabel lblNewLabel_maKH = new JLabel("Mã KH:");
 		lblNewLabel_maKH.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_maKH.setBounds(369, 118, 58, 29);
+		lblNewLabel_maKH.setBounds(923, 118, 58, 29);
 		contentPane.add(lblNewLabel_maKH);
 		
 		JLabel lblNewLabel_tenKH = new JLabel("Tên KH:");
 		lblNewLabel_tenKH.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_tenKH.setBounds(369, 172, 58, 29);
+		lblNewLabel_tenKH.setBounds(923, 172, 58, 29);
 		contentPane.add(lblNewLabel_tenKH);
 		
 		JLabel lblNewLabel_cmnd = new JLabel("CMND:");
 		lblNewLabel_cmnd.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_cmnd.setBounds(878, 118, 74, 29);
+		lblNewLabel_cmnd.setBounds(1196, 118, 74, 29);
 		contentPane.add(lblNewLabel_cmnd);
 		
 		JLabel lblNewLabel_sdt = new JLabel("SĐT:");
 		lblNewLabel_sdt.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_sdt.setBounds(878, 172, 74, 29);
+		lblNewLabel_sdt.setBounds(1196, 172, 74, 29);
 		contentPane.add(lblNewLabel_sdt);
 		
 		textField_maKH = new JTextField();
-		textField_maKH.setBounds(437, 118, 146, 26);
+		textField_maKH.setBounds(991, 122, 146, 26);
 		textField_maKH.setColumns(10);
 		contentPane.add(textField_maKH);
 		
 		textField_tenKH = new JTextField();
-		textField_tenKH.setBounds(437, 176, 146, 26);
+		textField_tenKH.setBounds(991, 176, 146, 26);
 		textField_tenKH.setColumns(10);
 		contentPane.add(textField_tenKH);
 		
 		textField_cmnd = new JTextField();
 		textField_cmnd.setColumns(10);
-		textField_cmnd.setBounds(932, 122, 146, 26);
+		textField_cmnd.setBounds(1280, 122, 146, 26);
 		contentPane.add(textField_cmnd);
 		
 		textField_sdt = new JTextField();
 		textField_sdt.setColumns(10);
-		textField_sdt.setBounds(932, 176, 146, 26);
+		textField_sdt.setBounds(1280, 176, 146, 26);
 		contentPane.add(textField_sdt);
 		
 		btnNewButton_them = new JButton("Thêm");
 		btnNewButton_them.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_them.setBounds(352, 236, 134, 39);
+		btnNewButton_them.setBounds(682, 236, 134, 39);
 		contentPane.add(btnNewButton_them);
 		
 		btnNewButton_xoa = new JButton("Xoá");
 		btnNewButton_xoa.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_xoa.setBounds(594, 236, 134, 39);
+		btnNewButton_xoa.setBounds(877, 236, 134, 39);
 		contentPane.add(btnNewButton_xoa);
 		
 		 btnNewButton_sua = new JButton("Sửa");
 		btnNewButton_sua.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_sua.setBounds(818, 236, 134, 39);
+		btnNewButton_sua.setBounds(1072, 236, 134, 39);
 		contentPane.add(btnNewButton_sua);
 		
 		 btnNewButton_xoaTrang = new JButton("Xoá Trắng");
 		btnNewButton_xoaTrang.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_xoaTrang.setBounds(1054, 236, 134, 39);
+		btnNewButton_xoaTrang.setBounds(1248, 236, 134, 39);
 		contentPane.add(btnNewButton_xoaTrang);
 		
 		String [] headers = {"Mã KH", "Tên KH", "CMND", "SĐT"};
@@ -289,18 +297,170 @@ public class CapNhapKH_GUI extends JFrame implements ActionListener, MouseListen
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 331, 1520, 391);
+		scrollPane.setBounds(413, 331, 1117, 391);
 		contentPane.add(scrollPane);
 		
 		JLabel lblNewLabel_2 = new JLabel("Danh sách Khách Hàng:");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(10, 292, 175, 29);
+		lblNewLabel_2.setBounds(413, 292, 175, 29);
 		contentPane.add(lblNewLabel_2);
 		
 		Box horizontalBox = Box.createHorizontalBox();
 		horizontalBox.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Th\u00F4ng Tin Kh\u00E1ch H\u00E0ng", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		horizontalBox.setBounds(10, 91, 1520, 135);
+		horizontalBox.setBounds(413, 91, 1117, 135);
 		contentPane.add(horizontalBox);
+		
+		JLabel lblNewLabel_maKH_1 = new JLabel("Tìm kiếm khách hàng");
+		lblNewLabel_maKH_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_maKH_1.setBounds(10, 10, 233, 29);
+		contentPane.add(lblNewLabel_maKH_1);
+		
+		txt_timkiemkhachhang = new JTextField();
+		txt_timkiemkhachhang.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(txt_timkiemkhachhang.getText().equals("Mã, Tên, Điện Thoại")) {
+					txt_timkiemkhachhang.setText("");
+					txt_timkiemkhachhang.setForeground(new Color(153,153,153));
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(txt_timkiemkhachhang.getText().equals("")) {
+					txt_timkiemkhachhang.setText("Mã, Tên, Điện Thoại");
+					txt_timkiemkhachhang.setForeground(new Color(153,153,153));
+				}
+			}
+		});
+		txt_timkiemkhachhang.setForeground(Color.GRAY); 
+		txt_timkiemkhachhang.setText("Mã, Tên, Điện Thoại");
+		txt_timkiemkhachhang.getText().isEmpty();
+		txt_timkiemkhachhang.setColumns(10);
+		txt_timkiemkhachhang.setBounds(10, 39, 233, 26);
+		contentPane.add(txt_timkiemkhachhang);
+		
+		txt_tinhthanh = new JTextField();
+		txt_tinhthanh.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if(txt_tinhthanh.getText().equals("Tỉnh, thành")) {
+					txt_tinhthanh.setText(" ");
+					txt_tinhthanh.setForeground(new Color(153,153,153));
+				}
+			}
+			@Override
+			public void focusLost(FocusEvent e) {
+				if(txt_tinhthanh.getText().equals("")) {
+					txt_tinhthanh.setText("Tỉnh, thành");
+					txt_tinhthanh.setForeground(new Color(153,153,153));
+				}
+			}
+		});
+		txt_tinhthanh.setForeground(Color.GRAY);
+		txt_tinhthanh.setText("Tỉnh, thành");
+		txt_tinhthanh.setColumns(10);
+		txt_tinhthanh.setBounds(10, 75, 233, 26);
+		contentPane.add(txt_tinhthanh);
+		
+		JComboBox<String> comboBox = new JComboBox<>();
+		comboBox.setBounds(10, 111, 233, 21);
+		contentPane.add(comboBox);
+		
+		JLabel lbl_tong_gdkh = new JLabel("Tổng giao dịch");
+		lbl_tong_gdkh.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbl_tong_gdkh.setBounds(10, 142, 175, 29);
+		contentPane.add(lbl_tong_gdkh);
+		
+		JLabel lbl_fromKH = new JLabel("Từ");
+		lbl_fromKH.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbl_fromKH.setBounds(10, 172, 36, 29);
+		contentPane.add(lbl_fromKH);
+		
+		JLabel lbl_toKH_1 = new JLabel("Đến");
+		lbl_toKH_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbl_toKH_1.setBounds(10, 209, 36, 29);
+		contentPane.add(lbl_toKH_1);
+		
+		txt_tuKH = new JTextField();
+		txt_tuKH.setText("0");
+		txt_tuKH.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		txt_tuKH.setColumns(10);
+		txt_tuKH.setBounds(39, 172, 204, 26);
+		txt_tuKH.setHorizontalAlignment(JTextField.RIGHT);
+		contentPane.add(txt_tuKH);
+		
+		txt_denKH = new JTextField();
+		txt_denKH.setText("0");
+		txt_denKH.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		txt_denKH.setColumns(10);
+		txt_denKH.setBounds(39, 211, 204, 26);
+		txt_denKH.setHorizontalAlignment(JTextField.RIGHT);
+		contentPane.add(txt_denKH);
+		
+		JButton btn_loc = new JButton("");
+		btn_loc.setBounds(10, 249, 233, 29);
+		contentPane.add(btn_loc);
+		
+		ImageIcon icon = new ImageIcon(""); 
+		btn_loc.setIcon(new ImageIcon("D:\\z_nam_4\\BTL_PhanTan_Karaoke\\KaraokePT\\src\\main\\resources\\images\\filt.png"));
+		btn_loc.setHorizontalTextPosition(SwingConstants.CENTER);
+		btn_loc.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btn_loc.setIconTextGap(5);
+		
+		JLabel lbl_duno = new JLabel("Dư nợ");
+		lbl_duno.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lbl_duno.setBounds(10, 292, 175, 29);
+		contentPane.add(lbl_duno);
+		
+		JLabel lbl_fromduno_1 = new JLabel("Từ");
+		lbl_fromduno_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbl_fromduno_1.setBounds(10, 318, 36, 29);
+		contentPane.add(lbl_fromduno_1);
+		
+		txt_duno = new JTextField();
+		txt_duno.setText("0");
+		txt_duno.setHorizontalAlignment(SwingConstants.RIGHT);
+		txt_duno.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		txt_duno.setColumns(10);
+		txt_duno.setBounds(39, 318, 204, 26);
+		contentPane.add(txt_duno);
+		
+		JLabel lbl_toduno_1_1 = new JLabel("Đến");
+		lbl_toduno_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbl_toduno_1_1.setBounds(10, 356, 36, 29);
+		contentPane.add(lbl_toduno_1_1);
+		
+		txt_denduno = new JTextField();
+		txt_denduno.setText("0");
+		txt_denduno.setHorizontalAlignment(SwingConstants.RIGHT);
+		txt_denduno.setFont(new Font("Times New Roman", Font.PLAIN, 13));
+		txt_denduno.setColumns(10);
+		txt_denduno.setBounds(39, 354, 204, 26);
+		contentPane.add(txt_denduno);
+		
+		JButton btn_loc_1 = new JButton("");
+		btn_loc_1.setIcon(new ImageIcon("D:\\z_nam_4\\BTL_PhanTan_Karaoke\\KaraokePT\\src\\main\\resources\\images\\filt.png"));
+		btn_loc_1.setVerticalTextPosition(SwingConstants.BOTTOM);
+		btn_loc_1.setIconTextGap(5);
+		btn_loc_1.setHorizontalTextPosition(SwingConstants.CENTER);
+		btn_loc_1.setBounds(10, 390, 233, 29);
+		contentPane.add(btn_loc_1);
+
+		comboBox.addItem("Sinh nhật");
+		
+		comboBox.addItem("Tháng 1");
+		comboBox.addItem("Tháng 2");
+		comboBox.addItem("Tháng 3");
+		comboBox.addItem("Tháng 4");
+		comboBox.addItem("Tháng 5");
+		comboBox.addItem("Tháng 6");
+		comboBox.addItem("Tháng 7");
+		comboBox.addItem("Tháng 8");
+		comboBox.addItem("Tháng 9");
+		comboBox.addItem("Tháng 10");
+		comboBox.addItem("Tháng 11");
+		comboBox.addItem("Tháng 12");
+
 		
 		btnNewButton_them.addActionListener(this);
 		btnNewButton_xoa.addActionListener(this);

@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.TextField;
 import javax.swing.JComboBox;
 import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.border.BevelBorder;
 import javax.swing.JTabbedPane;
@@ -47,6 +48,8 @@ import java.math.BigDecimal;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.List;
+import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
 public class CapNhapDV_GUI extends JFrame implements ActionListener, MouseListener{
 
 	private JPanel contentPane;
@@ -63,6 +66,8 @@ public class CapNhapDV_GUI extends JFrame implements ActionListener, MouseListen
 	private JComboBox comboBox_dvt;
 	private JTextField textField_tenDV;
 	private JTextField textField_giaDV;
+	private JTextField txt_Madichvu;
+	private JTextField txt_timkiem;
 
 	
 	public CapNhapDV_GUI() throws RemoteException {
@@ -214,37 +219,37 @@ public class CapNhapDV_GUI extends JFrame implements ActionListener, MouseListen
 		JLabel lblNewLabel = new JLabel("CẬP NHẬT DỊCH VỤ");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 50));
-		lblNewLabel.setBounds(329, 0, 650, 74);
+		lblNewLabel.setBounds(567, 0, 650, 74);
 		contentPane.add(lblNewLabel);
 		
 		JLabel lblNewLabel_maDV = new JLabel("Mã DV:");
 		lblNewLabel_maDV.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_maDV.setBounds(262, 118, 58, 29);
+		lblNewLabel_maDV.setBounds(459, 118, 58, 29);
 		contentPane.add(lblNewLabel_maDV);
 		
 		JLabel lblNewLabel_tenDV = new JLabel("Tên DV:");
 		lblNewLabel_tenDV.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_tenDV.setBounds(262, 172, 58, 29);
+		lblNewLabel_tenDV.setBounds(459, 172, 58, 29);
 		contentPane.add(lblNewLabel_tenDV);
 		
 		JLabel lblNewLabel_dvt = new JLabel("Đơn Vị Tính:");
 		lblNewLabel_dvt.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_dvt.setBounds(525, 118, 84, 29);
+		lblNewLabel_dvt.setBounds(724, 118, 84, 29);
 		contentPane.add(lblNewLabel_dvt);
 		
 		JLabel lblNewLabel_giaDV = new JLabel("Giá DV:");
 		lblNewLabel_giaDV.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_giaDV.setBounds(823, 118, 74, 29);
+		lblNewLabel_giaDV.setBounds(1015, 118, 74, 29);
 		contentPane.add(lblNewLabel_giaDV);
 		
 		JLabel lblNewLabel_loaiDV = new JLabel("Loại DV:");
 		lblNewLabel_loaiDV.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_loaiDV.setBounds(535, 172, 74, 29);
+		lblNewLabel_loaiDV.setBounds(734, 172, 74, 29);
 		contentPane.add(lblNewLabel_loaiDV);
 		
 		textField_maDV = new JTextField();
 		textField_maDV.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		textField_maDV.setBounds(329, 118, 161, 26);
+		textField_maDV.setBounds(527, 121, 161, 26);
 		contentPane.add(textField_maDV);
 		textField_maDV.setColumns(10);
 		
@@ -254,27 +259,27 @@ public class CapNhapDV_GUI extends JFrame implements ActionListener, MouseListen
 		for(LoaiDichVu ldv : ldv_dao.getAllLoaiDichVu()) {
 			comboBox_loaiDV.addItem(ldv.getLoaiDV());
 		}
-		comboBox_loaiDV.setBounds(619, 174, 161, 29);
+		comboBox_loaiDV.setBounds(818, 173, 161, 29);
 		contentPane.add(comboBox_loaiDV);
 		
 		btnNewButton_them = new JButton("Thêm");
 		btnNewButton_them.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_them.setBounds(276, 236, 134, 39);
+		btnNewButton_them.setBounds(459, 236, 134, 39);
 		contentPane.add(btnNewButton_them);
 		
 		 btnNewButton_xoa = new JButton("Xoá");
 		btnNewButton_xoa.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_xoa.setBounds(499, 236, 134, 39);
+		btnNewButton_xoa.setBounds(655, 236, 134, 39);
 		contentPane.add(btnNewButton_xoa);
 		
 		 btnNewButton_sua = new JButton("Sửa");
 		btnNewButton_sua.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_sua.setBounds(710, 236, 134, 39);
+		btnNewButton_sua.setBounds(854, 236, 134, 39);
 		contentPane.add(btnNewButton_sua);
 		
 		 btnNewButton_xoaTrang = new JButton("Xoá Trắng");
 		btnNewButton_xoaTrang.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton_xoaTrang.setBounds(919, 236, 134, 39);
+		btnNewButton_xoaTrang.setBounds(1052, 236, 134, 39);
 		contentPane.add(btnNewButton_xoaTrang);
 		
 		String [] headers = {"Mã DV", "Tên DV", "Đơn Vị Tính", "Giá Dịch Vụ", "Loại Dịch Vụ"};
@@ -286,12 +291,12 @@ public class CapNhapDV_GUI extends JFrame implements ActionListener, MouseListen
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
 		
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(10, 331, 1520, 395);
+		scrollPane.setBounds(348, 331, 1182, 395);
 		contentPane.add(scrollPane);
 		
 		JLabel lblNewLabel_2 = new JLabel("Danh sách Dịch Vụ:");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(10, 292, 151, 29);
+		lblNewLabel_2.setBounds(348, 292, 151, 29);
 		contentPane.add(lblNewLabel_2);
 		
 		 comboBox_dvt = new JComboBox();
@@ -303,20 +308,116 @@ public class CapNhapDV_GUI extends JFrame implements ActionListener, MouseListen
 		 comboBox_dvt.addItem("Điếu");
 		 comboBox_dvt.addItem("Gói");
 		 
-		comboBox_dvt.setBounds(619, 118, 161, 28);
+		comboBox_dvt.setBounds(818, 120, 161, 28);
 		contentPane.add(comboBox_dvt);
 		
 		textField_tenDV = new JTextField();
 		textField_tenDV.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textField_tenDV.setColumns(10);
-		textField_tenDV.setBounds(329, 172, 161, 26);
+		textField_tenDV.setBounds(527, 175, 161, 26);
 		contentPane.add(textField_tenDV);
 		
 		textField_giaDV = new JTextField();
 		textField_giaDV.setFont(new Font("Tahoma", Font.PLAIN, 10));
 		textField_giaDV.setColumns(10);
-		textField_giaDV.setBounds(907, 118, 146, 26);
+		textField_giaDV.setBounds(1088, 122, 146, 26);
 		contentPane.add(textField_giaDV);
+		
+		JLabel lbl_maDichvu = new JLabel("Mã dịch vụ: ");
+		lbl_maDichvu.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbl_maDichvu.setBounds(10, 0, 151, 29);
+		contentPane.add(lbl_maDichvu);
+		
+		txt_Madichvu = new JTextField();
+		txt_Madichvu.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txt_Madichvu.setColumns(10);
+		txt_Madichvu.setBounds(10, 30, 161, 26);
+		contentPane.add(txt_Madichvu);
+		
+		JLabel lbl_timkiemmathang = new JLabel("Tìm kiếm mặt hàng: ");
+		lbl_timkiemmathang.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbl_timkiemmathang.setBounds(10, 66, 151, 29);
+		contentPane.add(lbl_timkiemmathang);
+		
+		txt_timkiem = new JTextField();
+		txt_timkiem.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txt_timkiem.setColumns(10);
+		txt_timkiem.setBounds(10, 92, 161, 26);
+		contentPane.add(txt_timkiem);
+		
+		JLabel lbl_Loctheotrangthai = new JLabel("Loc theo trang thai");
+		lbl_Loctheotrangthai.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbl_Loctheotrangthai.setBounds(10, 128, 151, 29);
+		contentPane.add(lbl_Loctheotrangthai);
+		
+		JCheckBox cb_Dathang = new JCheckBox("Đặt hàng");
+		cb_Dathang.setBounds(10, 159, 93, 21);
+		contentPane.add(cb_Dathang);
+		
+		JCheckBox cb_Hoanthanhdathang = new JCheckBox("Hoàn Thành");
+		cb_Hoanthanhdathang.setBounds(10, 182, 93, 21);
+		contentPane.add(cb_Hoanthanhdathang);
+		
+		JCheckBox cb_Huyhang = new JCheckBox("Huỷ hàng");
+		cb_Huyhang.setBounds(10, 205, 93, 21);
+		contentPane.add(cb_Huyhang);
+		
+		JLabel lbl_Loctheongay = new JLabel("Loc theo ngày");
+		lbl_Loctheongay.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbl_Loctheongay.setBounds(10, 228, 151, 29);
+		contentPane.add(lbl_Loctheongay);
+		
+		JComboBox<String> comboBox = new JComboBox<>();
+		comboBox.addItem("Ngày bán");
+		comboBox.addItem("Ngày tạo");
+		comboBox.setBounds(10, 254, 150, 21);
+		contentPane.add(comboBox);
+		
+		// Tạo ButtonGroup
+		ButtonGroup group = new ButtonGroup();
+
+		JRadioButton rb_Toantg = new JRadioButton("Toàn thời gian");
+		rb_Toantg.setBounds(10, 281, 103, 21);
+		group.add(rb_Toantg); // Thêm vào nhóm
+		contentPane.add(rb_Toantg);
+
+		JRadioButton rb_homnay = new JRadioButton("Hôm nay");
+		rb_homnay.setBounds(10, 304, 103, 21);
+		group.add(rb_homnay); // Thêm vào nhóm
+		contentPane.add(rb_homnay);
+
+		JRadioButton rb_homqua = new JRadioButton("Hôm qua");
+		rb_homqua.setBounds(10, 327, 103, 21);
+		group.add(rb_homqua); // Thêm vào nhóm
+		contentPane.add(rb_homqua);
+
+		JRadioButton rb_7ngay = new JRadioButton("7 ngày trước");
+		rb_7ngay.setBounds(10, 350, 103, 21);
+		group.add(rb_7ngay); // Thêm vào nhóm
+		contentPane.add(rb_7ngay);
+
+		JRadioButton rb_thangnay = new JRadioButton("Tháng này");
+		rb_thangnay.setBounds(10, 373, 103, 21);
+		group.add(rb_thangnay); // Thêm vào nhóm
+		contentPane.add(rb_thangnay);
+
+		JRadioButton rb_thangtruoc = new JRadioButton("Tháng trước");
+		rb_thangtruoc.setBounds(10, 396, 103, 21);
+		group.add(rb_thangtruoc); // Thêm vào nhóm
+		contentPane.add(rb_thangtruoc);
+
+		JRadioButton rb_others = new JRadioButton("Lựa chọn khác");
+		rb_others.setBounds(10, 419, 103, 21);
+		group.add(rb_others); // Thêm vào nhóm
+		contentPane.add(rb_others);
+		
+		JLabel lbl_trangthaihoadon = new JLabel("Trạng Thái hóa đơn");
+		lbl_trangthaihoadon.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lbl_trangthaihoadon.setBounds(10, 446, 151, 29);
+		contentPane.add(lbl_trangthaihoadon);
+
+
+
 		
 		
 		btnNewButton_them.addActionListener(this);
