@@ -1,12 +1,7 @@
 package gui;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.*;
+import java.awt.event.*;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
@@ -14,8 +9,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.sql.Timestamp;
+import java.text.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 //import java.util.Date;
@@ -26,6 +21,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import Server.Config;
@@ -42,8 +40,11 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.view.JasperViewer;
+import org.eclipse.persistence.jpa.jpql.parser.MathDoubleExpression;
 import org.hibernate.Session;
 import org.hibernate.jdbc.ReturningWork;
+
+import static java.sql.Types.NULL;
 
 
 public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListener{
@@ -235,25 +236,33 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		lblNewLabel.setBounds(391, 0, 650, 74);
 		contentPane.add(lblNewLabel);
 
-		String [] headers = {"Mã PDP", "Tên Phòng", "Loại Phòng", "Giá Phòng", "Khách Hàng","Nhân Viên PV"};
+		String [] headers = {"Mã PDP", "Tên Phòng", "Loại Phòng", "Giá Phòng", "Khách Hàng","Nhân Viên PV","Thời gian đặt phòng"};
 		tableModel=new DefaultTableModel(headers,0);
 		JScrollPane scroll = new JScrollPane();
 		scroll.setViewportView(table = new JTable(tableModel));
 		table.setRowHeight(25);
 		table.setAutoCreateRowSorter(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+		table.getColumnModel().getColumn(6).setMinWidth(0);
+		table.getColumnModel().getColumn(6).setMaxWidth(0);
+		table.getColumnModel().getColumn(6).setWidth(0);
+		table.getColumnModel().getColumn(6).setPreferredWidth(0);
 
 		JScrollPane scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(20, 102, 590, 312);
 		contentPane.add(scrollPane);
 
-		String [] headers1 = {"STT", "Mã Hàng Hóa", "Tên Hàng Hóa", "Đơn Giá", "Số Lượng", "Thành Tiền", "Ghi Chú"};
+		String [] headers1 = {"STT", "Mã Hàng Hóa", "Tên Hàng Hóa", "Đơn Giá", "Số Giờ","Số Lượng", "Thành Tiền", "Ghi Chú"};
 		tableModel1=new DefaultTableModel(headers1,0);
 		JScrollPane scroll1 = new JScrollPane();
 		scroll1.setViewportView(table_1 = new JTable(tableModel1));
 		table_1.setRowHeight(25);
 		table_1.setAutoCreateRowSorter(true);
 		table_1.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		table_1.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		table_1.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 
 		JScrollPane scrollPane_1 = new JScrollPane(table_1);
 		scrollPane_1.setBounds(649, 187, 866, 401);
@@ -338,6 +347,38 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		textField_khachTra.setBounds(1043, 627, 158, 27);
 		contentPane.add(textField_khachTra);
 
+		textField_khachTra.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String input = textField_khachTra.getText().trim();
+
+				if (!input.matches("[0-9,.]*")) {
+					textField_khachTra.setText(input.replaceAll("[^0-9,.]", ""));
+				}
+				calculateTienThua();
+			}
+		});
+		textField_khachTra.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String input = textField_khachTra.getText().trim();
+
+				try {
+					if (!input.isEmpty()) {
+						double value = Double.parseDouble(input.replace(",", ""));
+
+						// Định dạng lại chuỗi
+						DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
+						textField_khachTra.setText(decimalFormat.format(value));
+					}
+				} catch (NumberFormatException ex) {
+					System.out.println("Lỗi định dạng số: " + ex.getMessage());
+					textField_khachTra.setText(""); // Xóa nếu không hợp lệ
+				}
+			}
+		});
+
+
 		JLabel lblNewLabel_4_1_2_3_1_1 = new JLabel("Tiền thừa:");
 		lblNewLabel_4_1_2_3_1_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel_4_1_2_3_1_1.setBounds(1211, 627, 96, 23);
@@ -346,6 +387,7 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		textField_tienThua = new JTextField();
 		textField_tienThua.setColumns(10);
 		textField_tienThua.setBounds(1317, 627, 158, 27);
+		textField_tienThua.setEditable(false);
 		contentPane.add(textField_tienThua);
 
 		btnNewButton_thanhToan = new JButton("Thanh Toán");
@@ -382,12 +424,12 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		contentPane.add(horizontalBox_2_2);
 
 		textField_kh = new JTextField();
-		textField_kh.setBounds(1043, 102, 158, 25);
+		textField_kh.setBounds(1040, 102, 158, 25);
 		contentPane.add(textField_kh);
 		textField_kh.setColumns(10);
 
 		textField_nv = new JTextField();
-		textField_nv.setBounds(1043, 139, 158, 27);
+		textField_nv.setBounds(1040, 139, 158, 27);
 		contentPane.add(textField_nv);
 		textField_nv.setColumns(10);
 
@@ -411,10 +453,45 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 	private double TinhTien() {
 		double tongTien = 0;
 		for (int i = 0; i < table_1.getRowCount(); i++) {
-			tongTien += ChuyenDoi.ChuyenTien(table_1.getValueAt(i, 5).toString());
+			tongTien += ChuyenDoi.ChuyenTien(table_1.getValueAt(i, 6).toString());
 		}
 		return tongTien ;
 	}
+	private void calculateTienThua() {
+		try {
+			// Lấy giá trị từ textField_tongTien và textField_khachTra
+			String tongTienStr = textField_tongTien.getText().trim();
+			String khachTraStr = textField_khachTra.getText().trim();
+
+			if (tongTienStr.isEmpty() || khachTraStr.isEmpty()) {
+				System.out.println("Vui lòng nhập đủ thông tin.");
+				textField_tienThua.setText("");
+				return;
+			}
+
+			tongTienStr = tongTienStr.replace(",", "");
+			khachTraStr = khachTraStr.replace(",", "");
+
+			double tongTien = Double.parseDouble(tongTienStr);
+			double khachTra = Double.parseDouble(khachTraStr);
+
+			System.out.println("Tổng tiền: " + tongTien);
+			System.out.println("Khách trả: " + khachTra);
+
+			double tienThua = khachTra - tongTien;
+
+			DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
+			textField_tienThua.setText(decimalFormat.format(tienThua));
+
+		} catch (NumberFormatException e) {
+			System.out.println("Lỗi định dạng số: " + e.getMessage());
+			textField_tienThua.setText("");
+		} catch (Exception e) {
+			System.out.println("Lỗi: " + e.getMessage());
+			textField_tienThua.setText("");
+		}
+	}
+
 	private String SoHoaDon() {
 		String soHoaDon = "";
 		try {
@@ -462,10 +539,13 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 
 	private void DocDuLieuDatabaseVaoTable() throws RemoteException {
 		// TODO Auto-generated method stub
+		//xoa du lieu cu de cap nhat
+		tableModel.setRowCount(0);
+
 		List<PhieuDatPhong> list = pdp_dao.getAllPhieuDatPhong();
 		for(PhieuDatPhong pdp : list) {
 			String[] rowData = {pdp.getId()+"",pdp.getMaPhong().getTenPhong(),pdp.getMaPhong().getLoaiPhong().getLoaiPhong()
-					,pdp.getMaPhong().getGiaPhong()+"",pdp.getMaKH().getMaKH(),pdp.getMaNV().getMaNV()};
+					,pdp.getMaPhong().getGiaPhong()+"",pdp.getMaKH().getMaKH(),pdp.getMaNV().getMaNV(),pdp.getTgDatPhong().toString()};
 			tableModel.addRow(rowData);
 		}
 		table.setModel(tableModel);
@@ -596,10 +676,11 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 
 	}
 
-	public static int SoGio;
+	public static double SoGio;
 	public static int SoLuong;
 	public static String GhiChu;
 	public static int maPDP;
+	public static Timestamp tgDatPhong;
 	public static String maDV;
 	private JTable table_2;
 	private JTextField textField_kh;
@@ -618,55 +699,140 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		System.out.println(GhiChu);
 
 		double thanhTien = SoLuong * giaDV;
+		if (SoLuong !=0){
+			ThemDVTbCTHD(maDV,tenDV,giaDV,SoLuong,thanhTien,GhiChu);
+			textField_tongTien.setText(ChuyenDoi.DinhDangTien(TinhTien()));
+			calculateTienThua();
 
-		ThemDVTbCTHD(maDV,tenDV,giaDV,SoLuong,thanhTien,GhiChu);
-		textField_tongTien.setText(ChuyenDoi.DinhDangTien(TinhTien()));
+		}
+
 	}
 
 	private void ThemDVTbCTHD(String maDV, String tenDV, double giaDV, int soLuong, double thanhTien,
 							  String ghiChu) {
 		// TODO Auto-generated method stub
 		DefaultTableModel tbModel = (DefaultTableModel) table_1.getModel();
-		Object obj[] = new Object[7];
-		obj[0] = tbModel.getRowCount() + 1;
-		obj[1] = maDV;
-		obj[2] = tenDV;
-		obj[3] = ChuyenDoi.DinhDangTien(giaDV);
-		obj[4] = soLuong;
-		obj[5] = ChuyenDoi.DinhDangTien(thanhTien);
-		obj[6] = ghiChu;
-		tbModel.addRow(obj);
-	}
+		boolean isUpdated = false;
 
-	private void ThemPhongTbCTHD(int maPDP, String tenP, double giaP, int soGio, double thanhTien, String ghiChu) {
+		// Duyệt qua bảng để kiểm tra sự tồn tại của mã dịch vụ
+		for (int i = 0; i < tbModel.getRowCount(); i++) {
+			String existingMaDV = String.valueOf(tbModel.getValueAt(i, 1));
+			if (existingMaDV.equals(maDV)) {
+				int existingSoLuong = (int) tbModel.getValueAt(i, 5);
+				String existingThanhTienStr = String.valueOf(tbModel.getValueAt(i, 6));
+				double existingThanhTien = 0.0;
+				try {
+					existingThanhTien = Double.parseDouble(existingThanhTienStr.replace(",", "").replace("đ", "").trim());  // Loại bỏ dấu phẩy và ký tự "đ" nếu có
+				} catch (NumberFormatException e) {
+					existingThanhTien = 0.0;
+				}
+				tbModel.setValueAt(existingSoLuong + soLuong, i, 5);
+				tbModel.setValueAt(existingThanhTien + thanhTien, i, 6);
+
+				isUpdated = true;
+				break;
+			}
+		}
+
+		if (!isUpdated) {
+			Object obj[] = new Object[8];
+			obj[0] = tbModel.getRowCount() + 1;
+			obj[1] = maDV;
+			obj[2] = tenDV;
+			obj[3] = ChuyenDoi.DinhDangTien(giaDV);
+			obj[4] = '-';
+			obj[5] = soLuong;
+			obj[6] = ChuyenDoi.DinhDangTien(thanhTien);
+			obj[7] = ghiChu;
+			tbModel.addRow(obj);
+		}
+	}
+	private boolean isMaPDPExistInTable(JTable tbModel, int maPDP) {
+		for (int i = 0; i < tbModel.getRowCount(); i++) {
+			int existingMaPDP = Integer.parseInt( tbModel.getValueAt(i, 0).toString());
+			if (existingMaPDP ==  maPDP) {
+				return true;
+			}
+		}
+		return false;
+	}
+	private void ThemPhongTbCTHD(int maPDP, String tenP, double giaP, double soGio, double thanhTien, String ghiChu) {
 		// TODO Auto-generated method stub
 		DefaultTableModel tbModel = (DefaultTableModel) table_1.getModel();
-		Object obj[] = new Object[7];
+		DecimalFormat df = new DecimalFormat("#.00");
+
+		// Kiểm tra các dòng chứa thông tin phòng trong bảng
+		for (int i = 0; i < tbModel.getRowCount(); i++) {
+			try {
+				// Lấy giá trị từ cột 1 và chuyển đổi sang số nguyên
+				int existingMaPDP = Integer.parseInt(tbModel.getValueAt(i, 1).toString().trim());
+
+				// Kiểm tra nếu mã phòng đã tồn tại
+				if (existingMaPDP == maPDP) {
+					JOptionPane.showMessageDialog(this, "Mã phòng đã được thêm vào", "Thông báo", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+
+				if (isMaPDPExistInTable(table, existingMaPDP)) {
+					JOptionPane.showMessageDialog(this, "Đã thêm phòng vào bảng!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+			} catch (NumberFormatException e) {
+				System.out.println("Giá trị không hợp lệ ở dòng: " + i + ", bỏ qua");
+			}
+		}
+
+
+		// Nếu chưa có phòng trong bảng, thêm phòng mới vào bảng
+		Object obj[] = new Object[8];
 		obj[0] = tbModel.getRowCount() + 1;
 		obj[1] = maPDP;
 		obj[2] = tenP;
 		obj[3] = ChuyenDoi.DinhDangTien(giaP);
-		obj[4] = soGio;
-		obj[5] = ChuyenDoi.DinhDangTien(thanhTien);
-		obj[6] = ghiChu;
+		obj[4] = df.format(soGio);
+		obj[5] = '-';
+		obj[6] = ChuyenDoi.DinhDangTien(thanhTien);
+		obj[7] = ghiChu;
 		tbModel.addRow(obj);
+
+
 	}
 
 	private void themP() {
 		// TODO Auto-generated method stub
 		maPDP = Integer.parseInt(table.getValueAt(table.getSelectedRow(), 0).toString());
+		tgDatPhong = Timestamp.valueOf(table.getValueAt(table.getSelectedRow(), 6).toString());
 		String tenP = table.getValueAt(table.getSelectedRow(), 1).toString();
 		double giaP = Double.parseDouble(table.getValueAt(table.getSelectedRow(), 3).toString());
 
+
 		jdlAddPDP jdl = new jdlAddPDP(this, true);
+		jdl.getDateChooser().setDate(new java.util.Date());
+
+		java.util.Date tgTraPhong = jdl.getDateChooser().getDate();
+		if (tgTraPhong != null) {
+			Timestamp tgNhanPhong = new Timestamp(tgTraPhong.getTime());
+
+			long diffMillis = tgNhanPhong.getTime() - tgDatPhong.getTime();
+			SoGio = diffMillis / (1000.0 * 60 * 60);
+            if(SoGio > 1){
+				jdl.getSpnSoGio().setValue(SoGio);
+			}
+			System.out.println("Số giờ: " + SoGio);
+		}
 		jdl.setVisible(true);
 		System.out.println(SoGio);
 		System.out.println(GhiChu);
 
 		double thanhTien = SoGio * giaP;
+		if(SoGio >0){
+			ThemPhongTbCTHD(maPDP,tenP,giaP,SoGio,thanhTien,GhiChu);
+			textField_tongTien.setText(ChuyenDoi.DinhDangTien(TinhTien()));
+			calculateTienThua();
 
-		ThemPhongTbCTHD(maPDP,tenP,giaP,SoGio,thanhTien,GhiChu);
-		textField_tongTien.setText(ChuyenDoi.DinhDangTien(TinhTien()));
+		}
+
+
 	}
 
 
@@ -688,7 +854,9 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		KhachHang kh = new KhachHang();
 		kh.setMaKH(textField_kh.getText());
 		hd.setMaKH(kh);
-		double tt = ChuyenDoi.ChuyenTien(textField_tongTien.getText());
+//		String tongTienStr = textField_tongTien.getText().trim();
+//		tongTienStr = tongTienStr.replace(",", "");
+		double tt = ChuyenDoi.ChuyenTien(textField_tongTien.getText().trim());
 		String gc = textField_ghiChu.getText();
 
 		java.util.Date date = new java.util.Date();
@@ -719,6 +887,8 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		//HoaDonDao dao = (HoaDonDao) Naming.lookup(Config.SERVER_URL + "hoaDonDao");
 		try {
 			dao.xuatHoaDon(idhd);
+			//Load lai data
+			DocDuLieuDatabaseVaoTable();
 		} catch (RemoteException e) {
 			e.printStackTrace();
 		}
@@ -741,7 +911,7 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 			return false;
 		}
 		try {
-			double d = Double.parseDouble(strNum);
+			int d = Integer.parseInt(strNum);
 		} catch (NumberFormatException nfe) {
 			return false;
 		}
@@ -752,42 +922,80 @@ public class LapHoaDon_GUI extends JFrame implements ActionListener , MouseListe
 		ChiTietHoaDonDao cthd_dao = (ChiTietHoaDonDao) Naming.lookup(Config.SERVER_URL + "chiTietHoaDonDao");
 		for (int i = 0; i < table_1.getRowCount(); i++) {
 			String temp = table_1.getValueAt(i, 1).toString();
+			System.out.println("temp " + temp);
 			int pdp1 = 0;
 			if (isNumeric(temp)) {
+				System.out.println("láy id ");
+
 				pdp1 = pdp_dao.getPhieuDatPhongByID(Integer.parseInt(temp)).getId();
+				System.out.println("là id "+ pdp1);
+
 			}
-			int sl = Integer.parseInt(table_1.getValueAt(i, 4).toString());
-			double ThanhTien = ChuyenDoi.ChuyenTien(table_1.getValueAt(i, 5).toString());
-			String gc = table_1.getValueAt(i, 6).toString();
+			int sl = 0;
+			double sg = 0.0;
+			try {
+				String slStr = table_1.getValueAt(i, 5).toString();
+				if ("-".equals(slStr)) {
+					sl = NULL;
+				} else {
+					sl = Integer.parseInt(slStr);
+				}
+
+				String sgStr = table_1.getValueAt(i, 4).toString();
+				if ("-".equals(sgStr)) {
+					sg = NULL;
+				} else {
+					sg = Double.parseDouble(sgStr);
+				}
+
+			} catch (NumberFormatException e) {
+				System.out.println("Lỗi định dạng dữ liệu: " + e.getMessage());
+				sl = 0;
+				sg = 0.0;
+			}
+			double ThanhTien = ChuyenDoi.ChuyenTien(table_1.getValueAt(i, 6).toString());
+			String gc = table_1.getValueAt(i, 7).toString();
 			ChiTietHoaDon cthd = new ChiTietHoaDon();
 			HoaDon hd = new HoaDon();
 			hd.setId(maHD);
 			cthd.setMaHD(hd);
 			DichVu dv = dv_dao.getDichVuByLoaiDichVu(temp);
+			System.out.println("Dịch Vụ: " + dv);
+
 			if (dv == null) {
 				// Tạo một DichVu mặc định
 				dv = new DichVu();
 				dv.setMaDV("DV000");
-				dv.setTenDV("Dịch vụ mặc định");
-				// hoặc bạn có thể thông báo cho người dùng
-				System.out.println("Không tìm thấy Dịch Vụ: " + temp);
-			} else {
-				cthd.setMaPDP(pdp1);
-				cthd.setMaDV(dv);
-				cthd.setSoLuong(sl);
-				cthd.setThanhTien(BigDecimal.valueOf(ThanhTien));
-				cthd.setGhiChu(gc);
-				cthd_dao.createChiTietHoaDon(cthd);
+				dv.setTenDV("Phòng hát");
+				// Kiểm tra dịch vụ có tồn tại không
+//				DichVu existingDv = dv_dao.getDichVuByLoaiDichVu(dv.getLoaiDV().toString());
+//				if (existingDv != null) {
+//					// Nếu đã tồn tại, cập nhật
+//					existingDv.setTenDV(dv.getTenDV());
+//					existingDv.setGiaDV(dv.getGiaDV());
+//					dv_dao.updateDichVu(existingDv);
+//				} else {
+//					dv_dao.createDichVu(dv);
+//				}
 			}
+			cthd.setMaPDP(pdp1);
+			cthd.setMaDV(dv);
+			cthd.setSoLuong(sl);
+			cthd.setSoGio(BigDecimal.valueOf(sg));
+			cthd.setThanhTien(BigDecimal.valueOf(ThanhTien));
+			cthd.setGhiChu(gc);
+			cthd_dao.createChiTietHoaDon(cthd);
+
 		}
+
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		int row = table.getSelectedRow();
-		textField_kh.setText(tableModel.getValueAt(row, 4).toString());
-		textField_nv.setText(tableModel.getValueAt(row, 5).toString());
+		textField_kh.setText(tableModel.getValueAt(row, 4).toString().trim());
+		textField_nv.setText(tableModel.getValueAt(row, 5).toString().trim());
 	}
 
 	@Override

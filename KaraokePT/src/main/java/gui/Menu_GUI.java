@@ -333,15 +333,16 @@ public class Menu_GUI extends JFrame implements ActionListener{
 		menuBar.add(mnNewMenu_hd);
 		
 		JMenuItem mntmNewMenuItem_lapHD = new JMenuItem("Lập Hoá Đơn");
-
 		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_ThanhToan.png")));
 
-		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_ThanhToan.png")));
-
-
-		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_ThanhToan.png")));
-
-		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_ThanhToan.png")));
+//		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_ThanhToan.png")));
+//
+//		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_ThanhToan.png")));
+//
+//
+//		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_ThanhToan.png")));
+//
+//		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_ThanhToan.png")));
 
 
 		mntmNewMenuItem_lapHD.setFont(new Font("Segoe UI", Font.PLAIN, 15));
