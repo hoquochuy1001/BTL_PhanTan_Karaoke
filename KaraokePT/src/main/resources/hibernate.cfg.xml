@@ -4,6 +4,7 @@
         <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=QuanLyKaraokeNice;trustServerCertificate=
             true</property>
         <property name="hibernate.connection.username">sa</property>
+<!--        <property name="hibernate.connection.password">123</property>-->
         <property name="hibernate.connection.password">123</property>
         <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
         <property name="hibernate.hbm2ddl.auto">update</property>

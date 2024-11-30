@@ -7,6 +7,11 @@ package bll;
 
 import gui.LapHoaDon_GUI;
 
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+
 /**
  *
  * @author CuongNP
@@ -52,7 +57,6 @@ public class jdlAddDV extends javax.swing.JDialog {
         jLabel2.setText("Số Lượng:");
 
         spnSoLuong.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
-
         txtGhiChu.setColumns(20);
         txtGhiChu.setRows(5);
         jScrollPane1.setViewportView(txtGhiChu);
@@ -67,7 +71,11 @@ public class jdlAddDV extends javax.swing.JDialog {
         });
 
         btnHuy.setText("Hủy");
-
+        btnHuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHuyActionPerformed(evt);
+            }
+        });
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -115,16 +123,36 @@ public class jdlAddDV extends javax.swing.JDialog {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnChonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonActionPerformed
-    	LapHoaDon_GUI.SoLuong =  Integer.parseInt(spnSoLuong.getValue().toString());
-    	LapHoaDon_GUI.GhiChu = txtGhiChu.getText();
+    private void btnHuyActionPerformed(ActionEvent evt) {
         this.dispose();
+    }
+
+    private void btnChonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonActionPerformed
+        try {
+//            Object value = spnSoLuong.getValue();
+            JSpinner.NumberEditor editor = (JSpinner.NumberEditor) spnSoLuong.getEditor();
+            String text = editor.getTextField().getText();
+            int value = Integer.parseInt(text);
+
+                int soLuong = ((Number) value).intValue();
+
+                if (value <= 0) {
+                    JOptionPane.showMessageDialog(this, "Số lượng phải lớn hơn 0.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                LapHoaDon_GUI.SoLuong = soLuong;
+                LapHoaDon_GUI.GhiChu = txtGhiChu.getText();
+                this.dispose(); // Đóng dialog
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhập số hợp lệ vào ô số lượng.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnChonActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
         txtMaSP.setText(LapHoaDon_GUI.maDV);
-        spnSoLuong.setModel(new javax.swing.SpinnerNumberModel());
+        spnSoLuong.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
         //spnSoLuong.setModel(new javax.swing.SpinnerNumberModel(1, 1, LapHoaDon_GUI.SoGio, 1));
     }//GEN-LAST:event_formWindowOpened
 

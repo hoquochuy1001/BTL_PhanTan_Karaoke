@@ -3,7 +3,9 @@ package entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.annotations.Nationalized;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 
@@ -12,6 +14,7 @@ import java.math.BigDecimal;
 @Entity
 @NamedNativeQueries({ @NamedNativeQuery(name = "getDSChiTietHoaDon", query = "{}", resultClass = ChiTietHoaDon.class), })
 public class ChiTietHoaDon implements java.io.Serializable{
+	private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "MaChiTietHD", nullable = false)
@@ -28,7 +31,7 @@ public class ChiTietHoaDon implements java.io.Serializable{
     @Column(name = "maPDP", nullable = false)
     private Integer maPDP;
 
-    @Column(name = "SoLuong", nullable = false)
+    @Column(name = "SoLuong", nullable = true)
     private Integer soLuong;
 
     @Column(name = "ThanhTien", nullable = false)
@@ -38,23 +41,34 @@ public class ChiTietHoaDon implements java.io.Serializable{
     @Column(name = "GhiChu", length = 200)
     private String ghiChu;
 
-    public ChiTietHoaDon() {
+	@Column(name = "SoGio", nullable = true)
+	private BigDecimal soGio;
+
+	public ChiTietHoaDon() {
     }
 
     public ChiTietHoaDon(Integer id) {
         this.id = id;
     }
 
-    public ChiTietHoaDon(Integer id, HoaDon maHD, DichVu maDV, Integer maPDP, Integer soLuong, BigDecimal thanhTien, String ghiChu) {
+    public ChiTietHoaDon(Integer id, HoaDon maHD, DichVu maDV, Integer maPDP, Integer soLuong,BigDecimal soGio, BigDecimal thanhTien, String ghiChu) {
         this.id = id;
         this.maHD = maHD;
         this.maDV = maDV;
         this.maPDP = maPDP;
         this.soLuong = soLuong;
+		this.soGio = soGio;
         this.thanhTien = thanhTien;
         this.ghiChu = ghiChu;
     }
 
+	public BigDecimal getSoGio() {
+		return soGio;
+	}
+
+	public void setSoGio(BigDecimal soGio) {
+		this.soGio = soGio;
+	}
 
 	public Integer getId() {
 		return id;
