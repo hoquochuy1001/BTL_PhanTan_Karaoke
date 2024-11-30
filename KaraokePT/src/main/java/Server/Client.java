@@ -9,8 +9,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 public class Client {
-//    private static final String URL = "rmi://LAPTOP-FK3M91LG:7878/";
-      public static final String SERVER_URL = "rmi://LAPTOP-2QBKN4EM:7878/";
+    private static final String URL = "rmi://LAPTOP-FK3M91LG:7878/";
+      //public static final String SERVER_URL = "rmi://LAPTOP-2QBKN4EM:7878/";
 
     public static void main(String[] args) throws MalformedURLException, RemoteException, NotBoundException {
 //        NhanVienDao nhanVienDao = (NhanVienDao) Naming.lookup(URL + "nhanVienDao");
