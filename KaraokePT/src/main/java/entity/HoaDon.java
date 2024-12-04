@@ -11,7 +11,29 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Entity
-@NamedNativeQueries({ @NamedNativeQuery(name = "getDSHoaDon", query = "{}", resultClass = HoaDon.class), })
+@NamedNativeQuery(
+		name = "getDSHoaDon",
+		query = "SELECT * FROM HoaDon",
+		resultClass = HoaDon.class
+)
+
+@NamedNativeQuery(
+		name = "getDoanhThuTheoThang",
+		query = "SELECT MONTH(NgayTaoHD) AS month, SUM(TongTien) AS totalRevenue FROM HoaDon GROUP BY MONTH(NgayTaoHD) ORDER BY month ASC",
+		resultSetMapping = "HoaDonRevenueMapping"
+)
+
+@SqlResultSetMapping(
+		name = "HoaDonRevenueMapping",
+		classes = @ConstructorResult(
+				targetClass = HoaDonRevenue.class,
+				columns = {
+						@ColumnResult(name = "month", type = Integer.class),
+						@ColumnResult(name = "totalRevenue", type = BigDecimal.class)
+				}
+		)
+)
+
 public class HoaDon implements java.io.Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +46,11 @@ public class HoaDon implements java.io.Serializable{
     @Column(name = "NgayTaoHD", nullable = false)
     private LocalDate ngayTaoHD;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "maNV", nullable = false)
     private NhanVien maNV;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "maKH", nullable = false)
     private KhachHang maKH;
 
