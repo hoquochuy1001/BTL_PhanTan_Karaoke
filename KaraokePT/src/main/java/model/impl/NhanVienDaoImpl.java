@@ -1,5 +1,6 @@
 package model.impl;
 
+import entity.KhachHang;
 import entity.NhanVien;
 import model.NhanVienDao;
 import org.hibernate.Session;
@@ -106,4 +107,21 @@ public class NhanVienDaoImpl extends UnicastRemoteObject implements NhanVienDao 
         }
         return dsNhanVien;
     }
+
+    public NhanVien getNhanVienByMaNhanVien(String maNV) {
+        Transaction transaction = null;
+        NhanVien nv = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
+            nv = session.get(NhanVien.class, maNV);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        }
+        return nv;
+    }
+
 }

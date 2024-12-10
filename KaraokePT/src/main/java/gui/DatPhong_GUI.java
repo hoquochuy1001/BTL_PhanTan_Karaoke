@@ -24,6 +24,8 @@ import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import java.awt.TextField;
@@ -39,6 +41,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.Component;
 import javax.swing.JScrollPane;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -221,8 +224,12 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		mntmNewMenuItem_tkDoanhThu.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_tkDoanhThu.addActionListener(this);
 		mnNewMenu_thongKe.add(mntmNewMenuItem_tkDoanhThu);
-		
-		
+
+		JMenuItem mntmNewMenuItem_tkDongHang = new JMenuItem("Thống Kê Đơn hàng");
+		mntmNewMenuItem_tkDongHang.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_HD.png")));
+		mntmNewMenuItem_tkDongHang.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		mntmNewMenuItem_tkDongHang.addActionListener(this);
+		mnNewMenu_thongKe.add(mntmNewMenuItem_tkDongHang);
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 255, 255));
@@ -298,7 +305,7 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		horizontalBox_4.setBounds(10, 475, 1520, 255);
 		contentPane.add(horizontalBox_4);
 		//
-		String [] headers4 = {"Mã Phiếu Đặt Phòng","Tên Phòng", "Loại Phòng", "Giá Phòng", "Thời gian Đặt Phòng","Tên Khách Hàng","Tên Nhân Viên"};
+		String [] headers4 = {"Mã Phiếu Đặt Phòng","Tên Phòng", "Loại Phòng", "Đơn Giá", "Thời gian Đặt Phòng","Tên Khách Hàng","Tên Nhân Viên"};
 		tableModel4=new DefaultTableModel(headers4,0);
 		JScrollPane scroll4 = new JScrollPane();
 		scroll4.setViewportView(table_4 = new JTable(tableModel4));
@@ -333,20 +340,36 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 	
 	private void DocDuLieuDatabaseVaoTable4() throws RemoteException {
 		// TODO Auto-generated method stub
+		tableModel4.setRowCount(0);
+
 		List<PhieuDatPhong> list = pdp_dao.getAllPhieuDatPhong();
-		for(PhieuDatPhong pdp : list) {
-			String[] rowData = {pdp.getId()+"",pdp.getMaPhong().getTenPhong(),pdp.getMaPhong().getLoaiPhong().getLoaiPhong()
-					,pdp.getMaPhong().getGiaPhong()+"",pdp.getTgDatPhong().toString()
-					,pdp.getMaKH().getMaKH(),pdp.getMaNV().getMaNV()};
+
+		// Sắp xếp danh sách theo TgDatPhong giảm dần
+		Collections.sort(list, (o1, o2) -> {
+			return o2.getTgDatPhong().compareTo(o1.getTgDatPhong()); // So sánh giảm dần
+		});
+
+		for (PhieuDatPhong pdp : list) {
+			String[] rowData = {
+					pdp.getId() + "",
+					pdp.getMaPhong().getTenPhong(),
+					pdp.getMaPhong().getLoaiPhong().getLoaiPhong(),
+					pdp.getMaPhong().getGiaPhong() + "",
+					pdp.getTgDatPhong().toString(),
+					pdp.getMaKH().getMaKH(),
+					pdp.getMaNV().getMaNV()
+			};
 
 			tableModel4.addRow(rowData);
 		}
+
 		table_4.setModel(tableModel4);
 	}
 
 
 
 	private void DocDuLieuDatabaseVaoTable3() throws RemoteException {
+		tableModel3.setRowCount(0);
 
 		List<NhanVien> list = nv_dao.getNhanVienExceptAdmin();
 		for(NhanVien s : list) {
@@ -360,12 +383,51 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		// TODO Auto-generated method stub
 
 		List<Phong> list = phong_dao.getAllPhong();
-		for(Phong s : list) {
-			String[] rowData = {s.getMaPhong(), s.getTenPhong(),s.getLoaiPhong().getLoaiPhong(),s.getTinhTrang()};
+
+		// Xóa dữ liệu cũ trong bảng nếu có
+		tableModel2.setRowCount(0);
+
+		for (Phong s : list) {
+			String[] rowData = {
+					s.getMaPhong(),
+					s.getTenPhong(),
+					s.getLoaiPhong().getLoaiPhong(),
+					s.getTinhTrang()
+			};
 			tableModel2.addRow(rowData);
 		}
+
 		table_2.setModel(tableModel2);
+
+		// Áp dụng renderer tùy chỉnh để tô màu các hàng
+		table_2.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
 	}
+	class CustomTableCellRenderer extends DefaultTableCellRenderer {
+		@Override
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+			Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+			String tinhTrang = table.getValueAt(row, 3).toString();
+			System.out.println("tinhTrang"+tinhTrang);
+			if ("Phòng có Khách".equalsIgnoreCase(tinhTrang != null ? tinhTrang.trim() : "")) {
+				System.out.println("yes");
+
+				cell.setBackground(Color.ORANGE);
+			} else {
+				cell.setBackground(Color.WHITE);
+			}
+
+			if (isSelected) {
+				cell.setBackground(table.getSelectionBackground());
+				cell.setForeground(table.getSelectionForeground());
+			} else {
+				cell.setForeground(Color.BLACK);
+			}
+
+			return cell;
+		}
+	}
+
 
 	private void DocDuLieuDatabaseVaoTable1() throws RemoteException {
 		// TODO Auto-generated method stub
@@ -477,10 +539,22 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 				throw new RuntimeException(ex);
 			}
 		}
-//		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
-//			dispose();
-//            new ThongKe_GUI();
-//        }
+		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
+			dispose();
+			try {
+				new THONGKE_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		if (e.getActionCommand().equals("Thống Kê Đơn hàng")) {
+			dispose();
+			try {
+				new DONHANG_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		//////////////////////////////////////////////////////////////////////////
 		Object o = e.getSource();
 		if(o.equals(btnNewButton_DP)) {
@@ -531,9 +605,16 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 			JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng, phòng và nhân viên phục vụ");
 			return;
 		}
+
 		String maKH = tableModel1.getValueAt(row1, 0).toString();
 		String maPhong = tableModel2.getValueAt(row2, 0).toString();
 		String maNV = tableModel3.getValueAt(row3, 0).toString();
+		String tinhTrangPhong = phong_dao.getPhongByLoaiPhong(maPhong).getTinhTrang();
+
+		if ("Phòng có Khách".equalsIgnoreCase(tinhTrangPhong != null ? tinhTrangPhong.trim() : "")) {
+			JOptionPane.showMessageDialog(this, "Phòng đã có khách, không thể đặt phòng");
+			return;
+		}
 		PhieuDatPhong pdp = new PhieuDatPhong();
 		pdp.setMaKH(kh_dao.getKhachHangByMaKhachHang(maKH));
 		pdp.setMaPhong(phong_dao.getPhongByLoaiPhong(maPhong));
@@ -542,6 +623,8 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		if(pdp_dao.createPhieuDatPhong(pdp)) {
 			JOptionPane.showMessageDialog(this, "Đặt phòng thành công");
 			tailai();
+			DocDuLieuDatabaseVaoTable4();
+			DocDuLieuDatabaseVaoTable2();
 		}
 		else {
 			JOptionPane.showMessageDialog(this, "Đặt phòng thất bại");

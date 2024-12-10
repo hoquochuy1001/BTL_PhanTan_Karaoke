@@ -212,8 +212,12 @@ public class CapNhapPhong_GUI extends JFrame implements ActionListener, MouseLis
 		mntmNewMenuItem_tkDoanhThu.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_tkDoanhThu.addActionListener(this);
 		mnNewMenu_thongKe.add(mntmNewMenuItem_tkDoanhThu);
-		
-		
+
+		JMenuItem mntmNewMenuItem_tkDongHang = new JMenuItem("Thống Kê Đơn hàng");
+		mntmNewMenuItem_tkDongHang.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_HD.png")));
+		mntmNewMenuItem_tkDongHang.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		mntmNewMenuItem_tkDongHang.addActionListener(this);
+		mnNewMenu_thongKe.add(mntmNewMenuItem_tkDongHang);
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 255, 255));
@@ -459,10 +463,22 @@ public class CapNhapPhong_GUI extends JFrame implements ActionListener, MouseLis
 				throw new RuntimeException(ex);
 			}
 		}
-//		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
-//			dispose();
-//            new ThongKe_GUI();
-//        }
+		if (e.getActionCommand().equals("Thống Kê Doanh Thu")) {
+			dispose();
+			try {
+				new THONGKE_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
+		if (e.getActionCommand().equals("Thống Kê Đơn hàng")) {
+			dispose();
+			try {
+				new DONHANG_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		///////////////////////////////////////////////////////////
 		Object o = e.getSource();
 		if(o.equals(btnNewButton_them))
