@@ -1,25 +1,15 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.sql.*;
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -27,34 +17,21 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.awt.event.ActionEvent;
 import java.awt.TextField;
-import javax.swing.JComboBox;
-import javax.swing.Box;
-import javax.swing.ImageIcon;
 import javax.swing.border.BevelBorder;
-import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
 import java.awt.Color;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import java.awt.Component;
-import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 
 import Server.Config;
-import entity.KhachHang;
-import entity.LoaiPhong;
-import entity.NhanVien;
-import entity.Phong;
-import entity.PhieuDatPhong;
-import model.KhachHangDao;
-import model.NhanVienDao;
-import model.PhieuDatPhongDao;
-import model.PhongDao;
+import bll.SessionManager;
+import entity.*;
+import model.*;
+import org.hibernate.LazyInitializationException;
 import util.HibernateUtil;
 
 public class DatPhong_GUI extends JFrame implements ActionListener, MouseListener{
@@ -76,7 +53,12 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 	private JTextField textField_1;
 	private PhieuDatPhongDao pdp_dao;
 	private JButton btnNewButton_load;
-	
+	private TaiKhoan user;
+	private TaiKhoanDao tk_dao;
+	private SessionManager currentUser = SessionManager.getInstance();
+	private JTextField txt_timkiemKH;
+	private JTextField txt_timkiemnNV;
+	private JTextField txt_timkiemP;
 
 	
 	public DatPhong_GUI() throws RemoteException {
@@ -86,6 +68,7 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 			nv_dao = (NhanVienDao) Naming.lookup(Config.SERVER_URL+"nhanVienDao");
 			phong_dao = (PhongDao) Naming.lookup(Config.SERVER_URL+"phongDao");
 			pdp_dao = (PhieuDatPhongDao) Naming.lookup(Config.SERVER_URL+"phieuDatPhongDao");
+			tk_dao = (TaiKhoanDao) Naming.lookup(Config.SERVER_URL + "taiKhoanDao");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -96,140 +79,361 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		  
-		JMenu mnNewMenu_menu = new JMenu("Nhân Viên");
-		mnNewMenu_menu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user.png")));
-		mnNewMenu_menu.setFont(new Font("Segoe UI", Font.PLAIN, 30));
-		mnNewMenu_menu.addActionListener(this);
-		menuBar.add(mnNewMenu_menu);
-		
-		JMenuItem mntmNewMenuItem_upNV = new JMenuItem("Cập Nhập Nhân Viên");
-		mntmNewMenuItem_upNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
-		mntmNewMenuItem_upNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_upNV.addActionListener(this);
-		mnNewMenu_menu.add(mntmNewMenuItem_upNV);
-		
-		JMenuItem mntmNewMenuItem_findNV = new JMenuItem("Tìm Kiếm Nhân Viên");
-		mntmNewMenuItem_findNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
-		mntmNewMenuItem_findNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_findNV.addActionListener(this);
-		mnNewMenu_menu.add(mntmNewMenuItem_findNV);
-		
-		JMenuItem mntmNewMenuItem_tkNV = new JMenuItem("Tài Khoản");
-		mntmNewMenuItem_tkNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user4.png")));
-		mntmNewMenuItem_tkNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_tkNV.addActionListener(this);
-		mnNewMenu_menu.add(mntmNewMenuItem_tkNV);
-		
-		JMenuItem mntmNewMenuItem_cvNV = new JMenuItem("Chức Vụ");
-		mntmNewMenuItem_cvNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_KH.png")));
-		mntmNewMenuItem_cvNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_cvNV.addActionListener(this);
-		mnNewMenu_menu.add(mntmNewMenuItem_cvNV);
-		
+		user = tk_dao.getTaiKhoanById(currentUser.getCurrentUser());
+		if (user.getRole().trim().equals("admin")) {
+
+			JMenu mnNewMenu_menu = new JMenu("Nhân Viên");
+
+			mnNewMenu_menu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user.png")));
+			mnNewMenu_menu.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/user.png")));
+
+
+			mnNewMenu_menu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user.png")));
+
+			mnNewMenu_menu.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/user.png")));
+
+
+			mnNewMenu_menu.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+			mnNewMenu_menu.addActionListener(this);
+			menuBar.add(mnNewMenu_menu);
+
+			JMenuItem mntmNewMenuItem_upNV = new JMenuItem("Cập Nhập Nhân Viên");
+
+			mntmNewMenuItem_upNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+			mntmNewMenuItem_upNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+
+			mntmNewMenuItem_upNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+			mntmNewMenuItem_upNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+
+			mntmNewMenuItem_upNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_upNV.addActionListener(this);
+			mnNewMenu_menu.add(mntmNewMenuItem_upNV);
+			JMenuItem mntmNewMenuItem_findNV = new JMenuItem("Tìm Kiếm Nhân Viên");
+
+			mntmNewMenuItem_findNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+			mntmNewMenuItem_findNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
+
+			mntmNewMenuItem_findNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+			mntmNewMenuItem_findNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
+
+			mntmNewMenuItem_findNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_findNV.addActionListener(this);
+			mnNewMenu_menu.add(mntmNewMenuItem_findNV);
+
+			JMenuItem mntmNewMenuItem_tkNV = new JMenuItem("Tài Khoản");
+
+			mntmNewMenuItem_tkNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user4.png")));
+
+			mntmNewMenuItem_tkNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/user4.png")));
+
+
+			mntmNewMenuItem_tkNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user4.png")));
+
+			mntmNewMenuItem_tkNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/user4.png")));
+
+
+			mntmNewMenuItem_tkNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_tkNV.addActionListener(this);
+			mnNewMenu_menu.add(mntmNewMenuItem_tkNV);
+
+			JMenuItem mntmNewMenuItem_cvNV = new JMenuItem("Chức Vụ");
+
+			mntmNewMenuItem_cvNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_KH.png")));
+
+			mntmNewMenuItem_cvNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_KH.png")));
+
+			mntmNewMenuItem_cvNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_KH.png")));
+
+			mntmNewMenuItem_cvNV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_KH.png")));
+
+
+			mntmNewMenuItem_cvNV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_cvNV.addActionListener(this);
+			mnNewMenu_menu.add(mntmNewMenuItem_cvNV);
+		}
+
 		JMenu mnNewMenu_kh = new JMenu("Khách Hàng");
+
 		mnNewMenu_kh.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/users.png")));
+
+		mnNewMenu_kh.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/users.png")));
+
+
+		mnNewMenu_kh.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/users.png")));
+
+		mnNewMenu_kh.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/users.png")));
+
+
 		mnNewMenu_kh.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		mnNewMenu_kh.addActionListener(this);
 		menuBar.add(mnNewMenu_kh);
-		
+
 		JMenuItem mntmCpNhp_upKH = new JMenuItem("Cập Nhập Khách Hàng");
+
 		mntmCpNhp_upKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+		mntmCpNhp_upKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+
+
+		mntmCpNhp_upKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+		mntmCpNhp_upKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+
 		mntmCpNhp_upKH.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmCpNhp_upKH.addActionListener(this);
 		mnNewMenu_kh.add(mntmCpNhp_upKH);
-		
+
 		JMenuItem mntmNewMenuItem_findKH = new JMenuItem("Tìm Kiếm Khách Hàng");
+
 		mntmNewMenuItem_findKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+		mntmNewMenuItem_findKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
+
+		mntmNewMenuItem_findKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+		mntmNewMenuItem_findKH.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
+
 		mntmNewMenuItem_findKH.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_findKH.addActionListener(this);
 		mnNewMenu_kh.add(mntmNewMenuItem_findKH);
-		
-		JMenu mnNewMenu_dv = new JMenu("Dịch Vụ");
-		mnNewMenu_dv.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_DV (5).png")));
-		mnNewMenu_dv.setFont(new Font("Segoe UI", Font.PLAIN, 30));
-		mnNewMenu_dv.addActionListener(this);
-		menuBar.add(mnNewMenu_dv);
-		
-		JMenuItem mntmNewMenuItem_upDV = new JMenuItem("Cập Nhập Dịch Vụ");
-		mntmNewMenuItem_upDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
-		mntmNewMenuItem_upDV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_upDV.addActionListener(this);
-		mnNewMenu_dv.add(mntmNewMenuItem_upDV);
-		
-		JMenuItem mntmNewMenuItem_findDV = new JMenuItem("Tìm Kiếm Dịch Vụ");
-		mntmNewMenuItem_findDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
-		mntmNewMenuItem_findDV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_findDV.addActionListener(this);
-		mnNewMenu_dv.add(mntmNewMenuItem_findDV);
-		
-		JMenuItem mntmNewMenuItem_loaiDV = new JMenuItem("Loại Dịch Vụ");
-		mntmNewMenuItem_loaiDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/food.png")));
-		mntmNewMenuItem_loaiDV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_loaiDV.addActionListener(this);
-		mnNewMenu_dv.add(mntmNewMenuItem_loaiDV);
-		
+		if (user.getRole().trim().equals("admin")) {
+			JMenu mnNewMenu_dv = new JMenu("Dịch Vụ");
+
+			mnNewMenu_dv.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_DV (5).png")));
+
+			mnNewMenu_dv.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_DV (5).png")));
+
+
+			mnNewMenu_dv.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_DV (5).png")));
+
+			mnNewMenu_dv.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_DV (5).png")));
+
+
+			mnNewMenu_dv.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+			mnNewMenu_dv.addActionListener(this);
+			menuBar.add(mnNewMenu_dv);
+
+			JMenuItem mntmNewMenuItem_upDV = new JMenuItem("Cập Nhập Dịch Vụ");
+
+			mntmNewMenuItem_upDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+			mntmNewMenuItem_upDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+
+			mntmNewMenuItem_upDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+			mntmNewMenuItem_upDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+
+			mntmNewMenuItem_upDV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_upDV.addActionListener(this);
+			mnNewMenu_dv.add(mntmNewMenuItem_upDV);
+
+			JMenuItem mntmNewMenuItem_findDV = new JMenuItem("Tìm Kiếm Dịch Vụ");
+
+			mntmNewMenuItem_findDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+			mntmNewMenuItem_findDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
+
+			mntmNewMenuItem_findDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+			mntmNewMenuItem_findDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
+
+			mntmNewMenuItem_findDV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_findDV.addActionListener(this);
+			mnNewMenu_dv.add(mntmNewMenuItem_findDV);
+
+			JMenuItem mntmNewMenuItem_loaiDV = new JMenuItem("Loại Dịch Vụ");
+
+			mntmNewMenuItem_loaiDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/food.png")));
+
+			mntmNewMenuItem_loaiDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/food.png")));
+
+
+			mntmNewMenuItem_loaiDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/food.png")));
+
+			mntmNewMenuItem_loaiDV.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/food.png")));
+
+
+			mntmNewMenuItem_loaiDV.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_loaiDV.addActionListener(this);
+			mnNewMenu_dv.add(mntmNewMenuItem_loaiDV);
+		}
+
 		JMenu mnNewMenu_phong = new JMenu("Phòng");
+
 		mnNewMenu_phong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/essentials-08.png")));
+
+		mnNewMenu_phong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/essentials-08.png")));
+
+
+		mnNewMenu_phong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/essentials-08.png")));
+
+		mnNewMenu_phong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/essentials-08.png")));
+
+
 		mnNewMenu_phong.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		mnNewMenu_phong.addActionListener(this);
 		menuBar.add(mnNewMenu_phong);
-		
-		JMenuItem mntmNewMenuItem_upPhong = new JMenuItem("Cập Nhập Phòng");
-		mntmNewMenuItem_upPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
-		mntmNewMenuItem_upPhong.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_upPhong.addActionListener(this);
-		mnNewMenu_phong.add(mntmNewMenuItem_upPhong);
-		
-		JMenuItem mntmNewMenuItem_upLP = new JMenuItem("Cập Nhập Loại Phòng");
-		mntmNewMenuItem_upLP.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
-		mntmNewMenuItem_upLP.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_upLP.addActionListener(this);
-		mnNewMenu_phong.add(mntmNewMenuItem_upLP);
-		
+		if (user.getRole().trim().equals("admin")) {
+			JMenuItem mntmNewMenuItem_upPhong = new JMenuItem("Cập Nhập Phòng");
+
+			mntmNewMenuItem_upPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+			mntmNewMenuItem_upPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+
+			mntmNewMenuItem_upPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+			mntmNewMenuItem_upPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+
+			mntmNewMenuItem_upPhong.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_upPhong.addActionListener(this);
+			mnNewMenu_phong.add(mntmNewMenuItem_upPhong);
+
+			JMenuItem mntmNewMenuItem_upLP = new JMenuItem("Cập Nhập Loại Phòng");
+
+			mntmNewMenuItem_upLP.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+			mntmNewMenuItem_upLP.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+			mntmNewMenuItem_upLP.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/plus.png")));
+
+			mntmNewMenuItem_upLP.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/plus.png")));
+
+
+			mntmNewMenuItem_upLP.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_upLP.addActionListener(this);
+			mnNewMenu_phong.add(mntmNewMenuItem_upLP);
+		}
+
 		JMenuItem mntmNewMenuItem_findPhong = new JMenuItem("Tìm Kiếm Phòng");
+
 		mntmNewMenuItem_findPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+		mntmNewMenuItem_findPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
+
+		mntmNewMenuItem_findPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/search.png")));
+
+		mntmNewMenuItem_findPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/search.png")));
+
+
 		mntmNewMenuItem_findPhong.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_findPhong.addActionListener(this);
 		mnNewMenu_phong.add(mntmNewMenuItem_findPhong);
-		
+
 		JMenuItem mntmNewMenuItem_datPhong = new JMenuItem("Đặt Phòng");
+
 		mntmNewMenuItem_datPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/bell.png")));
+
+		mntmNewMenuItem_datPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/bell.png")));
+
+
+		mntmNewMenuItem_datPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/bell.png")));
+
+		mntmNewMenuItem_datPhong.setIcon(new ImageIcon(Menu_GUI.class.getResource("../image/bell.png")));
+
+
 		mntmNewMenuItem_datPhong.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_datPhong.addActionListener(this);
 		mnNewMenu_phong.add(mntmNewMenuItem_datPhong);
-		
+
 		JMenu mnNewMenu_hd = new JMenu("Hoá Đơn");
+
 		mnNewMenu_hd.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_HD.png")));
+
+		mnNewMenu_hd.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_HD.png")));
+
+
+		mnNewMenu_hd.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_HD.png")));
+
+		mnNewMenu_hd.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_HD.png")));
+
+
 		mnNewMenu_hd.setFont(new Font("Segoe UI", Font.PLAIN, 30));
 		mnNewMenu_hd.addActionListener(this);
 		menuBar.add(mnNewMenu_hd);
-		
+
 		JMenuItem mntmNewMenuItem_lapHD = new JMenuItem("Lập Hoá Đơn");
 		mntmNewMenuItem_lapHD.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_ThanhToan.png")));
 		mntmNewMenuItem_lapHD.setFont(new Font("Segoe UI", Font.PLAIN, 15));
 		mntmNewMenuItem_lapHD.addActionListener(this);
 		mnNewMenu_hd.add(mntmNewMenuItem_lapHD);
-		
-		
-		
-		JMenu mnNewMenu_thongKe = new JMenu("Thống Kê");
-		mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
-		mnNewMenu_thongKe.setFont(new Font("Segoe UI", Font.PLAIN, 30));
-		mnNewMenu_thongKe.addActionListener(this);
-		menuBar.add(mnNewMenu_thongKe);
-		
-		JMenuItem mntmNewMenuItem_tkDoanhThu = new JMenuItem("Thống Kê Doanh Thu");
-		mntmNewMenuItem_tkDoanhThu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
-		mntmNewMenuItem_tkDoanhThu.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_tkDoanhThu.addActionListener(this);
-		mnNewMenu_thongKe.add(mntmNewMenuItem_tkDoanhThu);
+		if (user.getRole().trim().equals("admin")) {
+			JMenu mnNewMenu_thongKe = new JMenu("Thống Kê");
 
-		JMenuItem mntmNewMenuItem_tkDongHang = new JMenuItem("Thống Kê Đơn hàng");
-		mntmNewMenuItem_tkDongHang.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_HD.png")));
-		mntmNewMenuItem_tkDongHang.setFont(new Font("Segoe UI", Font.PLAIN, 15));
-		mntmNewMenuItem_tkDongHang.addActionListener(this);
-		mnNewMenu_thongKe.add(mntmNewMenuItem_tkDongHang);
+			mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
+
+			mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_TK.png")));
+
+			mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
+
+			mnNewMenu_thongKe.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_TK.png")));
+
+
+			mnNewMenu_thongKe.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+			mnNewMenu_thongKe.addActionListener(this);
+			menuBar.add(mnNewMenu_thongKe);
+
+			JMenuItem mntmNewMenuItem_tkDoanhThu = new JMenuItem("Thống Kê Doanh Thu");
+
+			mntmNewMenuItem_tkDoanhThu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
+
+			mntmNewMenuItem_tkDoanhThu.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_TK.png")));
+
+			mntmNewMenuItem_tkDoanhThu.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_TK.png")));
+
+			mntmNewMenuItem_tkDoanhThu.setIcon(new ImageIcon(Menu_GUI.class.getResource("../images/ic_TK.png")));
+
+			mntmNewMenuItem_tkDoanhThu.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_tkDoanhThu.addActionListener(this);
+			mnNewMenu_thongKe.add(mntmNewMenuItem_tkDoanhThu);
+
+			JMenuItem mntmNewMenuItem_tkDongHang = new JMenuItem("Thống Kê Đơn hàng");
+			mntmNewMenuItem_tkDongHang.setIcon(new ImageIcon(Menu_GUI.class.getResource("/images/ic_HD.png")));
+			mntmNewMenuItem_tkDongHang.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+			mntmNewMenuItem_tkDongHang.addActionListener(this);
+			mnNewMenu_thongKe.add(mntmNewMenuItem_tkDongHang);
+		}
+
+
+		JMenu mnOtherMenu = new JMenu();
+		menuBar.add(mnOtherMenu);
+		menuBar.add(Box.createHorizontalStrut(user.getRole().equals("admin") ? 300: 800));
+
+		JMenu mnNewMenu_Admin = new JMenu(user.getRole().equals("admin") ? "Admin" : "NV_" + user.getTenTK());
+		mnNewMenu_Admin.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/admin.png")));
+		mnNewMenu_Admin.setFont(new Font("Segoe UI", Font.PLAIN, 30));
+		mnNewMenu_Admin.addActionListener(this);
+		menuBar.add(mnNewMenu_Admin);
+
+		JMenuItem mntmNewMenuItem_info = new JMenuItem("Thông tin cá nhân");
+		mntmNewMenuItem_info.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/user.png")));
+		mntmNewMenuItem_info.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		mntmNewMenuItem_info.addActionListener(this);
+		mnNewMenu_Admin.add(mntmNewMenuItem_info);
+
+		JMenuItem mntmNewMenuItem_LOGOUT = new JMenuItem("Đăng xuất");
+		mntmNewMenuItem_LOGOUT.setIcon(new ImageIcon(Menu_GUI.class.getResource("/image/exit.png")));
+		mntmNewMenuItem_LOGOUT.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+		mntmNewMenuItem_LOGOUT.addActionListener(this);
+		mnNewMenu_Admin.add(mntmNewMenuItem_LOGOUT);
 		
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 255, 255));
@@ -239,7 +443,7 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		
 		JLabel lblNewLabel = new JLabel("ĐẶT PHÒNG");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 50));
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		lblNewLabel.setBounds(415, 0, 650, 74);
 		contentPane.add(lblNewLabel);
 		
@@ -275,8 +479,33 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		//
 		JScrollPane scrollPane_2 = new JScrollPane(table_2);
 		horizontalBox_2.add(scrollPane_2);
-		
-		
+
+		JLabel lblNewLabel_maNV_1 = new JLabel("Tìm Kiếm Nhân viên");
+		lblNewLabel_maNV_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_maNV_1.setBounds(1008, 27, 188, 29);
+		contentPane.add(lblNewLabel_maNV_1);
+
+		txt_timkiemnNV = new JTextField("Tìm kiếm tên/mã...");
+		txt_timkiemnNV.setForeground(Color.GRAY);
+		txt_timkiemnNV.setColumns(10);
+		txt_timkiemnNV.setBounds(1008, 52, 236, 26);
+		contentPane.add(txt_timkiemnNV);
+		txt_timkiemnNV.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				if (txt_timkiemnNV.getText().equals("Tìm kiếm tên/mã...")) {
+					txt_timkiemnNV.setText("");
+					txt_timkiemnNV.setForeground(Color.BLACK); // Đổi màu chữ khi có input
+				}
+			}
+
+			public void focusLost(FocusEvent e) {
+				if (txt_timkiemnNV.getText().equals("")) {
+					txt_timkiemnNV.setText("Tìm kiếm tên/mã...");
+					txt_timkiemnNV.setForeground(Color.GRAY); // Đổi màu lại khi không có input
+				}
+			}
+		});
+
 		Box horizontalBox_3 = Box.createHorizontalBox();
 		horizontalBox_3.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Danh s\u00E1ch nh\u00E2n vi\u00EAn ph\u1EE5c v\u1EE5", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		horizontalBox_3.setBounds(1008, 84, 522, 315);
@@ -298,8 +527,33 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		btnNewButton_DP.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnNewButton_DP.setBounds(509, 409, 157, 59);
 		contentPane.add(btnNewButton_DP);
-		
-		
+
+		JLabel lblNewLabel_maKH = new JLabel("Tìm Kiếm Khách hàng");
+		lblNewLabel_maKH.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_maKH.setBounds(10, 27, 188, 29);
+		contentPane.add(lblNewLabel_maKH);
+
+		txt_timkiemKH = new JTextField("Tìm kiếm tên/mã...");
+		txt_timkiemKH.setForeground(Color.GRAY);
+		txt_timkiemKH.setColumns(10);
+		txt_timkiemKH.setBounds(10, 52, 236, 26);
+		contentPane.add(txt_timkiemKH);
+		txt_timkiemKH.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				if (txt_timkiemKH.getText().equals("Tìm kiếm tên/mã...")) {
+					txt_timkiemKH.setText("");
+					txt_timkiemKH.setForeground(Color.BLACK); // Đổi màu chữ khi có input
+				}
+			}
+
+			public void focusLost(FocusEvent e) {
+				if (txt_timkiemKH.getText().equals("")) {
+					txt_timkiemKH.setText("Tìm kiếm tên/mã...");
+					txt_timkiemKH.setForeground(Color.GRAY); // Đổi màu lại khi không có input
+				}
+			}
+		});
+
 		Box horizontalBox_4 = Box.createHorizontalBox();
 		horizontalBox_4.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Danh s\u00E1ch ph\u00F2ng \u0111\u00E3 \u0111\u1EB7t", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		horizontalBox_4.setBounds(10, 475, 1520, 255);
@@ -320,6 +574,31 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		btnNewButton_load.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		btnNewButton_load.setBounds(855, 409, 157, 59);
 		contentPane.add(btnNewButton_load);
+		JLabel lblNewLabel_maP = new JLabel("Tìm Kiếm Phòng");
+		lblNewLabel_maP.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel_maP.setBounds(509, 27, 188, 29);
+		contentPane.add(lblNewLabel_maP);
+
+		txt_timkiemP = new JTextField("Tìm kiếm tên/mã...");
+		txt_timkiemP.setForeground(Color.GRAY);
+		txt_timkiemP.setColumns(10);
+		txt_timkiemP.setBounds(509, 52, 236, 26);
+		contentPane.add(txt_timkiemP);
+		txt_timkiemP.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				if (txt_timkiemP.getText().equals("Tìm kiếm tên/mã...")) {
+					txt_timkiemP.setText("");
+					txt_timkiemP.setForeground(Color.BLACK); // Đổi màu chữ khi có input
+				}
+			}
+
+			public void focusLost(FocusEvent e) {
+				if (txt_timkiemP.getText().equals("")) {
+					txt_timkiemP.setText("Tìm kiếm tên/mã...");
+					txt_timkiemP.setForeground(Color.GRAY); // Đổi màu lại khi không có input
+				}
+			}
+		});
 		
 		btnNewButton_DP.addActionListener(this);
 		btnNewButton_load.addActionListener(this);
@@ -333,6 +612,33 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		DocDuLieuDatabaseVaoTable2();
 		DocDuLieuDatabaseVaoTable3();
 		DocDuLieuDatabaseVaoTable4();
+		// tim kiem
+		txt_timkiemP.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String searchQuery = txt_timkiemP.getText().trim().toLowerCase();
+				updateTableWithFilter(searchQuery);
+			}
+		});
+		txt_timkiemKH.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String searchQuery = txt_timkiemKH.getText().trim().toLowerCase();
+				updateTableWithFilterForKH(searchQuery);
+			}
+		});
+		txt_timkiemnNV.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String searchQuery = txt_timkiemnNV.getText().trim().toLowerCase();
+				updateTableWithFilterForNV(searchQuery);
+			}
+		});
+
+
+
+
+
 		this.setVisible(true);
 	}
 
@@ -381,11 +687,11 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 
 	private void DocDuLieuDatabaseVaoTable2() throws RemoteException {
 		// TODO Auto-generated method stub
+		tableModel2.setRowCount(0);
 
 		List<Phong> list = phong_dao.getAllPhong();
 
 		// Xóa dữ liệu cũ trong bảng nếu có
-		tableModel2.setRowCount(0);
 
 		for (Phong s : list) {
 			String[] rowData = {
@@ -440,6 +746,81 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		table_1.setModel(tableModel1);
 	}
 
+	private void updateTableWithFilter(String searchQuery) {
+		tableModel2.setRowCount(0);
+
+		try {
+			List<Phong> list = phong_dao.getAllPhong();
+			for (Phong s : list) {
+				String maPhong = s.getMaPhong().toLowerCase();
+				String tenPhong = s.getTenPhong().toLowerCase();
+
+
+				if (maPhong.contains(searchQuery) || tenPhong.contains(searchQuery)) {
+					String[] rowData = {
+							s.getMaPhong(),
+							s.getTenPhong(),
+							s.getLoaiPhong().getLoaiPhong(),
+							s.getTinhTrang()
+					};
+					tableModel2.addRow(rowData);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		table_2.setModel(tableModel2);
+		table_2.setDefaultRenderer(Object.class, new CustomTableCellRenderer());
+	}
+	private void updateTableWithFilterForKH(String searchQuery) {
+		tableModel1.setRowCount(0);
+
+		try {
+			List<KhachHang> list = kh_dao.getAllKhachHang();
+			for (KhachHang s : list) {
+				String maKH = s.getMaKH().toLowerCase();
+				String tenKH = s.getTenKH().toLowerCase();
+
+				if (maKH.contains(searchQuery) || tenKH.contains(searchQuery)) {
+					String[] rowData = {
+							s.getMaKH(),
+							s.getTenKH(),
+							s.getSdt()
+					};
+					tableModel1.addRow(rowData);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		table_1.setModel(tableModel1);
+	}
+	private void updateTableWithFilterForNV(String searchQuery) {
+		tableModel3.setRowCount(0);
+
+		try {
+			List<NhanVien> list = nv_dao.getNhanVienExceptAdmin();
+			for (NhanVien s : list) {
+				String maNV = s.getMaNV().toLowerCase();
+				String tenNV = s.getTenNV().toLowerCase();
+
+				if (maNV.contains(searchQuery) || tenNV.contains(searchQuery)) {
+					String[] rowData = {
+							s.getMaNV(),
+							s.getTenNV(),
+							s.getSdt()
+					};
+					tableModel3.addRow(rowData);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		table_3.setModel(tableModel3);
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -455,10 +836,14 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 //			dispose();
 //            new TimKiemNV_GUI();
 //        }
-//		if (e.getActionCommand().equals("Tài Khoản")) {
-//			dispose();
-//            new TaiKhoan_GUI();
-//        }
+		if (e.getActionCommand().equals("Tài Khoản")) {
+			dispose();
+			try {
+				new TaiKhoan_GUI();
+			} catch (RemoteException ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		if (e.getActionCommand().equals("Chức Vụ")) {
 			dispose();
 			try {
@@ -555,11 +940,41 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 				throw new RuntimeException(ex);
 			}
 		}
+		if (e.getActionCommand().equals("Thông tin cá nhân")) {
+
+			try {
+//				TaiKhoan user = tk_dao.getTaiKhoanById(currentUser.getCurrentUser());
+				String maNV = user.getMaNV().getMaNV();
+				System.out.println("maNV: "+maNV);
+				NhanVien current = nv_dao.getNhanVienByMaNhanVien(maNV);
+				System.out.println("curentUser: "+current);
+
+				new ThongTinCaNhan_GUI(current);
+
+			} catch (LazyInitializationException | RemoteException ex) {
+				System.err.println("Session đã đóng trước khi truy cập dữ liệu!");
+				ex.printStackTrace();
+			}
+		}
+		if (e.getActionCommand().equals("Đăng xuất")) {
+			dispose();
+			try {
+//				System.out.println("curentUser: "+currentUser.getCurrentUser());
+				currentUser.clearSession();
+//				System.out.println("curentUser: "+currentUser.getCurrentUser());
+				new DangNhap_GUI();
+
+			} catch (Exception ex) {
+				throw new RuntimeException(ex);
+			}
+		}
 		//////////////////////////////////////////////////////////////////////////
 		Object o = e.getSource();
 		if(o.equals(btnNewButton_DP)) {
 			try {
 				datPhong();
+				tailai();
+
 			} catch (RemoteException ex) {
 				throw new RuntimeException(ex);
 			}
@@ -572,30 +987,60 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 			}
 		}
 	}
-	private void tailai() throws RemoteException {
-		// TODO Auto-generated method stub
-		tableModel4.setRowCount(0); 
-		tableModel2.setRowCount(0);
+//	private void tailai() throws RemoteException {
+//		// Thực hiện cập nhật bảng trong EDT
+//			tableModel4.setRowCount(0);
+//			tableModel2.setRowCount(0);
+//
+//			// Cập nhật bảng phiếu đặt phòng
+//			List<PhieuDatPhong> list = null;
+//			try {
+//				list = pdp_dao.getAllPhieuDatPhong();
+//			} catch (RemoteException e) {
+//				throw new RuntimeException(e);
+//			}
+//			for (PhieuDatPhong pdp : list) {
+//				String[] rowData = {
+//						pdp.getId() + "",
+//						pdp.getMaPhong().getTenPhong(),
+//						pdp.getMaPhong().getLoaiPhong().getLoaiPhong(),
+//						pdp.getMaPhong().getGiaPhong() + "",
+//						pdp.getTgDatPhong().toString(),
+//						pdp.getMaKH().getMaKH(),
+//						pdp.getMaNV().getMaNV()
+//				};
+//				tableModel4.addRow(rowData);
+//			}
+//
+//			// Cập nhật bảng phòng
+//			List<Phong> list1 = null;
+//			try {
+//				list1 = phong_dao.getAllPhong();
+//			} catch (RemoteException e) {
+//				throw new RuntimeException(e);
+//			}
+//			for (Phong s : list1) {
+//				String[] rowData = {
+//						s.getMaPhong(),
+//						s.getTenPhong(),
+//						s.getLoaiPhong().getLoaiPhong(),
+//						s.getTinhTrang()
+//				};
+//				tableModel2.addRow(rowData);
+//			}
+//
+//			tableModel4.fireTableDataChanged();
+//			tableModel2.fireTableDataChanged();
+//
+//			table_4.setModel(tableModel4);
+//			table_2.setModel(tableModel2);
+//
+//	}
+	private void tailai() throws RemoteException{
+		DocDuLieuDatabaseVaoTable4();
+		DocDuLieuDatabaseVaoTable2();
 
-		List<PhieuDatPhong> list = pdp_dao.getAllPhieuDatPhong();
-		for(PhieuDatPhong pdp : list) {
-			String[] rowData = {pdp.getId()+"",pdp.getMaPhong().getTenPhong(),pdp.getMaPhong().getLoaiPhong().getLoaiPhong()
-					,pdp.getMaPhong().getGiaPhong()+"",pdp.getTgDatPhong().toString()
-					,pdp.getMaKH().getMaKH(),pdp.getMaNV().getMaNV()};
-					
-			tableModel4.addRow(rowData);
-		}
-		table_4.setModel(tableModel4);
-		
-
-		List<Phong> list1 = phong_dao.getAllPhong();
-		for(Phong s : list1) {
-			String[] rowData = {s.getMaPhong(), s.getTenPhong(),s.getLoaiPhong().getLoaiPhong(),s.getTinhTrang()};
-			tableModel2.addRow(rowData);
-		}
-		table_2.setModel(tableModel2);
 	}
-
 	private void datPhong() throws RemoteException {
 		// TODO Auto-generated method stub
 		int row1 = table_1.getSelectedRow();
@@ -621,15 +1066,15 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		pdp.setMaNV(nv_dao.getNhanVienByChucVu(maNV));
 		pdp.setTgDatPhong(Timestamp.from(Instant.now()));
 		if(pdp_dao.createPhieuDatPhong(pdp)) {
+			phong_dao.updateTrangThaiDP(maPhong);
 			JOptionPane.showMessageDialog(this, "Đặt phòng thành công");
-			tailai();
-			DocDuLieuDatabaseVaoTable4();
-			DocDuLieuDatabaseVaoTable2();
+
 		}
 		else {
 			JOptionPane.showMessageDialog(this, "Đặt phòng thất bại");
 		}
-		phong_dao.updateTrangThaiDP(maPhong);
+		tailai();
+
 	}
 
 	@Override

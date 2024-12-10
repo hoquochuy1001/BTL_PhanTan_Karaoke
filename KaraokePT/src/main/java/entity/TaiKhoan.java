@@ -5,11 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Nationalized;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Entity
 @NamedNativeQueries({ @NamedNativeQuery(name = "getDSTaiKhoan", query = "{}", resultClass = TaiKhoan.class), })
-public class TaiKhoan {
+public class TaiKhoan implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @Nationalized
     @Column(name = "tenTK", nullable = false, length = 10)
@@ -23,10 +26,24 @@ public class TaiKhoan {
     @JoinColumn(name = "maNV")
     private NhanVien maNV;
 
-    public TaiKhoan(String tenTK, String matKhau, NhanVien maNV) {
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Nationalized
+    @Column(name = "role", nullable = false, length = 20)
+    private String role;
+
+    public TaiKhoan(String tenTK, String matKhau, NhanVien maNV, String role) {
         this.tenTK = tenTK;
         this.matKhau = matKhau;
         this.maNV = maNV;
+        this.role = role;
+
     }
 
     public TaiKhoan() {
