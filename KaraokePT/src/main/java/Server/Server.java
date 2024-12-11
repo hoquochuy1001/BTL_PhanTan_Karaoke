@@ -32,6 +32,7 @@ public class Server {
         KhachHangDao khachHangDao = new KhachHangDaoImpl(sessionFactory);
         LoaiPhongDao loaiPhongDao = new LoaiPhongDaoImpl(sessionFactory);
         LoaiDichVuDao loaiDichVuDao = new LoaiDichVuDaoImpl(sessionFactory);
+        TaiKhoanDao taiKhoanDao = new TaiKhoanDaoImpl(sessionFactory);
 
         LocateRegistry.createRegistry(7878);
 
@@ -45,6 +46,7 @@ public class Server {
         context.bind(URL + "khachHangDao", khachHangDao);
         context.bind(URL + "loaiPhongDao", loaiPhongDao);
         context.bind(URL + "loaiDichVuDao", loaiDichVuDao);
+        context.bind(URL + "taiKhoanDao", taiKhoanDao);
 
         System.out.println("Server is running...");
         //new Menu_GUI();

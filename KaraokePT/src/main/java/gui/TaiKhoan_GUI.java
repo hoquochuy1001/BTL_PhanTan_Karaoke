@@ -1,82 +1,91 @@
 package gui;
 
-import Server.Config;
-import bll.ChartStatitic;
-import bll.ChuyenDoi;
-import bll.HorizontalChart;
-import bll.SessionManager;
-import entity.*;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
 
-import java.net.MalformedURLException;
-import java.rmi.NotBoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import model.*;
-import org.hibernate.Hibernate;
-import org.hibernate.LazyInitializationException;
-import org.jfree.chart.ChartPanel;
-import java.time.LocalDate;
-import java.time.DayOfWeek;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.EtchedBorder;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JLabel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.TextField;
+import javax.swing.JComboBox;
+import javax.swing.AbstractButton;
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.border.BevelBorder;
+import javax.swing.JTabbedPane;
 import javax.swing.border.TitledBorder;
+import javax.swing.border.EtchedBorder;
+import java.awt.Color;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import java.awt.Component;
+import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
-import java.awt.event.*;
+import javax.swing.table.TableCellEditor;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.text.DecimalFormat;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-public class DONHANG_GUI extends JFrame implements ActionListener, MouseListener {
+
+import Server.Config;
+import bll.SessionManager;
+import entity.ChucVu;
+import entity.NhanVien;
+import entity.TaiKhoan;
+import model.ChucVuDao;
+import model.NhanVienDao;
+import model.TaiKhoanDao;
+import org.hibernate.LazyInitializationException;
+import util.HibernateUtil;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
+public class TaiKhoan_GUI extends JFrame implements ActionListener, MouseListener{
 
     private JPanel contentPane;
+    private JTextField textField_tenTK;
+    private JTextField textField_mk;
+    private JTextField textField_maNV;
+    private JTextField textField_role;
     private JTable table;
-    private JTable table_1;
-    private DefaultTableModel tableModel;
-    private DefaultTableModel tableModel1;
-    private DefaultTableModel tableModel2;
-    private PhieuDatPhongDao pdp_dao;
-    private DichVuDao dv_dao;
-    private LoaiDichVuDao ldv_dao;
-    private JButton btnThmDchV;
-    private JButton btnNewButton_themP;
-    private JTextField textField_ngayTao;
-    private JTextField textField_shd;
-    private JTextField textField_ghiChu;
-    private JTextField textField_tongTien;
-    private JTextField textField_khachTra;
-    private JTextField textField_tienThua;
-    private KhachHangDao kh_dao;
     private NhanVienDao nv_dao;
-    private ChiTietHoaDonDao cthd_dao;
-    private HoaDonDao dao;
-    private JButton btnNewButton_thanhToan;
-    private JButton btnNewButton_taoHD;
-    private int eventMask;
-    private PhongDao p_dao;
-    private HoaDonDao hoaDonDao;
+    private ChucVuDao cv_dao;
+    private DefaultTableModel tableModel;
+    private JComboBox comboBox_role;
+    private JComboBox comboBox_maNV;
+    private JButton btnNewButton_them;
+    private JButton btnNewButton_xoa;
+    private JButton btnNewButton_sua;
+    private JButton btnNewButton_xoaTrang;
+    private JTextField txt_timkiemnhanvien;
     private TaiKhoan user;
     private TaiKhoanDao tk_dao;
     private SessionManager currentUser = SessionManager.getInstance();
-    LocalDate today = LocalDate.now();
-    DayOfWeek dayOfWeek = today.getDayOfWeek();
-    int todayIndex = dayOfWeek.getValue();
-    public DONHANG_GUI() throws RemoteException {
+    public TaiKhoan_GUI() throws RemoteException {
+
         try{
-            dao = (HoaDonDao) Naming.lookup(Config.SERVER_URL + "hoaDonDao");
-            nv_dao = (NhanVienDao) Naming.lookup(Config.SERVER_URL + "nhanVienDao");
-            kh_dao = (KhachHangDao) Naming.lookup(Config.SERVER_URL + "khachHangDao");
-            p_dao = (PhongDao) Naming.lookup(Config.SERVER_URL + "phongDao");
-            pdp_dao = (PhieuDatPhongDao) Naming.lookup(Config.SERVER_URL + "phieuDatPhongDao");
-            dv_dao = (DichVuDao) Naming.lookup(Config.SERVER_URL + "dichVuDao");
-            ldv_dao = (LoaiDichVuDao) Naming.lookup(Config.SERVER_URL + "loaiDichVuDao");
-            cthd_dao = (ChiTietHoaDonDao) Naming.lookup(Config.SERVER_URL + "chiTietHoaDonDao");
+            nv_dao = (NhanVienDao) Naming.lookup(Config.SERVER_URL+"nhanVienDao");
+            cv_dao = (ChucVuDao) Naming.lookup(Config.SERVER_URL + "chucVuDao");
             tk_dao = (TaiKhoanDao) Naming.lookup(Config.SERVER_URL + "taiKhoanDao");
         }catch (Exception e){
             JOptionPane.showMessageDialog(this, "Server chưa mở");
@@ -85,7 +94,6 @@ public class DONHANG_GUI extends JFrame implements ActionListener, MouseListener
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setBounds(0, 0, 1650, 1080);
-
         JMenuBar menuBar = new JMenuBar();
         setJMenuBar(menuBar);
         user = tk_dao.getTaiKhoanById(currentUser.getCurrentUser());
@@ -443,205 +451,162 @@ public class DONHANG_GUI extends JFrame implements ActionListener, MouseListener
         mntmNewMenuItem_LOGOUT.setFont(new Font("Segoe UI", Font.PLAIN, 15));
         mntmNewMenuItem_LOGOUT.addActionListener(this);
         mnNewMenu_Admin.add(mntmNewMenuItem_LOGOUT);
+
         contentPane = new JPanel();
         contentPane.setBackground(new Color(0, 255, 255));
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
-        contentPane.setLayout(new GridBagLayout());
+        contentPane.setLayout(null);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-
-// Tiêu đề "THỐNG KÊ"
-        JLabel lblNewLabel = new JLabel("THỐNG KÊ ĐƠN HÀNG");
+        JLabel lblNewLabel = new JLabel("THÔNG TIN TÀI KHOẢN");
         lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 50));
-        gbc.gridx = 0; // Cột đầu tiên
-        gbc.gridy = 0; // Hàng đầu tiên
-        gbc.gridwidth = 2; // Chiếm 2 cột
-        gbc.insets = new Insets(10, 10, 10, 10); // Giảm khoảng cách bên ngoài (so với 20, 10, 20, 10)
-        contentPane.add(lblNewLabel, gbc);
+        lblNewLabel.setBounds(426, 0, 650, 74);
+        contentPane.add(lblNewLabel);
 
-// Biểu đồ doanh thu theo tháng
-        Box horizontalBox = Box.createHorizontalBox();
-        horizontalBox.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED,
-                new Color(255, 255, 255), new Color(160, 160, 160)),
-                "Thống kê đơn hàng",
-                TitledBorder.LEADING,
-                TitledBorder.TOP,
-                null,
-                new Color(0, 0, 0)));
-        String [] headers = {"MaHD","SoHoaDon",	"NgayTaoHD","maKH",	"maNV",	"TongTien",	"GhiChu"};
+        JLabel lblNewLabel_tenTK = new JLabel("Tên tài khoản:");
+        lblNewLabel_tenTK.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        lblNewLabel_tenTK.setBounds(587, 118, 108, 29);
+        contentPane.add(lblNewLabel_tenTK);
+
+        JLabel lblNewLabel_mk = new JLabel("Mật khẩu:");
+        lblNewLabel_mk.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        lblNewLabel_mk.setBounds(587, 172, 108, 29);
+        contentPane.add(lblNewLabel_mk);
+
+        JLabel lblNewLabel_maNV = new JLabel("Mã nhân viên:");
+        lblNewLabel_maNV.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        lblNewLabel_maNV.setBounds(910, 118, 124, 29);
+        contentPane.add(lblNewLabel_maNV);
+
+        JLabel lblNewLabel_role = new JLabel("Vai trò:");
+        lblNewLabel_role.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        lblNewLabel_role.setBounds(910, 172, 74, 29);
+        contentPane.add(lblNewLabel_role);
+
+        textField_tenTK = new JTextField();
+        textField_tenTK.setBounds(705, 122, 146, 26);
+        contentPane.add(textField_tenTK);
+        textField_tenTK.setColumns(10);
+        textField_tenTK.setEnabled(false);
+
+        textField_mk = new JTextField();
+        textField_mk.setBounds(705, 176, 146, 26);
+        contentPane.add(textField_mk);
+        textField_mk.setColumns(10);
+
+        textField_maNV = new JTextField();
+        textField_maNV.setColumns(10);
+        textField_maNV.setBounds(1010, 122, 146, 26);
+
+        textField_role = new JTextField();
+        textField_role.setColumns(10);
+        textField_role.setBounds(1010, 176, 146, 26);
+
+
+        comboBox_role = new JComboBox();
+        comboBox_role.setEditable(true);
+        comboBox_role.addItem("admin");
+        comboBox_role.addItem("employee");
+        comboBox_role.setBounds(1010, 176, 146, 26);
+        contentPane.add(comboBox_role);
+
+        comboBox_maNV = new JComboBox();
+        comboBox_maNV.setEditable(true);
+        for(String maNV : nv_dao.getAllMaNhanVien()) {
+            comboBox_maNV.addItem(maNV.trim());
+        }
+        comboBox_maNV.setBounds(1010, 122, 146, 26);
+        contentPane.add(comboBox_maNV);
+
+        btnNewButton_them = new JButton("Thêm");
+        btnNewButton_them.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        btnNewButton_them.setBounds(724, 236, 134, 39);
+        contentPane.add(btnNewButton_them);
+
+        btnNewButton_xoa = new JButton("Xoá");
+        btnNewButton_xoa.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        btnNewButton_xoa.setBounds(906, 236, 134, 39);
+        contentPane.add(btnNewButton_xoa);
+
+        btnNewButton_sua = new JButton("Sửa");
+        btnNewButton_sua.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        btnNewButton_sua.setBounds(1084, 236, 134, 39);
+        contentPane.add(btnNewButton_sua);
+
+        btnNewButton_xoaTrang = new JButton("Xoá Trắng");
+        btnNewButton_xoaTrang.setFont(new Font("Tahoma", Font.PLAIN, 20));
+        btnNewButton_xoaTrang.setBounds(1265, 236, 134, 39);
+        contentPane.add(btnNewButton_xoaTrang);
+
+
+        String [] headers = {"Tên tài khoản", "Mật khẩu","Mã nhân viên","Vai trò"};
         tableModel=new DefaultTableModel(headers,0);
-        JScrollPane scroll3 = new JScrollPane();
-        scroll3.setViewportView(table = new JTable(tableModel));
+        JScrollPane scroll = new JScrollPane();
+        scroll.setViewportView(table = new JTable(tableModel));
         table.setRowHeight(25);
         table.setAutoCreateRowSorter(true);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
-        //
+
         JScrollPane scrollPane = new JScrollPane(table);
-        horizontalBox.add(scrollPane);
+        scrollPane.setBounds(314, 331, 1216, 391);
+        contentPane.add(scrollPane);
 
-        Box horizontalBox1 = Box.createHorizontalBox();
-        horizontalBox1.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED,
-                new Color(255, 255, 255), new Color(160, 160, 160)),
-                "Top 5 khách hàng thân thiết",
-                TitledBorder.LEADING,
-                TitledBorder.TOP,
-                null,
-                new Color(0, 0, 0)));
-        List<Object[]> top5Customers = getTop5Customers();
-        HorizontalChart chart = new HorizontalChart("Top 5 Khách Hàng Thân Thiết", top5Customers,true);
-        ChartPanel chartPanel = (ChartPanel) chart.getContentPane();
-        horizontalBox1.add(chartPanel);
+        JLabel lblNewLabel_2 = new JLabel("Danh sách Tài Khoản:");
+        lblNewLabel_2.setFont(new Font("Tahoma", Font.BOLD, 15));
+        lblNewLabel_2.setBounds(314, 300, 188, 29);
+        contentPane.add(lblNewLabel_2);
 
-        gbc.gridx = 0; // Cột đầu tiên
-        gbc.gridy = 1; // Hàng thứ hai (cùng hàng cho cả hai biểu đồ)
-        gbc.gridwidth = 1; // Mỗi biểu đồ chiếm một cột
-        gbc.weightx = 0.5; // Trọng số ngang bằng nhau
-        gbc.weighty = 1; // Trọng số dọc, để chiếm toàn bộ chiều cao
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.insets = new Insets(10, 10, 10, 10); // Khoảng cách bên ngoài
-        contentPane.add(horizontalBox, gbc);
+        Box horizontalBox = Box.createHorizontalBox();
+        horizontalBox.setBorder(new TitledBorder(null, "Thông Tin Tài Khoản", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        horizontalBox.setBounds(314, 103, 1216, 135);
+        contentPane.add(horizontalBox);
 
-        gbc.gridx = 1; // Cột thứ hai
-        gbc.gridy = 1; // Cùng hàng với biểu đồ đầu tiên
-        contentPane.add(horizontalBox1, gbc);
+        JLabel lblNewLabel_maNV_1 = new JLabel("Tìm Kiếm Tài Khoản");
+        lblNewLabel_maNV_1.setFont(new Font("Times New Roman", Font.BOLD, 15));
+        lblNewLabel_maNV_1.setBounds(10, 0, 188, 29);
+        contentPane.add(lblNewLabel_maNV_1);
 
-        Box horizontalBox2 = Box.createHorizontalBox();
-        horizontalBox2.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED,
-                new Color(255, 255, 255), new Color(160, 160, 160)),
-                "Top 5 nhân viên xuất sắc",
-                TitledBorder.LEADING,
-                TitledBorder.TOP,
-                null,
-                new Color(0, 0, 0)));
-        List<Object[]> top5Employees = getTop5Employees();
-        HorizontalChart chartEmployee = new HorizontalChart("Top 5 Nhân viên xuất sắc", top5Employees,false);
-        ChartPanel chartEmployeePanel = (ChartPanel) chartEmployee.getContentPane();
-        horizontalBox2.add(chartEmployeePanel);
-        gbc.gridx = 0; // Cột đầu tiên
-        gbc.gridy = 2; // Hàng thứ ba (dưới các biểu đồ)
-        gbc.gridwidth = 2; // Chiếm toàn bộ chiều rộng
-        gbc.insets = new Insets(10, 10, 10, 10); // Khoảng cách bên ngoài
-        gbc.fill = GridBagConstraints.BOTH;
-        contentPane.add(horizontalBox2, gbc);
+        txt_timkiemnhanvien = new JTextField();
+        txt_timkiemnhanvien.setForeground(Color.GRAY);
+        txt_timkiemnhanvien.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if(txt_timkiemnhanvien.getText().equals("Mã, Tên, Điện thoại")) {
+                    txt_timkiemnhanvien.setText("");
+                    txt_timkiemnhanvien.setForeground(new Color(153,153,153));
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+                if(txt_timkiemnhanvien.getText().equals("")) {
+                    txt_timkiemnhanvien.setText("Mã, Tên, Điện thoại");
+                    txt_timkiemnhanvien.setForeground(new Color(153,153,153));
+                }
+            }
+        });
+        txt_timkiemnhanvien.setText("Mã, Tên, Điện thoại");
+        txt_timkiemnhanvien.setColumns(10);
+        txt_timkiemnhanvien.setBounds(10, 28, 236, 26);
+        contentPane.add(txt_timkiemnhanvien);
 
+        btnNewButton_them.addActionListener(this);
+        btnNewButton_xoa.addActionListener(this);
+        btnNewButton_sua.addActionListener(this);
+        btnNewButton_xoaTrang.addActionListener(this);
+        table.addMouseListener(this);
 
         DocDuLieuDatabaseVaoTable();
         this.setVisible(true);
     }
-    public List<Object[]> getTop5Customers() throws RemoteException {
-        // Lấy danh sách tất cả hóa đơn từ DAO
-        List<HoaDon> list = dao.getAllHoaDon();
-
-        if (list.isEmpty()) {
-            System.out.println("No invoices available");
-            return new ArrayList<>(); // Trả về danh sách rỗng nếu không có dữ liệu
-        }
-
-        // Tạo một Map để lưu số lượng hóa đơn theo mã khách hàng
-        Map<String, Integer> customerOrderCount = new HashMap<>();
-
-        for (HoaDon hd : list) {
-            Hibernate.initialize(hd.getMaKH());
-            String customerId = hd.getMaKH().getMaKH(); // Lấy mã khách hàng từ hóa đơn
-
-            // Tăng số lượng đơn hàng cho khách hàng
-            customerOrderCount.put(customerId, customerOrderCount.getOrDefault(customerId, 0) + 1);
-        }
-
-        // Sắp xếp theo số lượng hóa đơn giảm dần
-        List<Map.Entry<String, Integer>> sortedCustomers = customerOrderCount.entrySet().stream()
-                .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())) // Sắp xếp giảm dần
-                .collect(Collectors.toList());
-
-        // Tìm tên khách hàng theo mã và trả về danh sách Object[]
-        List<Object[]> top5CustomersData = sortedCustomers.stream()
-                .limit(5) // Lấy 5 khách hàng đứng đầu
-                .map(entry -> {
-                    String customerId = entry.getKey();
-                    int count = entry.getValue();
-                    String customerName = null;
-                    try{
-                        customerName= kh_dao.getKhachHangByMaKhachHang(customerId).getTenKH();
-                    }
-                    catch (RemoteException e) {
-
-                    }
-                    return new Object[] { customerName, count };
-                })
-                .collect(Collectors.toList());
-
-        // In dữ liệu kiểm tra
-        for (Object[] customer : top5CustomersData) {
-            System.out.println("Customer Name: " + customer[0] + ", Orders: " + customer[1]);
-        }
-
-        return top5CustomersData;
-    }
-    public List<Object[]> getTop5Employees() throws RemoteException {
-        // Lấy danh sách tất cả hóa đơn từ DAO
-        List<HoaDon> list = dao.getAllHoaDon();
-
-        if (list.isEmpty()) {
-            System.out.println("No invoices available");
-            return new ArrayList<>(); // Trả về danh sách rỗng nếu không có dữ liệu
-        }
-
-        // Tạo một Map để lưu số lượng hóa đơn theo mã nhân viên
-        Map<String, Integer> employeeOrderCount = new HashMap<>();
-
-        for (HoaDon hd : list) {
-            Hibernate.initialize(hd.getMaNV());
-            String employeeId = hd.getMaNV().getMaNV(); // Lấy mã nhân viên từ hóa đơn
-
-            // Tăng số lượng đơn hàng cho nhân viên
-            employeeOrderCount.put(employeeId, employeeOrderCount.getOrDefault(employeeId, 0) + 1);
-        }
-
-        // Sắp xếp theo số lượng hóa đơn giảm dần
-        List<Map.Entry<String, Integer>> sortedEmployees = employeeOrderCount.entrySet().stream()
-                .sorted((entry1, entry2) -> entry2.getValue().compareTo(entry1.getValue())) // Sắp xếp giảm dần
-                .collect(Collectors.toList());
-
-        // Tìm tên nhân viên theo mã và trả về danh sách Object[]
-        List<Object[]> top5EmployeesData = sortedEmployees.stream()
-                .limit(5) // Lấy 5 nhân viên đứng đầu
-                .map(entry -> {
-                    String employeeId = entry.getKey();
-                    int count = entry.getValue();
-                    String employeeName = null;
-                    try {
-                        employeeName = nv_dao.getNhanVienByMaNhanVien(employeeId).getTenNV();
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                    return new Object[] { employeeName, count };
-                })
-                .collect(Collectors.toList());
-
-        // In dữ liệu kiểm tra
-        for (Object[] employee : top5EmployeesData) {
-            System.out.println("Employee Name: " + employee[0] + ", Orders: " + employee[1]);
-        }
-
-        return top5EmployeesData;
-    }
-
 
 
     private void DocDuLieuDatabaseVaoTable() throws RemoteException {
         // TODO Auto-generated method stub
-        List<HoaDon> list = dao.getAllHoaDon();
-        for(HoaDon hd : list) {
-            Hibernate.initialize(hd.getMaKH());
-            Hibernate.initialize(hd.getMaNV());
-
-            String[] rowData = {hd.getId()+"",hd.getSoHoaDon(),hd.getNgayTaoHD() + ""
-                    ,hd.getMaKH().getTenKH(),hd.getMaNV().getTenNV()
-                    ,hd.getTongTien() + "",hd.getGhiChu()};
-
-            tableModel.addRow(rowData);
+        List<TaiKhoan> list = tk_dao.getAllTaiKhoan();
+        for (TaiKhoan tk : list) {
+            tableModel.addRow(new Object[] {tk.getTenTK().trim() , tk.getMatKhau().trim()
+                    , tk.getMaNV().getMaNV().trim(), tk.getRole().trim()});
         }
         table.setModel(tableModel);
     }
@@ -662,14 +627,10 @@ public class DONHANG_GUI extends JFrame implements ActionListener, MouseListener
 //			dispose();
 //            new TimKiemNV_GUI();
 //        }
-        if (e.getActionCommand().equals("Tài Khoản")) {
-            dispose();
-            try {
-                new TaiKhoan_GUI();
-            } catch (RemoteException ex) {
-                throw new RuntimeException(ex);
-            }
-        }
+//		if (e.getActionCommand().equals("Tài Khoản")) {
+//			dispose();
+//            new TaiKhoan_GUI();
+//        }
         if (e.getActionCommand().equals("Chức Vụ")) {
             dispose();
             try {
@@ -700,10 +661,14 @@ public class DONHANG_GUI extends JFrame implements ActionListener, MouseListener
                 throw new RuntimeException(ex);
             }
         }
-//		if (e.getActionCommand().equals("Tìm Kiếm Dịch Vụ")) {
-//			dispose();
-//            new TimKiemDV_GUI();
-//        }
+        if (e.getActionCommand().equals("Tài Khoản")) {
+            dispose();
+            try {
+                new TaiKhoan_GUI();
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
         if (e.getActionCommand().equals("Loại Dịch Vụ")) {
             dispose();
             try {
@@ -761,7 +726,7 @@ public class DONHANG_GUI extends JFrame implements ActionListener, MouseListener
         if (e.getActionCommand().equals("Thống Kê Đơn hàng")) {
             dispose();
             try {
-                new THONGKE_GUI();
+                new DONHANG_GUI();
             } catch (RemoteException ex) {
                 throw new RuntimeException(ex);
             }
@@ -794,114 +759,167 @@ public class DONHANG_GUI extends JFrame implements ActionListener, MouseListener
                 throw new RuntimeException(ex);
             }
         }
+        //////////////////////////////////////////////////////////////////////////
+        Object o = e.getSource();
+        if(o.equals(btnNewButton_them)) {
+            try {
+                themNV();
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        if(o.equals(btnNewButton_xoa)) {
+            try {
+                xoaNV();
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        if(o.equals(btnNewButton_sua)) {
+            try {
+                suaNV();
+            } catch (RemoteException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        if(o.equals(btnNewButton_xoaTrang))
+            xoaTrang();
+    }
 
+
+    private void xoaTrang() {
+        // TODO Auto-generated method stub
+        textField_tenTK.setText("");
+        textField_mk.setText("");
+        textField_maNV.setText("");
+        textField_role.setText("");
+        textField_tenTK.requestFocus();
+        comboBox_maNV.setSelectedItem("");
+        comboBox_role.setSelectedItem("");
 
     }
+
+
+    private void suaNV() throws RemoteException {
+        int row = table.getSelectedRow();
+
+        if (row < 0) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn một nhân viên để sửa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try {
+            // Lấy thông tin từ giao diện
+            String tenTK = textField_tenTK.getText().trim();
+            String mk = textField_mk.getText().trim();
+            String maNV = comboBox_maNV.getSelectedItem().toString();
+            String role = comboBox_role.getSelectedItem().toString();
+
+            // Truy vấn nhân viên từ cơ sở dữ liệu
+            NhanVien nv= nv_dao.getNhanVienByMaNhanVien(maNV);
+            TaiKhoan tk = tk_dao.getTaiKhoanById(tenTK);
+            if (tk != null) {
+                // Cập nhật các thuộc tính
+//                tk.setTenTK (hoten);
+                tk.setMatKhau(mk);
+                tk.setMaNV(nv);
+                tk.setRole(role);
+
+                // Gọi phương thức cập nhật
+                if (tk_dao.updateTaiKhoan(tk)) {
+                    // Cập nhật giao diện bảng
+                    table.setValueAt(mk, row, 1);
+                    table.setValueAt(maNV, row, 2);
+                    table.setValueAt(role, row, 3);
+
+                    JOptionPane.showMessageDialog(null, "Cập nhật thông tin nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cập nhật thất bại, vui lòng thử lại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Không tìm thấy nhân viên với mã: " + tenTK, "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Dữ liệu nhập không hợp lệ! " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+    }
+
+    private void themNV() throws RemoteException {
+        String tenTK =tk_dao.generateNextTenTK();
+        String mk = textField_mk.getText().trim();
+        String maNV = comboBox_maNV.getSelectedItem().toString();
+        String role = comboBox_role.getSelectedItem().toString();
+        NhanVien nv= nv_dao.getNhanVienByMaNhanVien(maNV);
+        TaiKhoan tk = new TaiKhoan(tenTK, mk , nv,role);
+        if (tk_dao.createTaiKhoan(tk)) {
+            JOptionPane.showMessageDialog(this, "Thêm tài khoản mới thành công");
+            tableModel.addRow(new Object[] {tk.getTenTK().trim() , tk.getMatKhau().trim()
+                    , tk.getMaNV().getMaNV().trim(), tk.getRole().trim()});
+        } else {
+            JOptionPane.showMessageDialog(this, "Không thể tạo nhân viên mới");
+        }
+
+    }
+    private void xoaNV() throws RemoteException {
+        int row = table.getSelectedRow();
+        if (row >= 0) {
+            int luaChon = JOptionPane.showConfirmDialog(this, "Bạn có muốn xóa Nhân viên này không?");
+            if (luaChon == JOptionPane.YES_OPTION) {
+                String maTK = (String) table.getValueAt(row, 0);
+
+                if (tk_dao.deleteTaiKhoan(maTK)) {
+                    tableModel.removeRow(row);
+                    xoaTrang();
+                    JOptionPane.showMessageDialog(this, "Xóa nhân viên thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Xóa nhân viên thất bại!");
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một nhân viên để xóa.");
+        }
+    }
+
+
 
     @Override
     public void mouseClicked(MouseEvent e) {
+        // TODO Auto-generated method stub
+        int row = table.getSelectedRow();
+        textField_tenTK.setText(tableModel.getValueAt(row, 0).toString());
+        textField_mk.setText(tableModel.getValueAt(row, 1).toString());
+        textField_maNV.setText(tableModel.getValueAt(row, 2).toString());
+        textField_role.setText(tableModel.getValueAt(row, 3).toString());
+        ((JComboBox) comboBox_role).setSelectedItem(tableModel.getValueAt(row, 3).toString());
+        ((JComboBox) comboBox_maNV).setSelectedItem(tableModel.getValueAt(row, 2).toString());
 
     }
+
 
     @Override
     public void mousePressed(MouseEvent e) {
+        // TODO Auto-generated method stub
 
     }
+
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        // TODO Auto-generated method stub
 
     }
+
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        // TODO Auto-generated method stub
 
     }
+
 
     @Override
     public void mouseExited(MouseEvent e) {
+        // TODO Auto-generated method stub
 
     }
-    private JPanel createDoanhThuTheoNgayPanel(List<HoaDonRevenue> dailyRevenueList) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(1, 2, 20, 0));  // Sử dụng GridLayout với 2 cột để dễ dàng chia thông tin
-
-        // Doanh thu hôm nay
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new BoxLayout(panel1, BoxLayout.Y_AXIS));
-        JLabel lblDoanhThuHienTai = new JLabel("Doanh thu hôm nay");
-        lblDoanhThuHienTai.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        JLabel lblDoanhThuHienTaiValue = new JLabel("0 đ");  // Giá trị sẽ thay đổi động
-        lblDoanhThuHienTaiValue.setFont(new Font("Tahoma", Font.BOLD, 18));
-        panel1.add(lblDoanhThuHienTai);
-        panel1.add(lblDoanhThuHienTaiValue);
-
-        // Doanh thu hôm qua
-        JPanel panel2 = new JPanel();
-        panel2.setLayout(new BoxLayout(panel2, BoxLayout.Y_AXIS));
-        JLabel lblDoanhThuHomQua = new JLabel("Doanh thu hôm qua");
-        lblDoanhThuHomQua.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        JLabel lblDoanhThuHomQuaValue = new JLabel("0 đ");  // Giá trị sẽ thay đổi động
-        lblDoanhThuHomQuaValue.setFont(new Font("Tahoma", Font.BOLD, 18));
-        panel2.add(lblDoanhThuHomQua);
-        panel2.add(lblDoanhThuHomQuaValue);
-
-        // Tỷ lệ thay đổi giữa ngày hôm nay và ngày hôm qua
-        JPanel panel3 = new JPanel();
-        panel3.setLayout(new BoxLayout(panel3, BoxLayout.Y_AXIS));
-        JLabel lblTiLeThayDoi = new JLabel("Tăng");
-        lblTiLeThayDoi.setFont(new Font("Tahoma", Font.PLAIN, 16));
-        JLabel lblTiLeThayDoiValue = new JLabel("↑ 0.00%");  // Giá trị sẽ thay đổi động
-        lblTiLeThayDoiValue.setFont(new Font("Tahoma", Font.BOLD, 18));
-        lblTiLeThayDoiValue.setForeground(new Color(0, 123, 0));  // Màu xanh lá cho tỷ lệ tăng
-        panel3.add(lblTiLeThayDoi);
-        panel3.add(lblTiLeThayDoiValue);
-
-        // Lấy doanh thu hôm nay và hôm qua từ danh sách doanh thu
-        double todayRevenue = 0;
-        double yesterdayRevenue = 0;
-
-        int todayIndex = LocalDate.now().getDayOfWeek().getValue(); // Lấy thứ trong tuần (1-7)
-        int yesterdayIndex = (todayIndex == 1) ? 7 : todayIndex - 1;  // Tính ngày hôm qua
-        System.out.println("todayIndex "+todayIndex );
-        System.out.println("yesterdayIndex "+yesterdayIndex );
-
-        // Tìm doanh thu hôm nay và hôm qua
-        for (HoaDonRevenue revenue : dailyRevenueList) {
-            System.out.println("revenue.getDayWeek() "+revenue.getDayWeek() );
-
-            if (revenue.getDayWeek() == todayIndex) {
-                todayRevenue = Double.parseDouble(revenue.getTotalRevenue().toString());
-            } else if (revenue.getDayWeek() == yesterdayIndex) {
-                yesterdayRevenue = Double.parseDouble(revenue.getTotalRevenue().toString());
-            }
-        }
-
-        // Cập nhật doanh thu hôm nay và hôm qua vào các JLabel
-        DecimalFormat formatter = new DecimalFormat("#,###.##");
-        lblDoanhThuHienTaiValue.setText(formatter.format(todayRevenue) + " đ");
-        lblDoanhThuHomQuaValue.setText(formatter.format(yesterdayRevenue)  + " đ");
-
-        // Tính tỷ lệ thay đổi
-        double changeRate = ((todayRevenue - yesterdayRevenue) / todayRevenue) * 100;
-
-
-        // Cập nhật tỷ lệ thay đổi
-        if (changeRate < 0) {
-            lblTiLeThayDoiValue.setText("↓ " + String.format("%.2f", Math.abs(changeRate)) + "%");
-            lblTiLeThayDoiValue.setForeground(new Color(255, 0, 0));  // Màu đỏ cho tỷ lệ giảm
-        }else{
-            lblTiLeThayDoiValue.setText("↑ " + String.format("%.2f", Math.abs(changeRate)) + "%");
-            lblTiLeThayDoiValue.setForeground(new Color(0, 123, 0));
-        }
-
-        // Thêm các panel con vào panel chính
-        panel.add(panel1);
-        panel.add(panel2);
-        panel.add(panel3);
-
-        return panel;
-    }
-
-
 }

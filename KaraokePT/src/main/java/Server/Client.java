@@ -1,5 +1,6 @@
 package Server;
 
+import gui.DangNhap_GUI;
 import gui.Menu_GUI;
 import model.*;
 
@@ -24,7 +25,7 @@ public class Client {
 //        ChiTietHoaDonDao chiTietHoaDonDao = (ChiTietHoaDonDao) Naming.lookup(URL + "chiTietHoaDonDao");
 //        ChucVuDao chucVuDao = (ChucVuDao) Naming.lookup(URL + "chucVuDao");
 
-        new Menu_GUI();
+        new DangNhap_GUI();
     }
 }
 
