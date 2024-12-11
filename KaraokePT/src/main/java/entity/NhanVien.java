@@ -37,6 +37,16 @@ public class NhanVien implements Serializable {
     @JoinColumn(name = "maCV", nullable = false)
     private ChucVu maCV;
 
+	public boolean isDelete() {
+		return isDelete;
+	}
+
+	public void setDelete(boolean delete) {
+		isDelete = delete;
+	}
+
+	@Column(name = "isDelete", nullable = false)
+	private boolean isDelete;
     public NhanVien(String maNV) {
         this.maNV = maNV;
     }
