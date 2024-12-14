@@ -559,7 +559,7 @@ public class DatPhong_GUI extends JFrame implements ActionListener, MouseListene
 		horizontalBox_4.setBounds(10, 475, 1520, 255);
 		contentPane.add(horizontalBox_4);
 		//
-		String [] headers4 = {"Mã Phiếu Đặt Phòng","Tên Phòng", "Loại Phòng", "Đơn Giá", "Thời gian Đặt Phòng","Tên Khách Hàng","Tên Nhân Viên"};
+		String [] headers4 = {"Mã Phiếu Đặt Phòng","Tên Phòng", "Loại Phòng", "Đơn Giá", "Thời gian Đặt Phòng","Mã Khách Hàng","Mã Nhân Viên"};
 		tableModel4=new DefaultTableModel(headers4,0);
 		JScrollPane scroll4 = new JScrollPane();
 		scroll4.setViewportView(table_4 = new JTable(tableModel4));
